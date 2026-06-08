@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Bakeshop - Wholesale Dashboard — Metro Bulk Distributors (Quezon City)</title>
+    <link rel="stylesheet" href="../../css/pages/wholesaler/wholesaler-portal.css">
+    <link rel="stylesheet" href="../../css/pages/wholesaler/wholesaler-modules.css">
+</head>
+<body>
+
+<header class="top-navbar-node">
+    <div class="brand-logo-panel">
+        <img src="../../assets/logo/kreezby-logo.png" alt="Kreezby logo">
+        <span>Kreezby</span>
+    </div>
+    <div class="top-nav-links-right">
+        <a class="top-nav-item home-badge" href="wholesaler-quezoncity_metrobulkdistributors.html">Home</a>
+        <button type="button" class="notification-pill" aria-label="Notifications">🔔</button>
+        <div class="user-dropdown">
+            <button class="user-dropdown-pill" type="button" id="user-dropdown-trigger">Metro Bulk Distributors ▾</button>
+            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                <a href="../report_issue-wholesaler.html" class="dropdown-item">Report Issue</a>
+                <a href="../../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="system-dashboard-wrapper" data-area="quezoncity" data-slug="metrobulkdistributors">
+    <aside class="sidebar-panel">
+        <div class="hamburger-row">☰</div>
+        <div class="panel-brand">Metro Bulk Distributors</div>
+        <ul class="navigation-tree">
+            <li class="tree-node active"><a href="wholesaler-quezoncity_metrobulkdistributors.html">Dashboard</a></li>
+            <li class="tree-node"><a href="po-quezoncity_metrobulkdistributors.html">Purchase Order</a></li>
+            <li class="tree-node"><a href="receive-quezoncity_metrobulkdistributors.html">Receiving</a></li>
+            <li class="tree-node"><a href="bo-quezoncity_metrobulkdistributors.html">Back Order</a></li>
+            <li class="tree-node"><a href="return-quezoncity_metrobulkdistributors.html">Return/P.O List</a></li>
+            <li class="tree-node"><a href="saleslist-quezoncity_metrobulkdistributors.html">Sales List</a></li>
+            <li class="tree-node"><a href="alert-quezoncity_metrobulkdistributors.html">Alert</a></li>
+        </ul>
+    </aside>
+
+    <main class="workspace-canvas">
+        <div class="workspace-container">
+            <h2 class="page-title">Metro Bulk Distributors — Quezon City</h2>
+            <div class="sync-status-bar">
+                <span><strong>Wholesale Portal:</strong> Bulk orders and distribution tracking</span>
+                <span>Contact: James Lim · james@metrobulk.com</span>
+            </div>
+            <div class="dashboard-grid">
+            <a class="stat-card" href="po-quezoncity_metrobulkdistributors.html"><div class="stat-title">PO Records</div><div class="stat-value">5</div></a>
+            <a class="stat-card blue-bar" href="receive-quezoncity_metrobulkdistributors.html"><div class="stat-title">Receiving Records</div><div class="stat-value">8</div></a>
+            <a class="stat-card" href="bo-quezoncity_metrobulkdistributors.html"><div class="stat-title">BO Records</div><div class="stat-value">2</div></a>
+            <a class="stat-card blue-bar" href="return-quezoncity_metrobulkdistributors.html"><div class="stat-title">Return Records</div><div class="stat-value">1</div></a>
+            <a class="stat-card" href="alert-quezoncity_metrobulkdistributors.html"><div class="stat-title">Alert</div><div class="stat-value">2</div></a>
+            <a class="stat-card" href="saleslist-quezoncity_metrobulkdistributors.html"><div class="stat-title">Sales Records</div><div class="stat-value">15</div></a>
+            </div>
+        </div>
+    </main>
+</div>
+
+    <div class="notification-modal-overlay" id="notification-modal-overlay">
+        <div class="notification-modal-box">
+            <div class="notification-modal-header"><h2>📢 Notifications</h2><button class="notification-modal-close-btn" onclick="closeNotificationModal()">✕</button></div>
+            <div class="notification-modal-body" id="notification-modal-body"></div>
+        </div>
+    </div>
+    <script>
+var notificationsData=[{id:1,type:"delivery",title:"🚚 Bulk Shipment En Route",message:"Pallet truck dispatched to Quezon City Bulk Warehouse. ETA today 3:00–5:00 PM.",time:"30 min ago",status:"unread"},{id:2,type:"payment",title:"💰 Invoice Due",message:"Bulk invoice #WINV-2026-089 for ₱288,000 due May 28, 2026.",time:"2 hours ago",status:"unread"},{id:3,type:"stock",title:"⚠️ Warehouse Low Stock",message:"Chocolate Crinkles cases below reorder point at Quezon City Bulk Warehouse.",time:"5 hours ago",status:"read"}];
+function openNotificationModal(){var body=document.getElementById("notification-modal-body");body.innerHTML=notificationsData.map(function(n){return '<div class="notification-item '+(n.status==="unread"?"unread":"")+'"><div class="notification-content"><div class="notification-title">'+n.title+'</div><div class="notification-message">'+n.message+'</div><div class="notification-time">'+n.time+'</div></div></div>';}).join("");document.getElementById("notification-modal-overlay").classList.add("active");}
+function closeNotificationModal(){document.getElementById("notification-modal-overlay").classList.remove("active");}
+document.addEventListener("DOMContentLoaded",function(){var bell=document.querySelector(".notification-pill");if(bell)bell.addEventListener("click",openNotificationModal);var ov=document.getElementById("notification-modal-overlay");if(ov)ov.addEventListener("click",function(e){if(e.target===this)closeNotificationModal();});});
+</script>
+
+    <script src="../../js/sidebar-toggle.js"></script>
+    <script src="../../js/wholesaler-nav.js"></script>
+    <script src="../../js/user-dropdown-nav.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reported Issues Inbox</title>
+    <link rel="stylesheet" href="../css/pages/staff/report_issue-received-students.css">
+
+</head>
+<body>
+<header class="top-navbar-node">
+    <div class="brand-logo-panel">Kreezby</div>
+    <div class="top-nav-links-right">
+        <a class="top-nav-item home-badge" href="admin.html">Support Home</a>
+        <a class="top-nav-item" href="report_issue-admin.html">Submit New Issue</a>
+    </div>
+</header>
+<div class="page-shell">
+    <div class="inbox-panel">
+        <div class="inbox-header">
+            <h1>Reported Issues Inbox</h1>
+            <p>All issue reports submitted by users are tracked here. Admin and staff can review incoming support requests and see the current status of each report.</p>
+        </div>
+        <div class="inbox-body">
+            <div class="inbox-actions">
+                <a class="btn-primary" href="report_issue-admin.html">New Admin Report</a>
+                <a class="btn-secondary" href="report_issue-staff.html">New Staff Report</a>
+                <a class="btn-secondary" href="report_issue-retailer.html">New Retailer Report</a>
+                <a class="btn-secondary" href="report_issue-customer.html">New Customer Report</a>
+            </div>
+            <table class="inbox-table">
+                <thead>
+                    <tr>
+                        <th>User Role</th>
+                        <th>Submitted By</th>
+                        <th>Issue Type</th>
+                        <th>Reference</th>
+                        <th>Received</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Customer</td>
+                        <td>Maria Santos</td>
+                        <td>Payment / Refund</td>
+                        <td>ORD-2026-005</td>
+                        <td>May 19, 2026 · 10:22 AM</td>
+                        <td><span class="status-chip status-new">New</span></td>
+                    </tr>
+                    <tr>
+                        <td>Retailer</td>
+                        <td>Juan Dela Cruz</td>
+                        <td>Delivery / Tracking</td>
+                        <td>PO-2026-0042</td>
+                        <td>May 19, 2026 · 09:38 AM</td>
+                        <td><span class="status-chip status-progress">In Progress</span></td>
+                    </tr>
+                    <tr>
+                        <td>Staff</td>
+                        <td>Anna Reyes</td>
+                        <td>Inventory</td>
+                        <td>Branch #102</td>
+                        <td>May 18, 2026 · 04:15 PM</td>
+                        <td><span class="status-chip status-progress">In Progress</span></td>
+                    </tr>
+                    <tr>
+                        <td>Admin</td>
+                        <td>Christopher Lee</td>
+                        <td>System Bug</td>
+                        <td>Alert Settings</td>
+                        <td>May 18, 2026 · 11:10 AM</td>
+                        <td><span class="status-chip status-closed">Resolved</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="empty-state">
+                These entries show sample received requests. Once a form is submitted, the support team can process it in the admin review workflow.
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

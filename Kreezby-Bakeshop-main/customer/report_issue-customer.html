@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Issue - Customer</title>
+    <link rel="stylesheet" href="../css/pages/customer/report_issue-customer.css">
+
+</head>
+<body>
+<header class="top-navbar-node">
+    <div class="brand-logo-panel">Kreezby</div>
+    <div class="top-nav-links-right">
+        <a class="top-nav-item home-badge" href="customer.html">Home</a>
+        <a class="top-nav-item" href="inbox-customer.html">Help Center</a>
+    </div>
+</header>
+<div class="page-shell">
+    <div class="report-panel">
+        <div class="report-header">
+            <h1>Report an Issue — Customer</h1>
+            <p>Submit product, ordering, or account issues so our support team can assist you quickly.</p>
+        </div>
+        <div class="report-body">
+            <form class="report-form" onsubmit="submitIssue(event, 'Customer');">
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label for="customer-name">Full Name</label>
+                        <input id="customer-name" name="fullName" type="text" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="customer-contact">Email or Phone</label>
+                        <input id="customer-contact" name="contact" type="text" placeholder="you@example.com or 0917 123 4567" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="customer-order">Order Number</label>
+                        <input id="customer-order" name="orderNumber" type="text" placeholder="E.g. ORD-2026-005" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="customer-issue-type">Issue Type</label>
+                        <select id="customer-issue-type" name="issueType" required>
+                            <option value="">Select issue type</option>
+                            <option>Order Status</option>
+                            <option>Product Quality</option>
+                            <option>Payment / Refund</option>
+                            <option>Website Issue</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-row full-width">
+                        <label for="customer-description">Issue Description</label>
+                        <textarea id="customer-description" name="description" placeholder="Tell us what happened and when." required></textarea>
+                    </div>
+                    <div class="form-row full-width">
+                        <label for="customer-notes">Additional Details</label>
+                        <textarea id="customer-notes" name="notes" placeholder="Any supporting details, preferences, or timeline." ></textarea>
+                    </div>
+                    <div class="form-row full-width">
+                        <label for="customer-attachment">Attach Screenshot / Receipt (optional)</label>
+                        <input id="customer-attachment" name="attachment" type="file">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">Submit Report</button>
+                    <a href="customer.html" class="btn-secondary">Return to Shop</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+function submitIssue(event, role) {
+    event.preventDefault();
+    alert(role + ' issue report submitted successfully. Redirecting to the received issues inbox.');
+    window.location.href='report_issue-received-students.html';
+}
+</script>
+</body>
+</html>

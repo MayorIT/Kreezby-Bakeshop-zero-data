@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Bakeshop - Admin Dashboard</title>
+    <link rel="stylesheet" href="../css/pages/admin/admin.css">
+
+</head>
+<body>
+
+    <header class="top-navbar-node">
+        <div class="brand-logo-panel">Kreezby</div>
+        <div class="top-nav-links-right">
+            <a class="top-nav-item home-badge" href="admin.html">Home</a>
+            <a class="top-nav-item" href="maintenance-admin.html">Maintenance</a>
+            <button type="button" class="notification-pill" aria-label="Notifications" onclick="openNotificationModal()">🔔</button>
+            <div class="user-dropdown">
+                <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">
+                    <span style="background:#fff; width:18px; height:18px; border-radius:50%; display:inline-block;"></span>
+                    Admin ▾
+                </button>
+                <div class="user-dropdown-menu" id="user-dropdown-menu">
+                    <a href="report_issue-admin.html" class="dropdown-item">Report Issue</a>
+                    <a href="../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+ 
+    <div class="core-viewport-wrapper">
+
+        <aside class="dark-sidebar-panel">
+            <div class="hamburger-row">☰</div>
+            <ul class="sidebar-menu-list">
+                <li class="menu-node-item active"><a href="admin.html">Dashboard</a></li>
+                <li class="menu-node-item"><a href="po-admin.html">Purchase Order</a></li>
+                <li class="menu-node-item"><a href="receive-admin.html">Receiving</a></li>
+                <li class="menu-node-item"><a href="bo-admin.html">Back Order</a></li>
+                <li class="menu-node-item"><a href="return-admin.html">Return/P.O List</a></li>
+                <li class="menu-node-item"><a href="stocks-admin.html">Stocks</a></li>
+                <li class="menu-node-item"><a href="saleslist-admin.html">Sales List</a></li>
+                <li class="menu-node-item"><a href="aiforecast-admin.html">AI Forecast</a></li>
+                <li class="menu-node-item"><a href="alert-admin.html">Alert</a></li>
+                <li class="menu-node-item"><a href="stocklevel-admin.html">Stock Level</a></li>
+            </ul>
+        </aside>
+
+        <main class="workspace-view-canvas">
+
+            <div id="admin-dashboard-root">
+                <div class="dashboard-split-layout">
+                    <div class="panel-data-card">
+                        <div class="panel-card-title-bar">
+                            <h3>Dashboard Overview</h3>
+                        </div>
+                        <div class="card-body-padded">
+                            <div class="dashboard-grid">
+                                <a class="stat-card" href="po-admin.html">
+                                    <div class="stat-title">PO Records</div>
+                                    <div class="stat-value">2</div>
+                                </a>
+                                <a class="stat-card blue-bar" href="receive-admin.html">
+                                    <div class="stat-title">Receiving Records</div>
+                                    <div class="stat-value">6</div>
+                                </a>
+                                <a class="stat-card" href="bo-admin.html">
+                                    <div class="stat-title">BO Records</div>
+                                    <div class="stat-value">4</div>
+                                </a>
+                                <a class="stat-card red-bar" href="return-admin.html">
+                                    <div class="stat-title">Return Records</div>
+                                    <div class="stat-value">3</div>
+                                </a>
+                                <a class="stat-card green-bar" href="saleslist-admin.html">
+                                    <div class="stat-title">Sales Records</div>
+                                    <div class="stat-value">4</div>
+                                </a>
+                                <a class="stat-card" href="stocks-admin.html">
+                                    <div class="stat-title">Stocks</div>
+                                    <div class="stat-value">13</div>
+                                </a>
+                                <a class="stat-card blue-bar" href="aiforecast-admin.html">
+                                    <div class="stat-title">AI Forecast</div>
+                                    <div class="stat-value">4</div>
+                                </a>
+                                <a class="stat-card" href="alert-admin.html">
+                                    <div class="stat-title">Alert</div>
+                                    <div class="stat-value">4</div>
+                                </a>
+                                <a class="stat-card blue-bar" href="stocklevel-admin.html">
+                                    <div class="stat-title">Stock Level</div>
+                                    <div class="stat-value">9</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div class="notification-modal-overlay" id="notification-modal-overlay">
+        <div class="notification-modal-box">
+            <div class="notification-modal-header">
+                <h2>📢 Notifications</h2>
+                <button type="button" class="notification-modal-close-btn" onclick="closeNotificationModal()">✕</button>
+            </div>
+            <div class="notification-modal-body" id="notification-modal-body">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const notificationsData = [
+            {
+                id: 1,
+                type: 'order',
+                title: 'Customer Order Placed',
+                message: 'New order #ORD-2026-005 from Bryle Atienza - 10 pouches of Chocolate Crinkles',
+                time: '5 minutes ago',
+                status: 'unread'
+            },
+            {
+                id: 2,
+                type: 'reorder',
+                title: 'Branch Reorder Received',
+                message: 'Branch #102 (Makati) reordered 25 units of Choco-Almond Crinkles',
+                time: '2 hours ago',
+                status: 'unread'
+            },
+            {
+                id: 3,
+                type: 'reorder',
+                title: 'Branch Reorder Received',
+                message: 'Branch #05 (BGC) reordered 15 units of Mango Crinkles',
+                time: '4 hours ago',
+                status: 'read'
+            },
+            {
+                id: 4,
+                type: 'order',
+                title: 'Customer Order Placed',
+                message: 'New order #ORD-2026-004 from Maria Santos - 5 jars of Choco Butternut',
+                time: '1 day ago',
+                status: 'read'
+            }
+        ];
+
+        function openNotificationModal() {
+            const modal = document.getElementById('notification-modal-overlay');
+            const body = document.getElementById('notification-modal-body');
+
+            body.innerHTML = notificationsData.map(notif => `
+                <div class="notification-item ${notif.status === 'unread' ? 'unread' : ''}">
+                    <div class="notification-icon">${notif.type === 'order' ? '🛒' : '📦'}</div>
+                    <div class="notification-content">
+                        <div class="notification-title">${notif.title}</div>
+                        <div class="notification-message">${notif.message}</div>
+                        <div class="notification-time">${notif.time}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            modal.classList.add('active');
+        }
+
+        function closeNotificationModal() {
+            document.getElementById('notification-modal-overlay').classList.remove('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('notification-modal-overlay').addEventListener('click', function (event) {
+                if (event.target === this) {
+                    closeNotificationModal();
+                }
+            });
+        });
+    </script>
+        <script src="../js/user-dropdown-nav.js"></script>
+    <script src="../js/admin-sidebar.js"></script>
+    <script src="../js/sidebar-toggle.js"></script>
+</body>
+</html>
