@@ -55,8 +55,15 @@ function listRetailerHtmlFiles() {
   return files;
 }
 
+function retailerPortalPath(area, slug) {
+  const file = 'retailer-' + area + '_' + slug + '.html';
+  const nested = path.join(RETAILER_HTML_DIR, area, slug, file);
+  if (fs.existsSync(nested)) return nested;
+  return path.join(RETAILER_HTML_DIR, slug, file);
+}
+
 function storeNameFromPortalHtml(area, slug) {
-  const portal = path.join(RETAILER_HTML_DIR, slug, 'retailer-' + area + '_' + slug + '.html');
+  const portal = retailerPortalPath(area, slug);
   if (!fs.existsSync(portal)) return slug;
   const html = fs.readFileSync(portal, 'utf8');
   const title = html.match(/<title>([^<]+)<\/title>/i);
