@@ -55,8 +55,13 @@ function listRetailerHtmlFiles() {
   return files;
 }
 
+function retailerPortalPath(area, slug) {
+  const folder = /^citimart/.test(slug) ? 'citimart' : area;
+  return path.join(RETAILER_HTML_DIR, folder, slug, 'retailer-' + area + '_' + slug + '.html');
+}
+
 function storeNameFromPortalHtml(area, slug) {
-  const portal = path.join(RETAILER_HTML_DIR, slug, 'retailer-' + area + '_' + slug + '.html');
+  const portal = retailerPortalPath(area, slug);
   if (!fs.existsSync(portal)) return slug;
   const html = fs.readFileSync(portal, 'utf8');
   const title = html.match(/<title>([^<]+)<\/title>/i);

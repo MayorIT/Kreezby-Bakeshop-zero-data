@@ -20,9 +20,20 @@ const cssSlugs = fs.readdirSync(cssBase);
 cssSlugs.forEach(slug => {
     const slugDir = path.join(cssBase, slug);
     if (!fs.statSync(slugDir).isDirectory()) return;
-    const htmlDir = path.join(retailerDir, slug);
-    if (!fs.existsSync(htmlDir)) {
-        issues.orphanCss.push('css/pages/retailer/' + slug + ' (no matching retailer/' + slug + ')');
+    let htmlDir = null;
+    for (const area of fs.readdirSync(retailerDir)) {
+        const candidate = path.join(retailerDir, area, slug);
+        if (fs.existsSync(candidate) && fs.statSync(candidate).isDirectory()) {
+            htmlDir = candidate;
+            break;
+        }
+    }
+    if (!htmlDir) {
+        const flat = path.join(retailerDir, slug);
+        if (fs.existsSync(flat) && fs.statSync(flat).isDirectory()) htmlDir = flat;
+    }
+    if (!htmlDir) {
+        issues.orphanCss.push('css/pages/retailer/' + slug + ' (no matching retailer folder)');
         return;
     }
     for (const f of fs.readdirSync(slugDir)) {
