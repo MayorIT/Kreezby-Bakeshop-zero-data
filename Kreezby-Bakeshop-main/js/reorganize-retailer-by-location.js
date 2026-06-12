@@ -76,7 +76,7 @@ const PDF_SECTIONS = [
     label: 'Sto. Tomas',
     areaTag: 'Sto. Tomas',
     slugs: [
-      'luciascafestotomas', 'jmarosegrace', 'dvinias', 'titachu',
+      'luciascafestotomas', 'jma', 'rosegrace', 'dvinias', 'titachu',
       'laonglaan', 'rsmbacnotan', 'avilles'
     ]
   },

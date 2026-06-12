@@ -551,14 +551,6 @@
     "lastDate": null,
     "json": "data/retailers/stotomas_dvinias.json"
   },
-  "stotomas_jmarosegrace": {
-    "area": "stotomas",
-    "slug": "jmarosegrace",
-    "storeName": "JMA Rose & Grace",
-    "count": 0,
-    "lastDate": null,
-    "json": "data/retailers/stotomas_jmarosegrace.json"
-  },
   "stotomas_laonglaan": {
     "area": "stotomas",
     "slug": "laonglaan",
@@ -662,5 +654,21 @@
     "count": 0,
     "lastDate": null,
     "json": "data/retailers/tagaytay_sinangagexpresstagaytay.json"
+  },
+  "stotomas_jma": {
+    "area": "stotomas",
+    "slug": "jma",
+    "storeName": "JMA",
+    "count": 0,
+    "lastDate": null,
+    "json": "data/retailers/stotomas_jma.json"
+  },
+  "stotomas_rosegrace": {
+    "area": "stotomas",
+    "slug": "rosegrace",
+    "storeName": "Rose & Grace",
+    "count": 0,
+    "lastDate": null,
+    "json": "data/retailers/stotomas_rosegrace.json"
   }
 }
