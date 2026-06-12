@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Bakeshop - Inventory Team Dashboard</title>
+    <link rel="stylesheet" href="../css/pages/staff/staff-3.css">
+
+</head>
+<body>
+
+<header class="top-navbar-node">
+    <div class="brand-logo-panel">
+        <img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo">
+        <span>Kreezby</span>
+    </div>
+    <div class="top-nav-links-right">
+        <a class="top-nav-item home-badge" href="staff-3.html">Home</a>
+        <button class="notification-pill" aria-label="Notifications">🔔</button>
+        <div class="user-dropdown">
+            <button class="user-dropdown-pill" type="button" id="user-dropdown-trigger">Staff 3 ▾</button>
+            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                <a href="report_issue-staff.html" class="dropdown-item">Report Issue</a>
+                <a href="../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="system-dashboard-wrapper">
+    <aside class="sidebar-panel">
+        <div class="hamburger-row">☰</div>
+        <div class="panel-brand">Kreezby Staff · Inventory</div>
+        <ul class="navigation-tree">
+            <li class="tree-node active"><a href="staff-3.html">Dashboard</a></li>
+            <li class="tree-node"><a href="stocks-staff.html">Stocks</a></li>
+            <li class="tree-node"><a href="stocklevel-staff.html">Stock Level</a></li>
+            <li class="tree-node"><a href="inventoryreport-staff.html">Report</a></li>
+            <li class="tree-node"><a href="alert-staff.html">Alert</a></li>
+        </ul>
+    </aside>
+
+    <main class="workspace-canvas">
+        <div class="workspace-container">
+            <h2 class="page-title">Inventory Team Dashboard</h2>
+            <p style="color:#666;margin-bottom:20px;font-size:14px;">Assigned tasks: stock management, stock levels, inventory reports, and alerts.</p>
+            <div class="dashboard-grid">
+                <a class="stat-card" href="stocks-staff.html">
+                    <div class="stat-title">Stocks</div>
+                    <div class="stat-value">5</div>
+                </a>
+                <a class="stat-card blue-bar" href="stocklevel-staff.html">
+                    <div class="stat-title">Stock Level</div>
+                    <div class="stat-value">4</div>
+                </a>
+                <a class="stat-card green-bar" href="inventoryreport-staff.html">
+                    <div class="stat-title">Report</div>
+                    <div class="stat-value">3</div>
+                </a>
+                <a class="stat-card" href="alert-staff.html">
+                    <div class="stat-title">Alert</div>
+                    <div class="stat-value">8</div>
+                </a>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="../js/staff-permissions.js"></script>
+<script src="../js/sidebar-toggle.js"></script>
+<script>KreezbyStaffPermissions.setCurrentStaffId('staff-3');</script>
+</body>
+</html>

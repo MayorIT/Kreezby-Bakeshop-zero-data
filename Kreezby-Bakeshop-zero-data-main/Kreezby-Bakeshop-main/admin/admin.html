@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Bakeshop - Admin Dashboard</title>
+    <link rel="stylesheet" href="../css/pages/admin/admin.css">
+
+</head>
+<body>
+
+    <header class="top-navbar-node">
+        <div class="brand-logo-panel">Kreezby</div>
+        <div class="top-nav-links-right">
+            <a class="top-nav-item home-badge" href="admin.html">Home</a>
+            <a class="top-nav-item" href="maintenance-admin.html">Maintenance</a>
+            <button type="button" class="notification-pill" aria-label="Notifications" onclick="openNotificationModal()">🔔</button>
+            <div class="user-dropdown">
+                <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">
+                    <span style="background:#fff; width:18px; height:18px; border-radius:50%; display:inline-block;"></span>
+                    Admin ▾
+                </button>
+                <div class="user-dropdown-menu" id="user-dropdown-menu">
+                    <a href="report_issue-admin.html" class="dropdown-item">Report Issue</a>
+                    <a href="../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+ 
+    <div class="core-viewport-wrapper">
+
+        <aside class="dark-sidebar-panel">
+            <div class="hamburger-row">☰</div>
+            <ul class="sidebar-menu-list">
+                <li class="menu-node-item active"><a href="admin.html">Dashboard</a></li>
+                <li class="menu-node-item"><a href="po-admin.html">Purchase Order</a></li>
+                <li class="menu-node-item"><a href="receive-admin.html">Receiving</a></li>
+                <li class="menu-node-item"><a href="bo-admin.html">Back Order</a></li>
+                <li class="menu-node-item"><a href="return-admin.html">Return/P.O List</a></li>
+                <li class="menu-node-item"><a href="stocks-admin.html">Stocks</a></li>
+                <li class="menu-node-item"><a href="saleslist-admin.html">Sales List</a></li>
+                <li class="menu-node-item"><a href="aiforecast-admin.html">AI Forecast</a></li>
+                <li class="menu-node-item"><a href="alert-admin.html">Alert</a></li>
+                <li class="menu-node-item"><a href="stocklevel-admin.html">Stock Level</a></li>
+            </ul>
+        </aside>
+
+        <main class="workspace-view-canvas">
+
+            <div id="admin-dashboard-root" class="dashboard-main-panel">
+                <h1 class="dashboard-welcome">Welcome, Admin!</h1>
+
+                <div class="dashboard-stat-grid">
+                    <!-- Column 1 -->
+                    <a class="dash-stat-card" href="po-admin.html">
+                        <div class="dash-stat-icon icon-po" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+                        </div>
+                        <span class="dash-stat-label">PO Records</span>
+                        <span class="dash-stat-value">2</span>
+                    </a>
+
+                    <!-- Column 2 -->
+                    <a class="dash-stat-card" href="receive-admin.html">
+                        <div class="dash-stat-icon icon-receiving" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M12 22V12"/><path d="m3.3 7.7 8.7 4.8 8.7-4.8"/></svg>
+                        </div>
+                        <span class="dash-stat-label">Receiving Records</span>
+                        <span class="dash-stat-value">6</span>
+                    </a>
+
+                    <!-- Column 3 -->
+                    <a class="dash-stat-card" href="bo-admin.html">
+                        <div class="dash-stat-icon icon-bo" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M8 8l4-4 4 4"/><path d="M8 16l4 4 4-4"/></svg>
+                        </div>
+                        <span class="dash-stat-label">BO Records</span>
+                        <span class="dash-stat-value">4</span>
+                    </a>
+
+                    <!-- Column 1 -->
+                    <a class="dash-stat-card" href="return-admin.html">
+                        <div class="dash-stat-icon icon-return" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                        </div>
+                        <span class="dash-stat-label">Return Records</span>
+                        <span class="dash-stat-value">4</span>
+                    </a>
+
+                    <!-- Column 2 -->
+                    <a class="dash-stat-card" href="saleslist-admin.html">
+                        <div class="dash-stat-icon icon-sales" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5M8 9h2"/></svg>
+                        </div>
+                        <span class="dash-stat-label">Sales Records</span>
+                        <span class="dash-stat-value">4</span>
+                    </a>
+
+                    <!-- Column 3 -->
+                    <a class="dash-stat-card" href="stocks-admin.html">
+                        <div class="dash-stat-icon icon-stocks" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7.7 12 12.5l8.7-4.8"/></svg>
+                        </div>
+                        <span class="dash-stat-label">Stocks</span>
+                        <span class="dash-stat-value">4</span>
+                    </a>
+
+                    <!-- Column 1 -->
+                    <a class="dash-stat-card" href="aiforecast-admin.html">
+                        <div class="dash-stat-icon icon-aiforecast" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><path d="m21 21-4.3-4.3"/><path d="M7 13l2-3 2 2 3-4"/></svg>
+                        </div>
+                        <span class="dash-stat-label">AI Forecast</span>
+                        <span class="dash-stat-value">4</span>
+                    </a>
+
+                    <!-- Column 2 -->
+                    <a class="dash-stat-card" href="alert-admin.html">
+                        <div class="dash-stat-icon icon-alert" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18"/><path d="M9 9v12M13 13v8M17 11v10"/></svg>
+                        </div>
+                        <span class="dash-stat-label">Alert</span>
+                        <span class="dash-stat-value">4</span>
+                    </a>
+
+                    <!-- Column 3 -->
+                    <a class="dash-stat-card" href="stocklevel-admin.html">
+                        <div class="dash-stat-icon icon-stocklevel" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-6 4 3 5-8"/></svg>
+                        </div>
+                        <span class="dash-stat-label">Stock Level</span>
+                        <span class="dash-stat-value">4</span>
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div class="notification-modal-overlay" id="notification-modal-overlay">
+        <div class="notification-modal-box">
+            <div class="notification-modal-header">
+                <h2>📢 Notifications</h2>
+                <button type="button" class="notification-modal-close-btn" onclick="closeNotificationModal()">✕</button>
+            </div>
+            <div class="notification-modal-body" id="notification-modal-body">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const notificationsData = [
+            {
+                id: 1,
+                type: 'order',
+                title: 'Customer Order Placed',
+                message: 'New order #ORD-2026-005 from Bryle Atienza - 10 pouches of Chocolate Crinkles',
+                time: '5 minutes ago',
+                status: 'unread'
+            },
+            {
+                id: 2,
+                type: 'reorder',
+                title: 'Branch Reorder Received',
+                message: 'Branch #102 (Makati) reordered 25 units of Choco-Almond Crinkles',
+                time: '2 hours ago',
+                status: 'unread'
+            },
+            {
+                id: 3,
+                type: 'reorder',
+                title: 'Branch Reorder Received',
+                message: 'Branch #05 (BGC) reordered 15 units of Mango Crinkles',
+                time: '4 hours ago',
+                status: 'read'
+            },
+            {
+                id: 4,
+                type: 'order',
+                title: 'Customer Order Placed',
+                message: 'New order #ORD-2026-004 from Maria Santos - 5 jars of Choco Butternut',
+                time: '1 day ago',
+                status: 'read'
+            }
+        ];
+
+        function openNotificationModal() {
+            const modal = document.getElementById('notification-modal-overlay');
+            const body = document.getElementById('notification-modal-body');
+
+            body.innerHTML = notificationsData.map(notif => `
+                <div class="notification-item ${notif.status === 'unread' ? 'unread' : ''}">
+                    <div class="notification-icon">${notif.type === 'order' ? '🛒' : '📦'}</div>
+                    <div class="notification-content">
+                        <div class="notification-title">${notif.title}</div>
+                        <div class="notification-message">${notif.message}</div>
+                        <div class="notification-time">${notif.time}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            modal.classList.add('active');
+        }
+
+        function closeNotificationModal() {
+            document.getElementById('notification-modal-overlay').classList.remove('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('notification-modal-overlay').addEventListener('click', function (event) {
+                if (event.target === this) {
+                    closeNotificationModal();
+                }
+            });
+        });
+    </script>
+        <script src="../js/user-dropdown-nav.js"></script>
+    <script src="../js/admin-sidebar.js"></script>
+    <script src="../js/sidebar-toggle.js"></script>
+</body>
+</html>

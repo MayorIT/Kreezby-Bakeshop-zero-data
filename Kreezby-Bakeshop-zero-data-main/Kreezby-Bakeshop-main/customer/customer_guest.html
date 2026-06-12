@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Crinkles - Browse Our Selection</title>
+    <link rel="stylesheet" href="../css/pages/customer/customer_guest.css">
+
+    
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <span class="logo-title">Kreezby</span>
+            <span class="logo-tagline">The Crinkle Factory</span>
+        </div>
+        <div class="nav-actions">
+            <a href="../auth/log_in.html" class="nav-btn">Log In</a>
+            <a href="../auth/sign_up.html" class="nav-btn nav-btn-primary">Create Account</a>
+            <a href="../auth/start.html" class="nav-btn" style="color: var(--primary-blue);">← Back</a>
+        </div>
+    </header>
+
+    <div class="pricing-banner">
+        Premium Taste, Simple Pricing: ₱165 for all standard pouches | ₱200 for Choco Butternut specialty jars
+    </div>
+
+    <div class="main-layout">
+        <div class="content-workspace">
+            <div class="guest-banner">
+                <div class="guest-banner-title">👋 Browsing as Guest</div>
+                <div class="guest-banner-text">You can view our delicious crinkles collection. Create an account or log in to place an order.</div>
+                <div class="guest-banner-buttons">
+                    <a href="../auth/log_in.html" class="banner-btn banner-btn-secondary">Log In</a>
+                    <a href="../auth/sign_up.html" class="banner-btn banner-btn-primary">Create Account</a>
+                </div>
+            </div>
+
+            <h3 class="menu-section-title">Explore Our Fresh Crinkles</h3>
+            
+            <div class="menu-grid" id="shop-menu-container"></div>
+        </div>
+    </div>
+
+    <script>
+        const productFlavorsCatalog = [
+            { id: "flavor-choc", name: "Chocolate Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/chocolate.jpg" },
+            { id: "flavor-almond", name: "Choco-Almond Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/choco-almond.jpg" },
+            { id: "flavor-cashew", name: "Choco-Cashew Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/choco-cashew.jpg" },
+            { id: "flavor-mint", name: "Choco-Mint Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/choco-mint.jpg" },
+            { id: "flavor-straw", name: "Strawberry Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/strawberry.jpg" },
+            { id: "flavor-velvet", name: "Red Velvet Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/redvelvet.jpg" },
+            { id: "flavor-lemon", name: "Lemon Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/lemon.jpg" },
+            { id: "flavor-melon", name: "Melon Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/melon.jpg" },
+            { id: "flavor-pandan", name: "Pandan Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/pandan.jpg" },
+            { id: "flavor-ube", name: "Ube Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/ube.jpg" },
+            { id: "flavor-mango", name: "Mango Crinkles", variant: "Jar (250g Container)", cost: 165, img: "flavors/mango.jpg" },
+            { id: "flavor-butternut", name: "Choco Butternut Crinkles", variant: "Jar (250g Container)", cost: 200, img: "flavors/chocobutternut.jpg" }
+        ];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderShopMenuGridCards();
+        });
+
+        function renderShopMenuGridCards() {
+            const gridContainer = document.getElementById('shop-menu-container');
+            gridContainer.innerHTML = productFlavorsCatalog.map(prod => `
+                <div class="product-card">
+                    <div class="image-frame">
+                        <img src="${prod.img}" alt="${prod.name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23eee%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2210%22 fill=%22%23999%22>${prod.name}</text></svg>'">
+                    </div>
+                    <div>
+                        <div class="product-title">${prod.name}</div>
+                        <div class="product-meta">${prod.variant}</div>
+                        <div class="product-price">₱${prod.cost.toFixed(2)}</div>
+                    </div>
+                    <div class="guest-action-group">
+                        <button class="btn-view-only" disabled>View Only (Guest)</button>
+                        <a href="../auth/log_in.html" class="btn-guest-action">Order Now</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+
+</body>
+</html>

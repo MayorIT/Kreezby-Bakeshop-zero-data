@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Bakeshop - Wholesale Dashboard — Visayas Wholesale Hub (Iloilo City)</title>
+    <link rel="stylesheet" href="../../css/pages/wholesaler/wholesaler-portal.css">
+    <link rel="stylesheet" href="../../css/pages/wholesaler/wholesaler-modules.css">
+</head>
+<body>
+
+<header class="top-navbar-node">
+    <div class="brand-logo-panel">
+        <img src="../../assets/logo/kreezby-logo.png" alt="Kreezby logo">
+        <span>Kreezby</span>
+    </div>
+    <div class="top-nav-links-right">
+        <a class="top-nav-item home-badge" href="wholesaler-iloilocity_visayaswholesalehub.html">Home</a>
+        <button type="button" class="notification-pill" aria-label="Notifications">🔔</button>
+        <div class="user-dropdown">
+            <button class="user-dropdown-pill" type="button" id="user-dropdown-trigger">Visayas Wholesale Hub ▾</button>
+            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                <a href="../report_issue-wholesaler.html" class="dropdown-item">Report Issue</a>
+                <a href="../../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="system-dashboard-wrapper" data-area="iloilocity" data-slug="visayaswholesalehub">
+    <aside class="sidebar-panel">
+        <div class="hamburger-row">☰</div>
+        <div class="panel-brand">Visayas Wholesale Hub</div>
+        <ul class="navigation-tree">
+            <li class="tree-node active"><a href="wholesaler-iloilocity_visayaswholesalehub.html">Dashboard</a></li>
+            <li class="tree-node"><a href="po-iloilocity_visayaswholesalehub.html">Purchase Order</a></li>
+            <li class="tree-node"><a href="receive-iloilocity_visayaswholesalehub.html">Receiving</a></li>
+            <li class="tree-node"><a href="bo-iloilocity_visayaswholesalehub.html">Back Order</a></li>
+            <li class="tree-node"><a href="return-iloilocity_visayaswholesalehub.html">Return/P.O List</a></li>
+            <li class="tree-node"><a href="saleslist-iloilocity_visayaswholesalehub.html">Sales List</a></li>
+            <li class="tree-node"><a href="alert-iloilocity_visayaswholesalehub.html">Alert</a></li>
+        </ul>
+    </aside>
+
+    <main class="workspace-canvas">
+        <div class="workspace-container">
+            <h2 class="page-title">Visayas Wholesale Hub — Iloilo City</h2>
+            <div class="sync-status-bar">
+                <span><strong>Wholesale Portal:</strong> Bulk orders and distribution tracking</span>
+                <span>Contact: Carla Mendez · carla@visayaswholesale.com</span>
+            </div>
+            <div class="dashboard-grid">
+            <a class="stat-card" href="po-iloilocity_visayaswholesalehub.html"><div class="stat-title">PO Records</div><div class="stat-value">4</div></a>
+            <a class="stat-card blue-bar" href="receive-iloilocity_visayaswholesalehub.html"><div class="stat-title">Receiving Records</div><div class="stat-value">6</div></a>
+            <a class="stat-card" href="bo-iloilocity_visayaswholesalehub.html"><div class="stat-title">BO Records</div><div class="stat-value">3</div></a>
+            <a class="stat-card blue-bar" href="return-iloilocity_visayaswholesalehub.html"><div class="stat-title">Return Records</div><div class="stat-value">2</div></a>
+            <a class="stat-card" href="alert-iloilocity_visayaswholesalehub.html"><div class="stat-title">Alert</div><div class="stat-value">3</div></a>
+            <a class="stat-card" href="saleslist-iloilocity_visayaswholesalehub.html"><div class="stat-title">Sales Records</div><div class="stat-value">12</div></a>
+            </div>
+        </div>
+    </main>
+</div>
+
+    <div class="notification-modal-overlay" id="notification-modal-overlay">
+        <div class="notification-modal-box">
+            <div class="notification-modal-header"><h2>📢 Notifications</h2><button class="notification-modal-close-btn" onclick="closeNotificationModal()">✕</button></div>
+            <div class="notification-modal-body" id="notification-modal-body"></div>
+        </div>
+    </div>
+    <script>
+var notificationsData=[{id:1,type:"delivery",title:"🚚 Bulk Shipment En Route",message:"Pallet truck dispatched to Iloilo Distribution Center. ETA today 3:00–5:00 PM.",time:"30 min ago",status:"unread"},{id:2,type:"payment",title:"💰 Invoice Due",message:"Bulk invoice #WINV-2026-089 for ₱288,000 due May 28, 2026.",time:"2 hours ago",status:"unread"},{id:3,type:"stock",title:"⚠️ Warehouse Low Stock",message:"Chocolate Crinkles cases below reorder point at Iloilo Distribution Center.",time:"5 hours ago",status:"read"}];
+function openNotificationModal(){var body=document.getElementById("notification-modal-body");body.innerHTML=notificationsData.map(function(n){return '<div class="notification-item '+(n.status==="unread"?"unread":"")+'"><div class="notification-content"><div class="notification-title">'+n.title+'</div><div class="notification-message">'+n.message+'</div><div class="notification-time">'+n.time+'</div></div></div>';}).join("");document.getElementById("notification-modal-overlay").classList.add("active");}
+function closeNotificationModal(){document.getElementById("notification-modal-overlay").classList.remove("active");}
+document.addEventListener("DOMContentLoaded",function(){var bell=document.querySelector(".notification-pill");if(bell)bell.addEventListener("click",openNotificationModal);var ov=document.getElementById("notification-modal-overlay");if(ov)ov.addEventListener("click",function(e){if(e.target===this)closeNotificationModal();});});
+</script>
+
+    <script src="../../js/sidebar-toggle.js"></script>
+    <script src="../../js/wholesaler-nav.js"></script>
+    <script src="../../js/user-dropdown-nav.js"></script>
+
+</body>
+</html>

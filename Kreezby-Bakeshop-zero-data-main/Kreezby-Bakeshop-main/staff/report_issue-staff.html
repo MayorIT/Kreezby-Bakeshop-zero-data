@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Issue - Staff</title>
+    <link rel="stylesheet" href="../css/pages/staff/report_issue-staff.css">
+
+</head>
+<body>
+<header class="top-navbar-node">
+    <div class="brand-logo-panel">Kreezby</div>
+    <div class="top-nav-links-right">
+        <a class="top-nav-item home-badge" href="staff.html">Dashboard</a>
+        <a class="top-nav-item" href="report_issue-received-students.html">Inbox</a>
+    </div>
+</header>
+<div class="page-shell">
+    <div class="report-panel">
+        <div class="report-header">
+            <h1>Report an Issue — Staff</h1>
+            <p>Submit tickets for inventory, order processing, or store operations issues.</p>
+        </div>
+        <div class="report-body">
+            <form class="report-form" onsubmit="submitIssue(event, 'Staff');">
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label for="staff-name">Full Name</label>
+                        <input id="staff-name" name="fullName" type="text" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="staff-email">Email Address</label>
+                        <input id="staff-email" name="email" type="email" placeholder="you@kreezby.com" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="staff-branch">Branch / Store</label>
+                        <input id="staff-branch" name="branch" type="text" placeholder="Makati / BGC / Retail Store" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="staff-role">Staff Role</label>
+                        <select id="staff-role" name="staffRole" required>
+                            <option>Frontline Staff</option>
+                            <option>Inventory Team</option>
+                            <option>Receiving Team</option>
+                            <option>Sales Support</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-row full-width">
+                        <label for="staff-issue-type">Issue Type</label>
+                        <select id="staff-issue-type" name="issueType" required>
+                            <option value="">Select issue type</option>
+                            <option>Stock / Inventory</option>
+                            <option>Receiving / PO</option>
+                            <option>Order Fulfillment</option>
+                            <option>System Access</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-row full-width">
+                        <label for="staff-description">Issue Description</label>
+                        <textarea id="staff-description" name="description" placeholder="Describe the issue and impact." required></textarea>
+                    </div>
+                    <div class="form-row full-width">
+                        <label for="staff-steps">Steps to Reproduce / Notes</label>
+                        <textarea id="staff-steps" name="steps" placeholder="Explain what you were doing when the issue occurred." required></textarea>
+                    </div>
+                    <div class="form-row full-width">
+                        <label for="staff-attachment">Attach Screenshot / File (optional)</label>
+                        <input id="staff-attachment" name="attachment" type="file">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">Submit Report</button>
+                    <a href="staff.html" class="btn-secondary">Return to Dashboard</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+function submitIssue(event, role) {
+    event.preventDefault();
+    alert(role + ' issue report submitted successfully. Redirecting to the received issues inbox.');
+    window.location.href='report_issue-received-students.html';
+}
+</script>
+<script src="../js/staff-permissions.js"></script>
+</body>
+</html>
