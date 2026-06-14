@@ -48,90 +48,49 @@
 
         <main class="workspace-view-canvas">
 
-            <div id="admin-dashboard-root" class="dashboard-main-panel">
-                <h1 class="dashboard-welcome">Welcome, Admin!</h1>
-
-                <div class="dashboard-stat-grid">
-                    <!-- Column 1 -->
-                    <a class="dash-stat-card" href="po-admin.html">
-                        <div class="dash-stat-icon icon-po" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+            <div id="admin-dashboard-root">
+                <div class="dashboard-split-layout">
+                    <div class="panel-data-card">
+                        <div class="panel-card-title-bar">
+                            <h3>Dashboard Overview</h3>
                         </div>
-                        <span class="dash-stat-label">PO Records</span>
-                        <span class="dash-stat-value">2</span>
-                    </a>
-
-                    <!-- Column 2 -->
-                    <a class="dash-stat-card" href="receive-admin.html">
-                        <div class="dash-stat-icon icon-receiving" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M12 22V12"/><path d="m3.3 7.7 8.7 4.8 8.7-4.8"/></svg>
+                        <div class="card-body-padded">
+                            <div class="dashboard-grid">
+                                <a class="stat-card" href="po-admin.html">
+                                    <div class="stat-title">PO Records</div>
+                                    <div class="stat-value">2</div>
+                                </a>
+                                <a class="stat-card blue-bar" href="receive-admin.html">
+                                    <div class="stat-title">Receiving Records</div>
+                                    <div class="stat-value">6</div>
+                                </a>
+                                <a class="stat-card" href="bo-admin.html">
+                                    <div class="stat-title">BO Records</div>
+                                    <div class="stat-value">4</div>
+                                </a>
+                                <a class="stat-card red-bar" href="return-admin.html">
+                                    <div class="stat-title">Return Records</div>
+                                    <div class="stat-value">3</div>
+                                </a>
+                                <a class="stat-card green-bar" href="saleslist-admin.html">
+                                    <div class="stat-title">Sales Records</div>
+                                    <div class="stat-value">4</div>
+                                </a>
+                                <a class="stat-card" href="stocks-admin.html">
+                                    <div class="stat-title">Stocks</div>
+                                    <div class="stat-value">13</div>
+                                </a>
+                                <a class="stat-card blue-bar" href="aiforecast-admin.html">
+                                    <div class="stat-title">AI Forecast</div>
+                                    <div class="stat-value">4</div>
+                                </a>
+                                <a class="stat-card" href="alert-admin.html">
+                                    <div class="stat-title">Alert</div>
+                                    <div class="stat-value">4</div>
+                                </a>
+                            </div>
                         </div>
-                        <span class="dash-stat-label">Receiving Records</span>
-                        <span class="dash-stat-value">6</span>
-                    </a>
-
-                    <!-- Column 3 -->
-                    <a class="dash-stat-card" href="bo-admin.html">
-                        <div class="dash-stat-icon icon-bo" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M8 8l4-4 4 4"/><path d="M8 16l4 4 4-4"/></svg>
-                        </div>
-                        <span class="dash-stat-label">BO Records</span>
-                        <span class="dash-stat-value">4</span>
-                    </a>
-
-                    <!-- Column 1 -->
-                    <a class="dash-stat-card" href="return-admin.html">
-                        <div class="dash-stat-icon icon-return" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-                        </div>
-                        <span class="dash-stat-label">Return Records</span>
-                        <span class="dash-stat-value">4</span>
-                    </a>
-
-                    <!-- Column 2 -->
-                    <a class="dash-stat-card" href="saleslist-admin.html">
-                        <div class="dash-stat-icon icon-sales" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5M8 9h2"/></svg>
-                        </div>
-                        <span class="dash-stat-label">Sales Records</span>
-                        <span class="dash-stat-value">4</span>
-                    </a>
-
-                    <!-- Column 3 -->
-                    <a class="dash-stat-card" href="stocks-admin.html">
-                        <div class="dash-stat-icon icon-stocks" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7.7 12 12.5l8.7-4.8"/></svg>
-                        </div>
-                        <span class="dash-stat-label">Stocks</span>
-                        <span class="dash-stat-value">4</span>
-                    </a>
-
-                    <!-- Column 1 -->
-                    <a class="dash-stat-card" href="aiforecast-admin.html">
-                        <div class="dash-stat-icon icon-aiforecast" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><path d="m21 21-4.3-4.3"/><path d="M7 13l2-3 2 2 3-4"/></svg>
-                        </div>
-                        <span class="dash-stat-label">AI Forecast</span>
-                        <span class="dash-stat-value">4</span>
-                    </a>
-
-                    <!-- Column 2 -->
-                    <a class="dash-stat-card" href="alert-admin.html">
-                        <div class="dash-stat-icon icon-alert" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18"/><path d="M9 9v12M13 13v8M17 11v10"/></svg>
-                        </div>
-                        <span class="dash-stat-label">Alert</span>
-                        <span class="dash-stat-value">4</span>
-                    </a>
-
-                    <!-- Column 3 -->
-                    <a class="dash-stat-card" href="stocklevel-admin.html">
-                        <div class="dash-stat-icon icon-stocklevel" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-6 4 3 5-8"/></svg>
-                        </div>
-                        <span class="dash-stat-label">Stock Level</span>
-                        <span class="dash-stat-value">4</span>
-                    </a>
+                    </div>
                 </div>
             </div>
 
@@ -216,7 +175,6 @@
         });
     </script>
         <script src="../js/user-dropdown-nav.js"></script>
-    <script src="../js/admin-sidebar.js"></script>
     <script src="../js/sidebar-toggle.js"></script>
 </body>
 </html>

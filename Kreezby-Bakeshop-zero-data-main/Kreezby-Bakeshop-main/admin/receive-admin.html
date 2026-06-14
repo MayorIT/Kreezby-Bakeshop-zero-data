@@ -13,6 +13,7 @@
         <div class="brand-logo-panel">Kreezby</div>
         <div class="top-nav-links-right">            <a class="top-nav-item home-badge" href="admin.html">Home</a>
             <a class="top-nav-item" href="maintenance-admin.html">Maintenance</a>
+             <button type="button" class="notification-pill" aria-label="Notifications" onclick="openNotificationModal()">🔔</button>
             <div class="user-dropdown">
                 <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">
                     <span style="background:#fff; width:18px; height:18px; border-radius:50%; display:inline-block;"></span>
@@ -217,14 +218,38 @@
     </div>
 
     <script>
-        function toggleCreateReceivedModal(shouldDisplay, receiptId) {
-            if (!window.ReceiveAdmin) return;
-            if (shouldDisplay) ReceiveAdmin.openEditModal(receiptId || null);
-            else ReceiveAdmin.closeModal();
-        }
-    </script>
-    <div id="recv-print-root" class="recv-print-root" aria-hidden="true"></div>
 
+        function openNotificationModal() {
+            const modal = document.getElementById('notification-modal-overlay');
+            const body = document.getElementById('notification-modal-body');
+            
+            body.innerHTML = notificationsData.map(notif => `
+                <div class="notification-item ${notif.status === 'unread' ? 'unread' : ''}">
+                    <div class="notification-icon">${notif.type === 'order' ? '🛒' : '📦'}</div>
+                    <div class="notification-content">
+                        <div class="notification-title">${notif.title}</div>
+                        <div class="notification-message">${notif.message}</div>
+                        <div class="notification-time">${notif.time}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            modal.classList.add('active');
+        }
+
+        function closeNotificationModal() {
+            document.getElementById('notification-modal-overlay').classList.remove('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Close modal when clicking outside
+            document.getElementById('notification-modal-overlay').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeNotificationModal();
+                }
+            });
+        });
+    </script>
     <script src="../js/receive-admin.js"></script>
     <script src="../js/user-dropdown-nav.js"></script>
     <script src="../js/admin-sidebar.js"></script>
