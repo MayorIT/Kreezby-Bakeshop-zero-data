@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Bakeshop - Receiving Team Dashboard</title>
+    <link rel="stylesheet" href="../css/pages/staff/staff-2.css">
+
+</head>
+<body>
+
+<header class="top-navbar-node">
+    <div class="brand-logo-panel">
+        <img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo">
+        <span>Kreezby</span>
+    </div>
+    <div class="top-nav-links-right">
+        <a class="top-nav-item home-badge" href="staff-2.html">Home</a>
+        <button class="notification-pill" aria-label="Notifications">🔔</button>
+        <div class="user-dropdown">
+            <button class="user-dropdown-pill" type="button" id="user-dropdown-trigger">Staff 2 ▾</button>
+            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                <a href="report_issue-staff.html" class="dropdown-item">Report Issue</a>
+                <a href="../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="system-dashboard-wrapper">
+    <aside class="sidebar-panel">
+        <div class="hamburger-row">☰</div>
+        <div class="panel-brand">Kreezby Staff · Receiving</div>
+        <ul class="navigation-tree">
+            <li class="tree-node active"><a href="staff-2.html">Dashboard</a></li>
+            <li class="tree-node"><a href="po-staff.html">Purchase Order</a></li>
+            <li class="tree-node"><a href="receive-staff.html">Receiving</a></li>
+            <li class="tree-node"><a href="bo-staff.html">Back Order</a></li>
+            <li class="tree-node"><a href="return-staff.html">Return/P.O List</a></li>
+            <li class="tree-node"><a href="alert-staff.html">Alert</a></li>
+        </ul>
+    </aside>
+
+    <main class="workspace-canvas">
+        <div class="workspace-container">
+            <h2 class="page-title">Receiving Team Dashboard</h2>
+            <p style="color:#666;margin-bottom:20px;font-size:14px;">Assigned tasks: purchase orders, receiving, back orders, returns, and alerts.</p>
+            <div class="dashboard-grid">
+                <a class="stat-card" href="po-staff.html">
+                    <div class="stat-title">PO Records</div>
+                    <div class="stat-value">2</div>
+                </a>
+                <a class="stat-card blue-bar" href="receive-staff.html">
+                    <div class="stat-title">Receiving Records</div>
+                    <div class="stat-value">6</div>
+                </a>
+                <a class="stat-card" href="bo-staff.html">
+                    <div class="stat-title">BO Records</div>
+                    <div class="stat-value">4</div>
+                </a>
+                <a class="stat-card red-bar" href="return-staff.html">
+                    <div class="stat-title">Return Records</div>
+                    <div class="stat-value">1</div>
+                </a>
+                <a class="stat-card" href="alert-staff.html">
+                    <div class="stat-title">Alert</div>
+                    <div class="stat-value">8</div>
+                </a>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="../js/staff-permissions.js"></script>
+<script src="../js/sidebar-toggle.js"></script>
+<script>KreezbyStaffPermissions.setCurrentStaffId('staff-2');</script>
+</body>
+</html>

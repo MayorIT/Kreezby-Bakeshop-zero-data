@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Bakeshop - Alerts — Metro Bulk Distributors (Quezon City)</title>
+    <link rel="stylesheet" href="../../css/pages/wholesaler/wholesaler-portal.css">
+    <link rel="stylesheet" href="../../css/pages/wholesaler/wholesaler-modules.css">
+</head>
+<body>
+
+<header class="top-navbar-node">
+    <div class="brand-logo-panel">
+        <img src="../../assets/logo/kreezby-logo.png" alt="Kreezby logo">
+        <span>Kreezby</span>
+    </div>
+    <div class="top-nav-links-right">
+        <a class="top-nav-item home-badge" href="wholesaler-quezoncity_metrobulkdistributors.html">Home</a>
+        <div class="user-dropdown">
+            <button class="user-dropdown-pill" type="button" id="user-dropdown-trigger">Metro Bulk Distributors ▾</button>
+            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                <a href="../report_issue-wholesaler.html" class="dropdown-item">Report Issue</a>
+                <a href="../../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="system-dashboard-wrapper" data-area="quezoncity" data-slug="metrobulkdistributors">
+    <aside class="sidebar-panel">
+        <div class="hamburger-row">☰</div>
+        <div class="panel-brand">Metro Bulk Distributors</div>
+        <ul class="navigation-tree">
+            <li class="tree-node"><a href="wholesaler-quezoncity_metrobulkdistributors.html">Dashboard</a></li>
+            <li class="tree-node"><a href="po-quezoncity_metrobulkdistributors.html">Purchase Order</a></li>
+            <li class="tree-node"><a href="receive-quezoncity_metrobulkdistributors.html">Receiving</a></li>
+            <li class="tree-node"><a href="bo-quezoncity_metrobulkdistributors.html">Back Order</a></li>
+            <li class="tree-node"><a href="return-quezoncity_metrobulkdistributors.html">Return/P.O List</a></li>
+            <li class="tree-node"><a href="saleslist-quezoncity_metrobulkdistributors.html">Sales List</a></li>
+            <li class="tree-node active"><a href="alert-quezoncity_metrobulkdistributors.html">Alert</a></li>
+        </ul>
+    </aside>
+
+    <main class="workspace-canvas">
+        <h2 class="page-title">Metro Bulk Distributors — Alerts</h2>
+        <p class="page-subtitle">Quezon City · Kreezby wholesaler portal</p>
+        <div class="retailer-module-host">
+            <div class="panel-data-card">
+                <div class="panel-card-title-bar"><h3>Distribution Notifications &amp; Logistics Alerts</h3></div>
+                <div class="card-body-padded">
+                    <div class="datatable-controls-bar">
+                        <div>Show <select><option value="10">10</option></select> entries</div>
+                        <div>Search Alerts: <input type="text" placeholder="Search logs..."></div>
+                    </div>
+                    <table class="data-display-table">
+                        <thead><tr style="background-color: var(--brand-brown); color: white;">
+                            <th style="width:50px;">#</th><th>Timestamp</th><th>Alert Source</th><th>Message Description</th><th style="text-align:center;width:120px;">Category</th><th style="text-align:center;width:100px;">Action</th>
+                        </tr></thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td><td>2026-05-16 16:45</td><td><strong>LOGISTICS-MAIN</strong></td>
+                                <td>Bulk truck dispatch confirmed: Kreezby main facility shipment en route to Quezon City Bulk Warehouse. Prepare receiving dock for pallet offload.</td>
+                                <td style="text-align:center;"><span class="severity-badge info">Delivery Today</span></td>
+                                <td style="text-align:center;"><div class="action-menu-relative-container">
+                                    <button class="action-trigger-btn" onclick="toggleAlertActionMenu(event, 'alert-pop-1')">Action ▾</button>
+                                    <div class="action-popup-menu" id="alert-pop-1">
+                                        <div class="action-popup-item" onclick="location.href='receive-quezoncity_metrobulkdistributors.html'">Open Receiving Log</div>
+                                        <div class="action-popup-item dismiss-action" onclick="handleAlertTrigger('dismiss', 'Logistics')">Dismiss Notice</div>
+                                    </div></div></td>
+                            </tr>
+                            <tr>
+                                <td>2</td><td>2026-05-16 11:05</td><td><strong>BULK-CHO-CASE</strong></td>
+                                <td>Warehouse stock warning: Chocolate Crinkles bulk cases below reorder threshold at Quezon City Bulk Warehouse.</td>
+                                <td style="text-align:center;"><span class="severity-badge critical">Low Stock</span></td>
+                                <td style="text-align:center;"><div class="action-menu-relative-container">
+                                    <button class="action-trigger-btn" onclick="toggleAlertActionMenu(event, 'alert-pop-2')">Action ▾</button>
+                                    <div class="action-popup-menu" id="alert-pop-2">
+                                        <div class="action-popup-item" onclick="location.href='po-quezoncity_metrobulkdistributors.html'">Place Bulk Order</div>
+                                        <div class="action-popup-item dismiss-action" onclick="handleAlertTrigger('dismiss', 'Low Stock')">Dismiss Notice</div>
+                                    </div></div></td>
+                            </tr>
+                            <tr>
+                                <td>3</td><td>2026-05-15 09:12</td><td><strong>BO-W-0003</strong></td>
+                                <td>Back-order pallet batch packaged at main facility — awaiting transit authorization to NCR route.</td>
+                                <td style="text-align:center;"><span class="severity-badge warning">Back Order</span></td>
+                                <td style="text-align:center;"><div class="action-menu-relative-container">
+                                    <button class="action-trigger-btn" onclick="toggleAlertActionMenu(event, 'alert-pop-3')">Action ▾</button>
+                                    <div class="action-popup-menu" id="alert-pop-3">
+                                        <div class="action-popup-item" onclick="location.href='bo-quezoncity_metrobulkdistributors.html'">Track Back Order</div>
+                                        <div class="action-popup-item dismiss-action" onclick="handleAlertTrigger('dismiss', 'BO')">Dismiss Notice</div>
+                                    </div></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+    <div class="alert-modal-overlay" id="alert-modal-overlay">
+        <div class="alert-modal-box">
+            <div class="alert-modal-header"><h2>Alert Details</h2><button class="alert-modal-close-btn" onclick="closeAlertModal()">✕</button></div>
+            <div class="alert-modal-body">
+                <div class="alert-detail-row"><div class="alert-detail-label">Alert Source</div><div class="alert-detail-value" id="modal-alert-id">—</div></div>
+                <div class="alert-detail-row"><div class="alert-detail-label">Timestamp</div><div class="alert-detail-value" id="modal-alert-timestamp">—</div></div>
+                <div class="alert-modal-divider"></div>
+                <div class="alert-detail-row"><div class="alert-detail-label">Message</div><div class="alert-detail-value" id="modal-alert-message">—</div></div>
+                <div class="alert-detail-row"><div class="alert-detail-label">Category</div><div class="alert-detail-value"><span id="modal-alert-severity" class="alert-detail-badge">—</span></div></div>
+            </div>
+        </div>
+    </div>
+    <script>
+function toggleAlertActionMenu(event,popupElementId){event.stopPropagation();document.querySelectorAll(".action-popup-menu").forEach(function(m){if(m.id!==popupElementId)m.classList.remove("active");});document.getElementById(popupElementId).classList.toggle("active");}
+window.addEventListener("click",function(){document.querySelectorAll(".action-popup-menu").forEach(function(m){m.classList.remove("active");});});
+function handleAlertTrigger(action,label){alert(action==="dismiss"?"Dismissed: "+label:"Action: "+label);}
+function closeAlertModal(){document.getElementById("alert-modal-overlay").classList.remove("active");}
+document.addEventListener("DOMContentLoaded",function(){
+  var ov=document.getElementById("alert-modal-overlay");if(ov)ov.addEventListener("click",function(e){if(e.target===this)closeAlertModal();});
+  document.querySelectorAll(".data-display-table tbody tr").forEach(function(row){row.addEventListener("click",function(e){if(e.target.closest(".action-menu-relative-container"))return;var id=parseInt(this.cells[0].textContent,10);if(id===1){document.getElementById("modal-alert-id").textContent="LOGISTICS-MAIN";document.getElementById("modal-alert-timestamp").textContent="2026-05-16 16:45";document.getElementById("modal-alert-message").textContent=this.cells[3].textContent;document.getElementById("modal-alert-severity").textContent="DELIVERY TODAY";document.getElementById("alert-modal-overlay").classList.add("active");}});});
+});
+</script>
+
+    <script src="../../js/sidebar-toggle.js"></script>
+    <script src="../../js/wholesaler-nav.js"></script>
+    <script src="../../js/user-dropdown-nav.js"></script>
+
+</body>
+</html>

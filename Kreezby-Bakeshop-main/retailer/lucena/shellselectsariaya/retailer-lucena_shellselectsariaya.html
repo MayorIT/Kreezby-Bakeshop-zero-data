@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Bakeshop - Shell Select Sariaya (Lucena)</title>
+    <link rel="stylesheet" href="../../../css/pages/retailer/shellselectsariaya/retailer-lucena_shellselectsariaya.css">
+
+    <link rel="stylesheet" href="../../../css/pages/retailer/lucena-retailer-brand.css">
+</head>
+<body>
+
+<header class="top-navbar-node">
+    <div class="brand-logo-panel">
+        <img class="brand-store-logo" src="../../../assets/logo/lucena/shellselectsariaya.png" alt="Shell Select Sariaya logo">
+        <span class="brand-logo-divider" aria-hidden="true"></span>
+        <img class="brand-kreezby-logo" src="../../../assets/logo/kreezby-logo.png" alt="Kreezby logo">
+    </div>
+    <div class="top-nav-links-right">
+        <a class="top-nav-item home-badge" href="retailer-lucena_shellselectsariaya.html">Home</a>
+        <button class="notification-pill" aria-label="Notifications">🔔</button>
+        <div class="user-dropdown">
+            <button class="user-dropdown-pill" type="button" id="user-dropdown-trigger">Shell Select Sariaya ▾</button>
+            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                <a href="../../report_issue-retailer.html" class="dropdown-item">Report Issue</a>
+                <a href="../../../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="system-dashboard-wrapper">
+    <aside class="sidebar-panel">
+        <div class="hamburger-row">☰</div>
+        <div class="panel-brand">Shell Select Sariaya</div>
+                <ul class="navigation-tree">
+            <li class="tree-node active"><a href="retailer-lucena_shellselectsariaya.html">Dashboard</a></li>
+            <li class="tree-node"><a href="po-lucena_shellselectsariaya.html">Purchase Order</a></li>
+            <li class="tree-node"><a href="receive-lucena_shellselectsariaya.html">Receiving</a></li>
+            <li class="tree-node"><a href="bo-lucena_shellselectsariaya.html">Back Order</a></li>
+            <li class="tree-node"><a href="return-lucena_shellselectsariaya.html">Return/P.O List</a></li>
+            <li class="tree-node"><a href="saleslist-lucena_shellselectsariaya.html">Sales List</a></li>
+            <li class="tree-node"><a href="alert-lucena_shellselectsariaya.html">Alert</a></li>
+        </ul>
+    </aside>
+
+    <main class="workspace-canvas">
+        <div class="workspace-container">
+            <h2 class="page-title">Shell Select Sariaya — Lucena</h2>
+
+        <div class="sync-status-bar">
+            <span><strong>Admin Status:</strong> Daily logs auto-submitted to Admin Dashboard summary view nodes</span>
+            <span>Last Sync: 15:31 (1 min ago)</span>
+        </div>
+        
+        <div class="dashboard-grid">
+            <a class="stat-card" href="po-lucena_shellselectsariaya.html">
+                <div class="stat-title">PO Records</div>
+                <div class="stat-value">2</div>
+            </a>
+            <a class="stat-card blue-bar" href="receive-lucena_shellselectsariaya.html">
+                <div class="stat-title">Receiving Records</div>
+                <div class="stat-value">6</div>
+            </a>
+            <a class="stat-card" href="bo-lucena_shellselectsariaya.html">
+                <div class="stat-title">BO Records</div>
+                <div class="stat-value">4</div>
+            </a>
+            <a class="stat-card blue-bar" href="return-lucena_shellselectsariaya.html">
+                <div class="stat-title">Return Records</div>
+                <div class="stat-value">4</div>
+            </a>
+            <a class="stat-card" href="alert-lucena_shellselectsariaya.html">
+                <div class="stat-title">Alert</div>
+                <div class="stat-value">4</div>
+            </a>
+            <a class="stat-card" href="saleslist-lucena_shellselectsariaya.html">
+                <div class="stat-title">Sales Records</div>
+                <div class="stat-value">0</div>
+            </a>
+        </div>
+</div>
+</main>
+
+    <!-- Notification Modal Overlay -->
+    <div class="notification-modal-overlay" id="notification-modal-overlay">
+        <div class="notification-modal-box">
+            <div class="notification-modal-header">
+                <h2>📢 Notifications</h2>
+                <button class="notification-modal-close-btn" onclick="closeNotificationModal()">✕</button>
+            </div>
+            <div class="notification-modal-body" id="notification-modal-body">
+                <!-- Notifications will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../js/sidebar-toggle.js"></script>
+    <script src="../../../js/retailer-nav.js"></script>
+<script>
+        // Retailer-specific notifications data
+        const notificationsData = [
+            {
+                id: 1,
+                type: 'delivery',
+                title: '🚚 Delivery Arriving Today',
+                message: 'Your shipment with Chocolate & Mango Crinkles is out for delivery. Expected arrival: 2:00 PM - 4:00 PM',
+                time: '30 minutes ago',
+                status: 'unread'
+            },
+            {
+                id: 2,
+                type: 'payment',
+                title: '💰 Payment Due',
+                message: 'Invoice #INV-2026-156 for ₱12,500 is due on May 25, 2026',
+                time: '2 hours ago',
+                status: 'unread'
+            },
+            {
+                id: 3,
+                type: 'stock',
+                title: '⚠️ Low Stock Warning',
+                message: 'Choco-Almond Crinkles stock level is below reorder point (15 units remaining)',
+                time: '5 hours ago',
+                status: 'read'
+            },
+            {
+                id: 4,
+                type: 'order',
+                title: '✅ Order Delivered',
+                message: 'Your order #PO-2026-0042 (40 pouches mixed flavors) has been successfully delivered',
+                time: '1 day ago',
+                status: 'read'
+            },
+            {
+                id: 5,
+                type: 'promo',
+                title: '🎉 Special Offer',
+                message: 'Buy 50+ units and get 10% discount on bulk orders this month',
+                time: '2 days ago',
+                status: 'read'
+            }
+        ];
+
+        function openNotificationModal() {
+            const modal = document.getElementById('notification-modal-overlay');
+            const body = document.getElementById('notification-modal-body');
+            
+            body.innerHTML = notificationsData.map(notif => {
+                let icon = '📦';
+                if (notif.type === 'delivery') icon = '🚚';
+                if (notif.type === 'payment') icon = '💰';
+                if (notif.type === 'stock') icon = '⚠️';
+                if (notif.type === 'order') icon = '✅';
+                if (notif.type === 'promo') icon = '🎉';
+                
+                return `
+                <div class="notification-item ${notif.status === 'unread' ? 'unread' : ''}">
+                    <div class="notification-icon">${icon}</div>
+                    <div class="notification-content">
+                        <div class="notification-title">${notif.title}</div>
+                        <div class="notification-message">${notif.message}</div>
+                        <div class="notification-time">${notif.time}</div>
+                    </div>
+                </div>
+            `;
+            }).join('');
+            
+            modal.classList.add('active');
+        }
+
+        function closeNotificationModal() {
+            document.getElementById('notification-modal-overlay').classList.remove('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handler to notification bell
+            const notificationBell = document.querySelector('.notification-pill');
+            if (notificationBell) {
+                notificationBell.addEventListener('click', openNotificationModal);
+            }
+
+            const userDropdownTrigger = document.getElementById('user-dropdown-trigger');
+            const userDropdownMenu = document.getElementById('user-dropdown-menu');
+            if (userDropdownTrigger && userDropdownMenu) {
+                userDropdownTrigger.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    userDropdownMenu.classList.toggle('active');
+                });
+
+                document.addEventListener('click', function(event) {
+                    if (!userDropdownMenu.contains(event.target) && event.target !== userDropdownTrigger) {
+                        userDropdownMenu.classList.remove('active');
+                    }
+                });
+            }
+
+            // Close modal when clicking outside
+            document.getElementById('notification-modal-overlay').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeNotificationModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

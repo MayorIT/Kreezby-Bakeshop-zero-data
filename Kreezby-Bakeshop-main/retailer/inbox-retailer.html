@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Bakeshop - Retailer Portal Inbox</title>
+    <link rel="stylesheet" href="../css/pages/admin/inbox-admin.css">
+</head>
+<body>
+
+    <header class="top-navbar-node">
+        <div class="brand-logo-panel">Kreezby</div>
+        <div class="top-nav-links-right">
+            <a class="top-nav-item home-badge" href="retailer-directory.html">Retailer Portal</a>
+            <a class="top-nav-item" href="inbox-retailer.html">Inbox</a>
+            <div class="user-dropdown">
+                <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">
+                    <span style="background:#fff; width:18px; height:18px; border-radius:50%; display:inline-block;"></span>
+                    Retailer Hub ▾
+                </button>
+                <div class="user-dropdown-menu" id="user-dropdown-menu">
+                    <a href="report_issue-retailer.html" class="dropdown-item">Report Issue</a>
+                    <a href="../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="core-viewport-wrapper">
+
+        <aside class="dark-sidebar-panel">
+            <div class="hamburger-row">☰</div>
+            <ul class="sidebar-menu-list">
+                <li class="menu-node-item"><a href="retailer-directory.html">Select Store</a></li>
+                <li class="menu-node-item active"><a href="inbox-retailer.html">Inbox</a></li>
+                <li class="menu-node-item"><a href="report_issue-retailer.html">Report Issue</a></li>
+            </ul>
+        </aside>
+
+        <main class="workspace-view-canvas">
+            
+            <div class="inbox-split-layout">
+                
+                <div class="chat-threads-sidebar">
+                    <div class="chats-sidebar-header">Chats</div>
+                    <div class="threads-scroll-container">
+                        
+                        <div class="thread-item-card selected-active">
+                            <div class="avatar-circle online">B</div>
+                            <div class="thread-meta-pane">
+                                <div class="thread-head-row">
+                                    <span class="thread-client-name">Brent Ramos (Admin)</span>
+                                    <span class="thread-timestamp">1h</span>
+                                </div>
+                                <div class="thread-snippet-preview">Next delivery schedule will be on May 27 po</div>
+                            </div>
+                        </div>
+
+                        <div class="thread-item-card">
+                            <div class="avatar-circle">M</div>
+                            <div class="thread-meta-pane">
+                                <div class="thread-head-row">
+                                    <span class="thread-client-name">Maricel Ramos</span>
+                                    <span class="thread-timestamp">1h</span>
+                                </div>
+                                <div class="thread-snippet-preview">Next delivery will be...</div>
+                            </div>
+                        </div>
+
+                        <div class="thread-item-card">
+                            <div class="avatar-circle staff-avatar">S</div>
+                            <div class="thread-meta-pane">
+                                <div class="thread-head-row">
+                                    <span class="thread-client-name">Staff 1</span>
+                                    <span class="thread-timestamp">1h</span>
+                                </div>
+                                <div class="thread-snippet-preview">Next delivery will be...</div>
+                            </div>
+                        </div>
+
+                        <div class="thread-item-card">
+                            <div class="avatar-circle online">K</div>
+                            <div class="thread-meta-pane">
+                                <div class="thread-head-row">
+                                    <span class="thread-client-name">Kobe Bryan</span>
+                                    <span class="thread-timestamp">1h</span>
+                                </div>
+                                <div class="thread-snippet-preview">Sales running by the...</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="chat-window-workspace">
+                    
+                    <div class="chat-window-header">
+                        <span class="header-active-client-title">Brent Ramos</span>
+                    </div>
+
+                    <div class="messages-scroll-viewport" id="chat-messages-container">
+                        
+                        <div class="message-row incoming-node">
+                            <div class="chat-row-avatar">B</div>
+                            <div class="speech-bubble">
+                                Hello po, what can we do for you?
+                            </div>
+                        </div>
+
+                        <div class="message-row outgoing-node">
+                            <div class="speech-bubble">
+                                Kami po sana magtatanong regarding dun sa automated stock replenishment transfer metrics loop.
+                            </div>
+                        </div>
+
+                        <div class="message-row incoming-node">
+                            <div class="chat-row-avatar">B</div>
+                            <div class="speech-bubble">
+                                Ilan po ang o-orderin?
+                            </div>
+                        </div>
+
+                        <div class="message-row outgoing-node">
+                            <div class="speech-bubble">
+                                Bale bale 150 pouches of Chocolate Boxes po para sa standard regional hub safety reorder targets.
+                            </div>
+                        </div>
+
+                        <div class="message-row incoming-node">
+                            <div class="chat-row-avatar">B</div>
+                            <div class="speech-bubble">
+                                Next delivery schedule will be on May 27 po
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="chat-composition-footer-bar">
+                        <div class="composition-utilities-group">
+                            <button class="btn-utility-trigger" title="Voice Response Node">🎤</button>
+                            <button class="btn-utility-trigger" title="Attach Document Proof / Image">📷</button>
+                            <button class="btn-utility-trigger" title="Insert Document Sheet Metadata">📄</button>
+                        </div>
+                        <input type="text" class="composition-input-element" id="chat-type-input" placeholder="Aa">
+                        <button class="btn-like-emoji" onclick="simulateEmojiReactionSubmit()">👍</button>
+                    </div>
+
+                </div>
+
+                <div class="chat-profile-context-pane">
+                    <div class="large-context-avatar online">B</div>
+                    <div class="context-profile-name">Brent Ramos</div>
+                    <div class="context-profile-status">Active Now</div>
+
+                    <div class="profile-actions-row">
+                        <button class="profile-action-btn-unit" onclick="alert('Muting conversation updates...')">
+                            <div class="icon-btn-circle">🔔</div>
+                            <span>Mute</span>
+                        </button>
+                        <button class="profile-action-btn-unit" onclick="alert('Activating contextual workspace search loops...')">
+                            <div class="icon-btn-circle">🔍</div>
+                            <span>Search</span>
+                        </button>
+                    </div>
+
+                    <div class="profile-accordion-menu">
+                        <div class="accordion-node-item"><span>Chat Info</span><span>▾</span></div>
+                        <div class="accordion-node-item"><span>Media & Files</span><span>▾</span></div>
+                        <div class="accordion-node-item"><span>Privacy & Support</span><span>▾</span></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function transmitLiveMessageRow(textInputString, isOutgoingDirection = true) {
+            const container = document.getElementById('chat-messages-container');
+            const createdRow = document.createElement('div');
+            
+            if (isOutgoingDirection) {
+                createdRow.className = 'message-row outgoing-node';
+                createdRow.innerHTML = `<div class="speech-bubble">${textInputString}</div>`;
+            } else {
+                createdRow.className = 'message-row incoming-node';
+                createdRow.innerHTML = `
+                    <div class="chat-row-avatar">B</div>
+                    <div class="speech-bubble">${textInputString}</div>
+                `;
+            }
+
+            container.appendChild(createdRow);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Handle sending custom messages on typing + Enter keyboard action clicks
+        document.getElementById('chat-type-input').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const textValue = this.value.trim();
+                if (textValue) {
+                    transmitLiveMessageRow(textValue, true);
+                    this.value = '';
+                }
+            }
+        });
+
+        function simulateEmojiReactionSubmit() {
+            transmitLiveMessageRow('👍', true);
+        }
+    </script>
+        <script src="../js/user-dropdown-nav.js"></script>
+    <script src="../js/sidebar-toggle.js"></script>
+    <script src="../js/retailer-nav.js"></script>
+</body>
+</html>

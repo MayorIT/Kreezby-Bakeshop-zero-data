@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Bakeshop - Sales Floor Staff Dashboard</title>
+    <link rel="stylesheet" href="../css/pages/staff/staff-4.css">
+
+</head>
+<body>
+
+<header class="top-navbar-node">
+    <div class="brand-logo-panel">
+        <img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo">
+        <span>Kreezby</span>
+    </div>
+    <div class="top-nav-links-right">
+        <a class="top-nav-item home-badge" href="staff-4.html">Home</a>
+        <button class="notification-pill" aria-label="Notifications">🔔</button>
+        <div class="user-dropdown">
+            <button class="user-dropdown-pill" type="button" id="user-dropdown-trigger">Derek Lim (Staff 4) ▾</button>
+            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                <a href="report_issue-staff.html" class="dropdown-item">Report Issue</a>
+                <a href="../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="system-dashboard-wrapper">
+    <aside class="sidebar-panel">
+        <div class="hamburger-row">☰</div>
+        <div class="panel-brand">Kreezby Staff · Sales Floor</div>
+        <ul class="navigation-tree">
+            <li class="tree-node active"><a href="staff-4.html">Dashboard</a></li>
+            <li class="tree-node"><a href="saleslist-staff.html">Sales List</a></li>
+            <li class="tree-node"><a href="dailysales-staff.html">Daily Sales</a></li>
+            <li class="tree-node"><a href="aiforecast-staff.html">AI Forecast</a></li>
+            <li class="tree-node"><a href="alert-staff.html">Alert</a></li>
+        </ul>
+    </aside>
+
+    <main class="workspace-canvas">
+        <div class="workspace-container">
+            <h2 class="page-title">Sales Floor Staff Dashboard</h2>
+            <p style="color:#666;margin-bottom:20px;font-size:14px;">Assigned tasks: sales list, daily sales, AI forecast, and alerts.</p>
+            <div class="dashboard-grid">
+                <a class="stat-card green-bar" href="saleslist-staff.html">
+                    <div class="stat-title">Sales Records</div>
+                    <div class="stat-value">1</div>
+                </a>
+                <a class="stat-card" href="dailysales-staff.html">
+                    <div class="stat-title">Daily Sales</div>
+                    <div class="stat-value">8</div>
+                </a>
+                <a class="stat-card blue-bar" href="aiforecast-staff.html">
+                    <div class="stat-title">AI Forecast</div>
+                    <div class="stat-value">5</div>
+                </a>
+                <a class="stat-card" href="alert-staff.html">
+                    <div class="stat-title">Alert</div>
+                    <div class="stat-value">8</div>
+                </a>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="../js/staff-permissions.js"></script>
+<script src="../js/sidebar-toggle.js"></script>
+<script>KreezbyStaffPermissions.setCurrentStaffId('staff-4');</script>
+</body>
+</html>
