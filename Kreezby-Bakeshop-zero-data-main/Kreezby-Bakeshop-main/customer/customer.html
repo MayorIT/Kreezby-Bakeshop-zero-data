@@ -1,0 +1,370 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Crinkles - Premium Taste, Simple Pricing</title>
+    <link rel="stylesheet" href="../css/pages/customer/customer.css">
+
+    
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <span class="logo-title">Kreezby</span>
+            <span class="logo-tagline">The Crinkle Factory</span>
+        </div>
+        <div class="nav-actions">
+            <button class="nav-btn" onclick="openModal('notifications-modal')">Notifications</button>
+            <button class="nav-btn" onclick="openModal('orders-tracker-modal')">My Orders</button>
+            <button class="nav-btn" onclick="openModal('profile-settings-modal')">My Profile</button>
+            <button class="nav-btn cart-toggle-btn" onclick="toggleCartSidebar()">Cart (<span id="global-cart-count">0</span>)</button>
+            <div class="user-dropdown-wrapper">
+                <button class="nav-btn" type="button" id="user-dropdown-trigger">Customer ▾</button>
+                <div class="user-dropdown-menu" id="user-dropdown-menu">
+                    <a href="inbox-customer.html" class="dropdown-item">Help Center</a>
+                    <a href="report_issue-customer.html" class="dropdown-item">Report Issue</a>
+                    <a href="../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="pricing-banner">
+        Premium Taste, Simple Pricing: ₱165 for all standard pouches | ₱200 for Choco Butternut specialty jars
+    </div>
+
+    <div class="main-layout">
+        
+        <div class="content-workspace">
+            <h3 class="menu-section-title">Explore Our Fresh Crinkles</h3>
+            
+            <div class="menu-grid" id="shop-menu-container">
+                </div>
+        </div>
+
+        <div class="cart-sidebar" id="interactive-cart-sidebar">
+            <div class="cart-header">
+                <span class="cart-title">My Cart Orders</span>
+                <button class="nav-btn" style="padding:4px 8px;" onclick="toggleCartSidebar()">✕ Close</button>
+            </div>
+            
+            <div class="cart-items-container" id="cart-rows-injector">
+                </div>
+
+            <div class="cart-footer">
+                <div class="summary-line">
+                    <span>Total Item/s:</span>
+                    <span id="summary-items-count">0</span>
+                </div>
+                <div class="summary-line">
+                    <span>Total Discount:</span>
+                    <span>₱0.00</span>
+                </div>
+                <div class="summary-line summary-total">
+                    <span>Total Bill Amount:</span>
+                    <span id="summary-bill-total">₱0.00</span>
+                </div>
+                <button class="checkout-btn" onclick="processCartCheckoutSubmission()">Proceed To Checkout</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="global-modal-overlay-context" onclick="closeAllSystemModals(event)">
+        
+        <div class="modal-box" id="profile-settings-modal">
+            <div class="modal-header">
+                <h2>Account Settings</h2>
+                <button class="nav-btn" onclick="closeCurrentModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-tabs">
+                    <div class="tab-link active" onclick="switchModalSubTab(this, 'profile-tab')">Profile Information</div>
+                    <div class="tab-link" onclick="switchModalSubTab(this, 'addresses-tab')">Addresses</div>
+                    <div class="tab-link" onclick="switchModalSubTab(this, 'security-tab')">Change Password</div>
+                </div>
+
+                <div class="tab-content-panel active" id="profile-tab">
+                    <div class="profile-row">
+                        <div class="profile-inputs-pane">
+                            <div class="form-control-group">
+                                <label>Username</label>
+                                <input type="text" value="bryle_atienza" disabled>
+                                <small style="color:var(--text-muted); font-size:11px;">Usernames can only be updated once.</small>
+                            </div>
+                            <div class="form-control-group">
+                                <label>Full Name</label>
+                                <input type="text" value="Bryle Atienza">
+                            </div>
+                            <div class="form-control-group">
+                                <label>Email Address</label>
+                                <input type="text" value="br***********@gmail.com">
+                            </div>
+                        </div>
+                        <div class="profile-avatar-pane">
+                            <div class="avatar-preview-box"></div>
+                            <button class="nav-btn" style="font-size:12px;">Select Image File</button>
+                            <p style="font-size:10px; color:var(--text-muted); margin-top:8px;">Max: 1 MB (.JPEG, .PNG)</p>
+                        </div>
+                    </div>
+                    <button class="btn-action-primary" style="margin-top:20px;">Save Profile Parameters</button>
+                </div>
+
+                <div class="tab-content-panel" id="addresses-tab" style="display:none;">
+                    <p style="color:var(--text-muted); margin-bottom:15px;">You don't have shipping addresses stored yet.</p>
+                    <button class="btn-action-primary">+ Add New Delivery Address</button>
+                </div>
+
+                <div class="tab-content-panel" id="security-tab" style="display:none;">
+                    <div class="form-control-group">
+                        <label>Current Password</label>
+                        <input type="password" placeholder="••••••••">
+                    </div>
+                    <div class="form-control-group">
+                        <label>New Password</label>
+                        <input type="password">
+                    </div>
+                    <div class="form-control-group">
+                        <label>Confirm New Password</label>
+                        <input type="password">
+                    </div>
+                    <button class="btn-action-primary" style="margin-top:10px;">Update Password Verification</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-box orders-modal" id="orders-tracker-modal">
+            <div class="modal-header">
+                <div class="orders-modal-header-left">
+                    <button type="button" class="orders-back-btn" id="orders-back-btn" style="display:none;" aria-label="Back to orders">←</button>
+                    <h2 id="orders-modal-title">My Orders</h2>
+                </div>
+                <button class="nav-btn" onclick="closeCurrentModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="orders-list-view">
+                    <div class="modal-tabs">
+                        <div class="tab-link active" onclick="filterOrders('all', this)">All Orders</div>
+                        <div class="tab-link" onclick="filterOrders('processing', this)">Processing</div>
+                        <div class="tab-link" onclick="filterOrders('shipped', this)">Shipped</div>
+                        <div class="tab-link" onclick="filterOrders('completed', this)">Completed</div>
+                    </div>
+                    <div id="orders-container"></div>
+                </div>
+                <div id="orders-detail-view" style="display:none;"></div>
+            </div>
+        </div>
+
+        <div class="modal-box" id="notifications-modal">
+            <div class="modal-header">
+                <h2>Notifications Box</h2>
+                <button class="nav-btn" onclick="closeCurrentModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="notification-item-card">
+                    <strong>Welcome to the new Kreezby Digital Portal System!</strong>
+                    <p style="font-size:13px; color:#444; margin-top:4px;">Enjoy Batangas' best crinkles fresh out of the factory production floors lines.</p>
+                    <div class="notification-time">System Message • 1 hour ago</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../js/customer-orders.js"></script>
+    <script>
+        // System Data Matrix Catalog Initialization Structures 
+        const productFlavorsCatalog = [
+            { id: "flavor-choc", name: "Chocolate Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/chocolate.jpg" },
+            { id: "flavor-almond", name: "Choco-Almond Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/choco-almond.jpg" },
+            { id: "flavor-cashew", name: "Choco-Cashew Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/choco-cashew.jpg" },
+            { id: "flavor-mint", name: "Choco-Mint Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/choco-mint.jpg" },
+            { id: "flavor-straw", name: "Strawberry Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/strawberry.jpg" },
+            { id: "flavor-velvet", name: "Red Velvet Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/redvelvet.jpg" },
+            { id: "flavor-lemon", name: "Lemon Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/lemon.jpg" },
+            { id: "flavor-melon", name: "Melon Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/melon.jpg" },
+            { id: "flavor-pandan", name: "Pandan Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/pandan.jpg" },
+            { id: "flavor-ube", name: "Ube Crinkles", variant: "Pouch (8 Pcs)", cost: 165, img: "flavors/ube.jpg" },
+            { id: "flavor-mango", name: "Mango Crinkles", variant: "Jar (250g Container)", cost: 165, img: "flavors/mango.jpg" },
+            { id: "flavor-butternut", name: "Choco Butternut Crinkles", variant: "Jar (250g Container)", cost: 200, img: "flavors/chocobutternut.jpg" }
+        ];
+
+        let shoppingCartStateMap = {};
+
+        // Window Init Execution hook lifecycle bindings
+        window.addEventListener('DOMContentLoaded', () => {
+            renderShopMenuGridCards();
+        });
+
+        function renderShopMenuGridCards() {
+            const gridContainer = document.getElementById('shop-menu-container');
+            gridContainer.innerHTML = productFlavorsCatalog.map(prod => `
+                <div class="product-card">
+                    <div class="image-frame">
+                        <img src="${prod.img}" alt="${prod.name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23eee%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2210%22 fill=%22%23999%22>${prod.name}</text></svg>'">
+                    </div>
+                    <div>
+                        <div class="product-title">${prod.name}</div>
+                        <div class="product-meta">${prod.variant}</div>
+                        <div class="product-price">₱${prod.cost.toFixed(2)}</div>
+                    </div>
+                    <div class="counter-widget">
+                        <button class="counter-btn" onclick="adjustCardWidgetQtyState('${prod.id}', -1)">-</button>
+                        <span class="counter-value" id="qty-val-${prod.id}">1</span>
+                        <button class="counter-btn" onclick="adjustCardWidgetQtyState('${prod.id}', 1)">+</button>
+                    </div>
+                    <button class="add-cart-btn" onclick="commitItemToCartState('${prod.id}')">Add To Cart Bag</button>
+                </div>
+            `).join('');
+        }
+
+        function adjustCardWidgetQtyState(prodId, modifierValue) {
+            const targetLabel = document.getElementById(`qty-val-${prodId}`);
+            let currentVal = parseInt(targetLabel.textContent) || 1;
+            currentVal += modifierValue;
+            if (currentVal < 1) currentVal = 1;
+            targetLabel.textContent = currentVal;
+        }
+
+        // Cart core functions execution matrix blocks
+        function toggleCartSidebar() {
+            const sidePanel = document.getElementById('interactive-cart-sidebar');
+            sidePanel.classList.toggle('open');
+        }
+
+        function commitItemToCartState(prodId) {
+            const itemConfig = productFlavorsCatalog.find(f => f.id === prodId);
+            const inputQtyVal = parseInt(document.getElementById(`qty-val-${prodId}`).textContent) || 1;
+
+            if (shoppingCartStateMap[prodId]) {
+                shoppingCartStateMap[prodId].qty += inputQtyVal;
+            } else {
+                shoppingCartStateMap[prodId] = {
+                    name: itemConfig.name,
+                    cost: itemConfig.cost,
+                    qty: inputQtyVal
+                };
+            }
+            
+            // Reset quantity to 1 for convenience
+            document.getElementById(`qty-val-${prodId}`).textContent = "1";
+            refreshGlobalCartInterfaceState();
+        }
+
+        function changeCartLineQty(prodId, explicitDelta) {
+            if (!shoppingCartStateMap[prodId]) return;
+            shoppingCartStateMap[prodId].qty += explicitDelta;
+            if (shoppingCartStateMap[prodId].qty <= 0) {
+                delete shoppingCartStateMap[prodId];
+            }
+            refreshGlobalCartInterfaceState();
+        }
+
+        function refreshGlobalCartInterfaceState() {
+            const rowsContainer = document.getElementById('cart-rows-injector');
+            const keys = Object.keys(shoppingCartStateMap);
+            
+            let accumulatedItemsCount = 0;
+            let computedBillTotal = 0;
+
+            if (keys.length === 0) {
+                rowsContainer.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:30px 0;">Your shopping cart is empty.</p>`;
+            } else {
+                rowsContainer.innerHTML = keys.map(key => {
+                    const line = shoppingCartStateMap[key];
+                    const lineCostTotal = line.cost * line.qty;
+                    
+                    accumulatedItemsCount += line.qty;
+                    computedBillTotal += lineCostTotal;
+
+                    return `
+                        <div class="cart-item-row">
+                            <div class="cart-item-details">
+                                <div class="cart-item-name">${line.name}</div>
+                                <div class="cart-item-price">₱${line.cost.toFixed(2)} x ${line.qty}</div>
+                            </div>
+                            <div class="counter-widget" style="gap:6px;">
+                                <button class="counter-btn" style="width:24px; height:24px; font-size:14px;" onclick="changeCartLineQty('${key}', -1)">-</button>
+                                <span class="counter-value" style="font-size:14px;">${line.qty}</span>
+                                <button class="counter-btn" style="width:24px; height:24px; font-size:14px;" onclick="changeCartLineQty('${key}', 1)">+</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            document.getElementById('global-cart-count').textContent = accumulatedItemsCount;
+            document.getElementById('summary-items-count').textContent = accumulatedItemsCount;
+            document.getElementById('summary-bill-total').textContent = `₱${computedBillTotal.toFixed(2)}`;
+        }
+
+        function processCartCheckoutSubmission() {
+            if (Object.keys(shoppingCartStateMap).length === 0) {
+                alert("Please add items to your shopping cart before attempting to proceed with checkout payment channels.");
+                return;
+            }
+            localStorage.setItem('kreezbyCart', JSON.stringify(shoppingCartStateMap));
+            window.location.href='checkout-customer.html';
+        }
+
+        // Central overlay modals controllers systems logic block
+        function openModal(modalBoxId) {
+            document.getElementById('global-modal-overlay-context').classList.add('active');
+            
+            // Deactivate other existing target cards if present context inside layout loop frame loop
+            const boxes = document.querySelectorAll('.modal-box');
+            boxes.forEach(b => b.classList.remove('active'));
+
+            document.getElementById(modalBoxId).classList.add('active');
+        }
+
+        function closeCurrentModal() {
+            document.getElementById('global-modal-overlay-context').classList.remove('active');
+        }
+
+        function closeAllSystemModals(event) {
+            if (event.target.id === 'global-modal-overlay-context') {
+                closeCurrentModal();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const dropdownTrigger = document.getElementById('user-dropdown-trigger');
+            const dropdownMenu = document.getElementById('user-dropdown-menu');
+
+            if (dropdownTrigger && dropdownMenu) {
+                dropdownTrigger.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    dropdownMenu.classList.toggle('active');
+                });
+
+                document.addEventListener('click', (event) => {
+                    if (!dropdownMenu.contains(event.target) && event.target !== dropdownTrigger) {
+                        dropdownMenu.classList.remove('active');
+                    }
+                });
+            }
+        });
+
+        function switchModalSubTab(elementNode, displayPanelId) {
+            const tabsContainer = elementNode.parentElement;
+            tabsContainer.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
+            elementNode.classList.add('active');
+
+            const bodyContentFrame = tabsContainer.parentElement;
+            bodyContentFrame.querySelectorAll('.tab-content-panel').forEach(p => p.style.display = 'none');
+            document.getElementById(displayPanelId).style.display = 'block';
+        }
+
+        const originalOpenModal = openModal;
+        openModal = function(modalBoxId) {
+            originalOpenModal(modalBoxId);
+            if (modalBoxId === 'orders-tracker-modal' && window.KreezbyCustomerOrders) {
+                window.KreezbyCustomerOrders.onOrdersModalOpen();
+            }
+        };
+    </script>
+</body>
+</html>

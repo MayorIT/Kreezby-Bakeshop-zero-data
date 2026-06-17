@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreezby Bakeshop - Back Orders — Metro Bulk Distributors (Quezon City)</title>
+    <link rel="stylesheet" href="../../css/pages/wholesaler/wholesaler-portal.css">
+    <link rel="stylesheet" href="../../css/pages/wholesaler/wholesaler-modules.css">
+</head>
+<body data-kreezby-portal="retailer-bo">
+
+<header class="top-navbar-node">
+    <div class="brand-logo-panel">
+        <img src="../../assets/logo/kreezby-logo.png" alt="Kreezby logo">
+        <span>Kreezby</span>
+    </div>
+    <div class="top-nav-links-right">
+        <a class="top-nav-item home-badge" href="wholesaler-quezoncity_metrobulkdistributors.html">Home</a>
+        <div class="user-dropdown">
+            <button class="user-dropdown-pill" type="button" id="user-dropdown-trigger">Metro Bulk Distributors ▾</button>
+            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                <a href="../report_issue-wholesaler.html" class="dropdown-item">Report Issue</a>
+                <a href="../../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="system-dashboard-wrapper" data-area="quezoncity" data-slug="metrobulkdistributors">
+    <aside class="sidebar-panel">
+        <div class="hamburger-row">☰</div>
+        <div class="panel-brand">Metro Bulk Distributors</div>
+        <ul class="navigation-tree">
+            <li class="tree-node"><a href="wholesaler-quezoncity_metrobulkdistributors.html">Dashboard</a></li>
+            <li class="tree-node"><a href="po-quezoncity_metrobulkdistributors.html">Purchase Order</a></li>
+            <li class="tree-node"><a href="receive-quezoncity_metrobulkdistributors.html">Receiving</a></li>
+            <li class="tree-node active"><a href="bo-quezoncity_metrobulkdistributors.html">Back Order</a></li>
+            <li class="tree-node"><a href="return-quezoncity_metrobulkdistributors.html">Return/P.O List</a></li>
+            <li class="tree-node"><a href="saleslist-quezoncity_metrobulkdistributors.html">Sales List</a></li>
+            <li class="tree-node"><a href="alert-quezoncity_metrobulkdistributors.html">Alert</a></li>
+        </ul>
+    </aside>
+
+    <main class="workspace-canvas">
+        <h2 class="page-title">Metro Bulk Distributors — Back Orders</h2>
+        <p class="page-subtitle">Quezon City · Kreezby wholesaler portal</p>
+        <div class="retailer-module-host">
+            <div id="bo-retailer-dashboard-view">
+                <div class="panel-data-card">
+                    <div class="panel-card-title-bar"><h3>List of Back Orders</h3></div>
+                    <div class="card-body-padded">
+                        <div class="datatable-filters-line">
+                            <div>Show <select><option>10</option></select> entries</div>
+                            <div>Search: <input type="text" placeholder="Search..."></div>
+                        </div>
+                        <div class="po-table-scroll-wrap">
+                        <table class="data-display-table">
+                            <thead><tr data-kreezby-portal-head="1">
+                                <th>#</th><th>Date Created</th><th>BO Code</th><th>Action</th><th>Supplier</th><th>Items</th><th>Status</th>
+                            </tr></thead>
+                            <tbody></tbody>
+                        </table></div>
+                        <div style="font-size: 13px; margin-top: 15px; color: #555;">Pending bulk lines from main bakery facility</div>
+                    </div>
+                </div>
+            </div>
+            <div id="bo-details-inspection-panel-view" style="display: none;">
+                <div class="panel-data-card">
+                    <div class="panel-card-title-bar"><h3>Back Order Details</h3></div>
+                    <div class="card-body-padded">
+                        <div class="details-inspection-sheet"></div>
+                        <div class="details-action-footer-row">
+                            <button class="btn-viewer-tool green" onclick="window.print()">Print Report</button>
+                            <button class="btn-viewer-tool black" onclick="switchToBackOrderMasterDashboardView()">Back To Lists Summary</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+    <script>
+function switchToBackOrderDetailsInspector(code){if(window.BoAdmin)BoAdmin.openDetails(code);}
+function switchToBackOrderMasterDashboardView(){if(window.BoAdmin)BoAdmin.backToList();}
+</script>
+<div id="bo-print-root" class="bo-print-root" aria-hidden="true"></div>
+
+    <script src="../../js/bo-admin.js?v=1"></script>
+    <script src="../../js/sidebar-toggle.js"></script>
+    <script src="../../js/wholesaler-nav.js"></script>
+    <script src="../../js/user-dropdown-nav.js"></script>
+
+</body>
+</html>
