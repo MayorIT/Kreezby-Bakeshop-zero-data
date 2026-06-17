@@ -1,4 +1,4 @@
-/* Styles for staff-1.html */
+﻿/* Styles for staff-1.html */
 /* Edit this file to change styles for this page only. */
 
 /* --- Global styles (from style.css) --- */
@@ -252,8 +252,10 @@ main.workspace-canvas header {
 }
 
 .brand-logo-panel img {
-    width: 38px;
-    height: auto;
+    height: 38px;
+    width: auto;
+    max-width: 104px;
+    flex-shrink: 0;
     display: block;
 }
 

@@ -1164,3 +1164,50 @@ body {
             transform: translateY(-1px);
             box-shadow: 0 12px 22px rgba(0,0,0,0.12);
         }
+
+.customer-inbox-header.top-navbar-node {
+    background-color: #3f2f14;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+
+.customer-inbox-header .brand-logo-panel img {
+    height: 38px;
+    width: auto;
+}
+
+.customer-inbox-header .top-nav-links-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.customer-inbox-header .top-nav-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    background-color: rgba(255,255,255,0.12);
+}
+
+.customer-inbox-header .top-nav-item.home-badge {
+    background-color: #ffca28;
+    color: #1f1f1f;
+}
+
+.customer-inbox-main {
+    padding: 8px;
+    min-height: calc(100vh - 72px);
+}
+
+.customer-inbox-main .inbox-chat-root {
+    height: calc(100vh - 88px);
+}

@@ -5,34 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kreezby Bakeshop - Customer Help Center</title>
     <link rel="stylesheet" href="../css/pages/customer/inbox-customer.css">
-
+    <link rel="stylesheet" href="../css/shared/inbox-chat-layout.css">
 </head>
 <body>
-    <div class="help-center-shell">
-        <h1>Customer Help Center</h1>
-        <p>Need assistance? Submit your request here and our admin/staff support team will follow up shortly.</p>
-        
-        <div class="inbox-section">
-            <div class="live-agent-request">
-                <h3>💬 Chat with Us!</h3>
-                <p>Describe your issue below and one of our staffs will connect with you shortly.</p>
-                <form class="live-agent-form" onsubmit="submitLiveAgentRequest(event)">
-                    <textarea placeholder="Describe your issue or question in detail..." required></textarea>
-                    <button type="submit">Start Chat</button>
-                </form>
-            </div>
-        </div>
 
-        <div class="help-center-actions">
-            <a href="customer.html" class="help-link">Back to Shop</a>
-            <a href="../auth/log_in.html" class="help-link">↩ Log Out</a>
+    <header class="top-navbar-node customer-inbox-header">
+        <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
+        <div class="top-nav-links-right">
+            <a class="top-nav-item home-badge" href="customer.html">Shop</a>
+            <a class="top-nav-item" href="inbox-customer.html">Help Chat</a>
+            <a class="top-nav-item" href="../auth/log_in.html">Log Out</a>
         </div>
-    </div>
-    <script>
-    function submitLiveAgentRequest(event) {
-        event.preventDefault();
-        alert('Your live agent request has been submitted. A support agent will connect with you shortly.');
-    }
-    </script>
+    </header>
+
+    <main class="customer-inbox-main">
+        <div data-inbox-role="customer"></div>
+    </main>
+
+    <script src="../js/inbox-chat.js"></script>
+    <script src="../js/user-dropdown-nav.js"></script>
 </body>
 </html>

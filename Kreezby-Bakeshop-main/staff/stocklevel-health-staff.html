@@ -1,15 +1,20 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+        <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="../css/shared/kreezby-turbo-nav.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kreezby Bakeshop - Stock Health (Staff)</title>
     <link rel="stylesheet" href="../css/pages/staff/stocklevel-staff.css">
 </head>
 <body>
+<script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
+
+
 
     <header class="top-navbar-node">
-        <div class="brand-logo-panel">Kreezby</div>
+        <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
         <div class="top-nav-links-right">
             <a class="top-nav-item home-badge" href="staff.html">Home</a>
             <div class="user-dropdown">
@@ -42,6 +47,7 @@
             </ul>
         </aside>
 
+        <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
         <main class="workspace-view-canvas">
             <div class="panel-data-card">
                 <div class="panel-card-title-bar">
@@ -53,12 +59,14 @@
                 </div>
             </div>
         </main>
+        </turbo-frame>
     </div>
 
     <script src="../js/stocklevel-dashboard.js"></script>
     <script src="../js/stocklevel-pills.js"></script>
     <script src="../js/staff-permissions.js"></script>
     <script src="../js/user-dropdown-nav.js"></script>
-    <script src="../js/sidebar-toggle.js"></script>
+        <script src="../js/staff-sidebar.js"></script>
+<script src="../js/sidebar-toggle.js"></script>
 </body>
 </html>

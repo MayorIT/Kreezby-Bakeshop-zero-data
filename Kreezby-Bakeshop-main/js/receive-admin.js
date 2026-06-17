@@ -411,6 +411,7 @@
 
     function renderTable(filter) {
         var tbody = document.getElementById('receiving-supplies-tbody');
+        var footer = document.getElementById('receiving-supplies-footer');
         if (!tbody) return;
         var q = (filter || '').toLowerCase().trim();
         var list = Object.keys(RECEIPTS).map(function (k) { return RECEIPTS[k]; })
@@ -439,6 +440,7 @@
                 '<td>' + r.remarks + '</td>' +
                 '<td>' + buildActionMenu(r.id) + '</td></tr>';
         }).join('');
+        if (footer) footer.textContent = 'Showing ' + rows.length + ' of ' + list.length + ' entries — sorted newest first (by date received)';
     }
 
     function renderDetailsView(receipt) {

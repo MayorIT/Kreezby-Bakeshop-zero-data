@@ -1,18 +1,22 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="../css/shared/kreezby-turbo-nav.css">
     <title>Kreezby Bakeshop - Sales Records Ledger (Admin)</title>
     <link rel="stylesheet" href="../css/pages/admin/saleslist-admin.css">
+    <link rel="stylesheet" href="../css/shared/expandable-nav-tabs.css">
 
 </head>
 <body>
 
     <header class="top-navbar-node">
-        <div class="brand-logo-panel">Kreezby</div>
+        <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
         <div class="top-nav-links-right">            <a class="top-nav-item home-badge" href="admin.html">Home</a>
             <a class="top-nav-item" href="maintenance-admin.html">Maintenance</a>
+            <a class="top-nav-item" href="inbox-admin.html">Inbox</a>
             <div class="user-dropdown">
                 <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">
                     <span style="background:#fff; width:18px; height:18px; border-radius:50%; display:inline-block;"></span>
@@ -27,23 +31,9 @@
     </header>
 
     <div class="core-viewport-wrapper">
+        <aside class="dark-sidebar-panel" aria-label="Admin navigation"></aside>
 
-        <aside class="dark-sidebar-panel">
-            <div class="hamburger-row">☰</div>
-            <ul class="sidebar-menu-list">
-                <li class="menu-node-item"><a href="admin.html">Dashboard</a></li>
-                <li class="menu-node-item"><a href="po-admin.html">Purchase Order</a></li>
-                <li class="menu-node-item"><a href="receive-admin.html">Receiving</a></li>
-                <li class="menu-node-item"><a href="bo-admin.html">Back Order</a></li>
-                <li class="menu-node-item"><a href="return-admin.html">Return/P.O List</a></li>
-                <li class="menu-node-item"><a href="stocks-admin.html">Stocks</a></li>
-                <li class="menu-node-item active"><a href="saleslist-admin.html">Sales List</a></li>
-                <li class="menu-node-item"><a href="aiforecast-admin.html">AI Forecast</a></li>
-                <li class="menu-node-item"><a href="alert-admin.html">Alert</a></li>
-                <li class="menu-node-item"><a href="stocklevel-admin.html">Stock Level</a></li>
-            </ul>
-        </aside>
-
+        <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
         <main class="workspace-view-canvas">
 
             <div id="saleslist-master-directory-panel-view">
@@ -152,9 +142,8 @@
             </div>
 
         </main>
-    </div>
-
-
+</turbo-frame>
+</div>
     <div class="system-modal-backdrop" id="create-saleslist-modal-overlay"></div>
 
     <script>

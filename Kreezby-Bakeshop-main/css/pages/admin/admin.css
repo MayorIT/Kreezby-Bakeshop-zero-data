@@ -1,5 +1,23 @@
-/* Styles for admin.html */
+﻿/* Styles for admin.html */
 /* Edit this file to change styles for this page only. */
+
+/* Icon sidebar FOUC guard */
+aside.dark-sidebar-panel:not(.kreezby-sidebar-ready){
+    visibility:hidden;
+    pointer-events:none;
+    width:256px;
+    min-width:256px;
+    max-width:256px;
+    background:#424242!important;
+}
+body.sidebar-collapsed aside.dark-sidebar-panel:not(.kreezby-sidebar-ready){
+    width:64px;
+    min-width:64px;
+    max-width:64px;
+}
+aside.dark-sidebar-panel{overflow:hidden!important;flex-shrink:0!important}
+aside.dark-sidebar-panel img{max-width:40px!important;max-height:40px!important;width:28px!important;height:auto!important;display:block!important;object-fit:contain!important}
+aside.dark-sidebar-panel svg{width:18px!important;height:18px!important;max-width:18px!important;max-height:18px!important;display:block!important}
 
 /* --- Global styles (from style.css) --- */
 /* ==========================================================================
@@ -252,8 +270,10 @@ main.workspace-canvas header {
 }
 
 .brand-logo-panel img {
-    width: 38px;
-    height: auto;
+    height: 38px;
+    width: auto;
+    max-width: 104px;
+    flex-shrink: 0;
     display: block;
 }
 
@@ -293,7 +313,7 @@ main.workspace-canvas header {
 }
 
 .sidebar-collapsed aside.sidebar-panel,
-.sidebar-collapsed aside.dark-sidebar-panel {
+.sidebar-collapsed aside.dark-sidebar-panel:not(.kreezby-icon-sidebar) {
     width: 0 !important;
     min-width: 0 !important;
     max-width: 0 !important;
@@ -583,7 +603,7 @@ button.user-dropdown-pill {
     will-change: width, transform, opacity;
 }
 
-aside.dark-sidebar-panel {
+aside.dark-sidebar-panel:not(.kreezby-icon-sidebar) {
     --sidebar-width: 240px;
     width: var(--sidebar-width);
     min-width: var(--sidebar-width);
@@ -600,8 +620,9 @@ main.workspace-canvas {
     will-change: transform;
 }
 
-body.sidebar-collapsed main.workspace-canvas {
-    transform: translateX(-12px);
+body.sidebar-collapsed main.workspace-canvas,
+body.sidebar-collapsed main.workspace-view-canvas {
+    transform: none;
 }
 
 .sidebar-panel .panel-brand {
@@ -1073,6 +1094,7 @@ main.workspace-canvas {
             flex-direction: column;
             min-height: 100vh;
             overflow-x: hidden;
+            --kreezby-admin-header-height: 60px;
         }
 
         .top-navbar-node {
@@ -1090,6 +1112,13 @@ main.workspace-canvas {
             font-weight: 800;
             color: var(--sidebar-active-yellow);
             letter-spacing: 0.5px;
+        }
+
+        .brand-logo-panel img {
+            height: 38px;
+            width: auto;
+            max-width: 104px;
+            display: block;
         }
 
         .top-nav-links-right {
@@ -1130,9 +1159,11 @@ main.workspace-canvas {
         .core-viewport-wrapper {
             display: flex;
             flex: 1;
+            min-height: 0;
+            align-items: stretch;
         }
 
-        aside.dark-sidebar-panel {
+        aside.dark-sidebar-panel:not(.kreezby-icon-sidebar) {
             width: 240px;
             background-color: var(--sidebar-gray);
             display: flex;

@@ -3,37 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kreezby Bakeshop - Log In</title>
-    <link rel="stylesheet" href="../css/pages/log_in.css">
-
-    
+    <title>Kreezby Bakeshop - Welcome</title>
+    <link rel="stylesheet" href="../css/shared/auth-shell.css">
 </head>
 <body>
 
-<div class="login-container">
-    <div class="logo-placeholder">Kreezby</div>
-    <div class="tagline">The Crinkle Factory - Making your life sweeter!</div>
-    
-    <h2>Log In</h2>
-    
-    <form class="login-form" novalidate onsubmit="return false;">
-        <div class="input-group">
-            <input type="text" name="identity" placeholder="Email or Name" required>
-        </div>
-        <div class="input-group">
-            <input type="password" name="password" placeholder="Password" required>
-        </div>
-        
-        <button type="submit" class="btn-login">Log In</button>
-    </form>
-    
-    <div class="links-container">
-        <p><a href="sign_up.html">Forgot password?</a></p>
-        <p class="signup-prompt">Don't have an account? <a href="sign_up.html">Sign Up</a></p>
-        <p class="signup-prompt" style="margin-top:12px;font-size:12px;color:#888;">Quick login: <strong>brent_admin</strong>, <strong>staff1</strong>, <strong>retailer</strong>, <strong>customer</strong> / <strong>kreezby123</strong></p>
+<section class="auth-shell" aria-label="Authentication">
+    <canvas class="auth-shell__particles" aria-hidden="true"></canvas>
+    <div class="auth-shell__vignette" aria-hidden="true"></div>
+    <div class="auth-shell__lines" aria-hidden="true">
+        <div class="auth-shell__hline"></div>
+        <div class="auth-shell__hline"></div>
+        <div class="auth-shell__hline"></div>
+        <div class="auth-shell__vline"></div>
+        <div class="auth-shell__vline"></div>
+        <div class="auth-shell__vline"></div>
     </div>
-</div>
 
+    <header class="auth-shell__header">
+        <a href="start.html" class="auth-shell__brand">
+            <img src="../assets/logo/kreezby-logo.png" alt="Kreezby">
+        </a>
+    </header>
+
+    <div class="auth-shell__center">
+        <div class="auth-card auth-card--wide card-animate" data-auth-tabs>
+            <div class="auth-card__header">
+                <h1 class="auth-card__title">Welcome</h1>
+                <p class="auth-card__description">Log in or create an account</p>
+            </div>
+
+            <div class="auth-card__content">
+                <div class="auth-tabs" role="tablist" aria-label="Authentication mode">
+                    <button type="button" class="auth-tab is-active" role="tab" data-auth-tab="login" aria-selected="true">Log In</button>
+                    <button type="button" class="auth-tab" role="tab" data-auth-tab="signup" aria-selected="false">Sign Up</button>
+                </div>
+
+                <div class="auth-panel is-active" data-auth-panel="login" role="tabpanel">
+                    <form class="login-form" novalidate onsubmit="return false;">
+                        <div class="auth-field">
+                            <label class="auth-label" for="identity">Email</label>
+                            <div class="auth-input-wrap">
+                                <svg class="auth-input-icon" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                <input class="auth-input auth-input--icon-left" id="identity" type="text" name="identity" placeholder="you@example.com" autocomplete="username" required>
+                            </div>
+                        </div>
+
+                        <div class="auth-field">
+                            <label class="auth-label" for="password">Password</label>
+                            <div class="auth-input-wrap">
+                                <svg class="auth-input-icon" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                <input class="auth-input auth-input--icon-left auth-input--icon-right" id="password" type="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
+                                <button type="button" class="auth-toggle-password" data-auth-toggle-password aria-controls="password" aria-label="Show password">
+                                    <svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="auth-check-row">
+                            <label class="auth-check">
+                                <input type="checkbox" name="remember">
+                                <span>Remember me</span>
+                            </label>
+                            <button type="button" class="auth-link auth-link-btn" data-auth-tab-trigger="signup">Forgot password?</button>
+                        </div>
+
+                        <button type="submit" class="auth-btn">Continue</button>
+                    </form>
+
+                    <p class="auth-demo-hint">
+                        Quick login: <strong>brent_admin</strong>, <strong>staff1</strong>, <strong>retailer</strong>, <strong>customer</strong> / <strong>kreezby123</strong>
+                    </p>
+                </div>
+
+                <div class="auth-panel auth-panel--signup" data-auth-panel="signup" role="tabpanel">
+                    <form class="signup-form" novalidate onsubmit="return false;">
+                        <div class="auth-row">
+                            <div class="auth-field">
+                                <label class="auth-label" for="firstName">First name</label>
+                                <input class="auth-input" id="firstName" type="text" name="firstName" placeholder="Maria" required>
+                            </div>
+                            <div class="auth-field">
+                                <label class="auth-label" for="lastName">Last name</label>
+                                <input class="auth-input" id="lastName" type="text" name="lastName" placeholder="Santos" required>
+                            </div>
+                        </div>
+
+                        <div class="auth-field">
+                            <label class="auth-label">Birthday</label>
+                            <div class="auth-row auth-row--birthday">
+                                <select class="auth-select" name="birthMonth" required>
+                                    <option value="">Month</option>
+                                    <option value="1">Jan</option>
+                                    <option value="8" selected>Aug</option>
+                                </select>
+                                <select class="auth-select" name="birthDay" required>
+                                    <option value="">Day</option>
+                                    <option value="25" selected>25</option>
+                                </select>
+                                <select class="auth-select" name="birthYear" required>
+                                    <option value="">Year</option>
+                                    <option value="1998" selected>1998</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="auth-field">
+                            <label class="auth-label">Gender</label>
+                            <div class="auth-gender-grid">
+                                <label class="auth-gender-option">
+                                    <input type="radio" name="gender" value="Female"> Female
+                                </label>
+                                <label class="auth-gender-option">
+                                    <input type="radio" name="gender" value="Male" checked> Male
+                                </label>
+                                <label class="auth-gender-option">
+                                    <input type="radio" name="gender" value="Others"> Others
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="auth-field">
+                            <label class="auth-label" for="contactInfo">Email or phone</label>
+                            <div class="auth-input-wrap">
+                                <svg class="auth-input-icon" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                <input class="auth-input auth-input--icon-left" id="contactInfo" type="text" name="contactInfo" placeholder="you@example.com" required>
+                            </div>
+                        </div>
+
+                        <div class="auth-field">
+                            <label class="auth-label" for="signup-password">Password</label>
+                            <div class="auth-input-wrap">
+                                <svg class="auth-input-icon" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                <input class="auth-input auth-input--icon-left auth-input--icon-right" id="signup-password" type="password" name="password" placeholder="••••••••" required>
+                                <button type="button" class="auth-toggle-password" data-auth-toggle-password aria-controls="signup-password" aria-label="Show password">
+                                    <svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="auth-btn">Create account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="../js/auth-shell.js"></script>
 <script src="../js/maintenance-settings.js"></script>
 <script src="../js/app-runtime.js"></script>
 </body>

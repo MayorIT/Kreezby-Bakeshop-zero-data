@@ -2,15 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+        <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="../css/shared/kreezby-turbo-nav.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kreezby Bakeshop - Back Order Management (Admin)</title>
     <link rel="stylesheet" href="../css/pages/staff/bo-staff.css">
+    <link rel="stylesheet" href="../css/shared/order-tabbed-layout.css">
 
 </head>
 <body data-kreezby-portal="staff-bo">
+<script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
+
+
 
     <header class="top-navbar-node">
-        <div class="brand-logo-panel">Kreezby</div>
+        <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
         <div class="top-nav-links-right">            <a class="top-nav-item home-badge" href="staff.html">Home</a>
             <div class="user-dropdown">
                 <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">
@@ -43,83 +49,65 @@
             </ul>
         </aside>
 
+        <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
         <main class="workspace-view-canvas">
 
             <div id="bo-master-dashboard-split-view">
-                <div class="dashboard-split-layout">
-                    
-                    <div class="panel-data-card">
+                <div class="panel-data-card po-tabbed-card">
+                    <div class="po-order-tabs" role="tablist" data-panel-prefix="bo">
+                        <button type="button" class="po-order-tab active" data-tab="retailer" role="tab" aria-selected="true">Retailer Back Orders</button>
+                        <button type="button" class="po-order-tab" data-tab="customer" role="tab" aria-selected="false">Customer Back Orders</button>
+                    </div>
+
+                    <div id="bo-tab-retailer" class="po-tab-panel active" role="tabpanel">
                         <div class="panel-card-title-bar">
                             <h3>Retailer Back Orders</h3>
                         </div>
                         <div class="card-body-padded">
                             <div class="datatable-filters-line">
-                                <div>Show <select><option>10</option></select> entries</div>
-                                <div>Search: <input type="text" placeholder="Search..."></div>
+                                <div>Show <select id="bo-retailer-page-size"><option value="10">10</option><option value="25">25</option></select> entries</div>
+                                <div class="search-field-wrap">
+                                    <input type="text" id="bo-retailer-search" placeholder="PO code, date, retailer, status...">
+                                </div>
                             </div>
-                            <table class="data-display-table">
-                                <thead>
-                                    <tr>
-                                        <th>#</th><th>Date Created</th><th>P.O. Code</th><th>Retailer</th><th>Items</th><th>Status</th><th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr onclick="switchToBackOrderDetailsInspector()" style="cursor: pointer;">
-                                        <td>1</td><td>2021-11-03 16:13</td><td><strong style="color:#0288d1;">PO-0005</strong></td><td>Retailer 103</td><td>2</td><td><span class="status-pill-badge pending">Pending</span></td><td><button class="action-trigger-btn">Action ▾</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td><td>2021-11-03 11:52</td><td><strong>PO-0004</strong></td><td>Retailer 102</td><td>1</td><td><span class="status-pill-badge received">Received</span></td><td><button class="action-trigger-btn">Action ▾</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td><td>2021-11-03 11:51</td><td><strong>PO-0003</strong></td><td>Retailer 102</td><td>2</td><td><span class="status-pill-badge partial">Partially Received</span></td><td><button class="action-trigger-btn">Action ▾</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td><td>2021-11-03 11:20</td><td><strong>PO-0002</strong></td><td>Retailer 101</td><td>1</td><td><span class="status-pill-badge received">Received</span></td><td><button class="action-trigger-btn">Action ▾</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td><td>2021-11-03 11:20</td><td><strong>PO-0001</strong></td><td>Retailer 101</td><td>1</td><td><span class="status-pill-badge partial">Partially Received</span></td><td><button class="action-trigger-btn">Action ▾</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="po-table-scroll-wrap">
+                                <table class="data-display-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th><th>Date Created</th><th>P.O. Code</th><th>Retailer</th><th>Items</th><th>Status</th><th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bo-retailer-tbody"></tbody>
+                                </table>
+                            </div>
+                            <div class="datatable-footer-line" id="bo-retailer-footer"></div>
                         </div>
                     </div>
 
-                    <div class="panel-data-card">
+                    <div id="bo-tab-customer" class="po-tab-panel" role="tabpanel">
                         <div class="panel-card-title-bar">
                             <h3>Customer Back Orders</h3>
                         </div>
                         <div class="card-body-padded">
                             <div class="datatable-filters-line">
-                                <div>Show <select><option>10</option></select> entries</div>
-                                <div>Search: <input type="text" placeholder="Search..."></div>
+                                <div>Show <select id="bo-customer-page-size"><option value="10">10</option><option value="25">25</option></select> entries</div>
+                                <div class="search-field-wrap">
+                                    <input type="text" id="bo-customer-search" placeholder="PO code, date, customer, status...">
+                                </div>
                             </div>
-                            <table class="data-display-table">
-                                <thead>
-                                    <tr>
-                                        <th>#</th><th>Date Created</th><th>P.O. Code</th><th>Customer</th><th>Items</th><th>Status</th><th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td><td>2021-11-03 16:10</td><td><strong>PO-0012</strong></td><td>Customer 205</td><td>3</td><td><span class="status-pill-badge pending">Pending</span></td><td><button class="action-trigger-btn">Action ▾</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td><td>2021-11-03 15:45</td><td><strong>PO-0011</strong></td><td>Customer 201</td><td>1</td><td><span class="status-pill-badge received">Received</span></td><td><button class="action-trigger-btn">Action ▾</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td><td>2021-11-03 14:30</td><td><strong>PO-0010</strong></td><td>Customer 203</td><td>2</td><td><span class="status-pill-badge partial">Partially Received</span></td><td><button class="action-trigger-btn">Action ▾</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td><td>2021-11-03 13:05</td><td><strong>PO-0009</strong></td><td>Customer 202</td><td>4</td><td><span class="status-pill-badge received">Received</span></td><td><button class="action-trigger-btn">Action ▾</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td><td>2021-11-03 12:20</td><td><strong>PO-0008</strong></td><td>Customer 204</td><td>1</td><td><span class="status-pill-badge pending">Pending</span></td><td><button class="action-trigger-btn">Action ▾</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="po-table-scroll-wrap">
+                                <table class="data-display-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th><th>Date Created</th><th>P.O. Code</th><th>Customer</th><th>Items</th><th>Status</th><th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bo-customer-tbody"></tbody>
+                                </table>
+                            </div>
+                            <div class="datatable-footer-line" id="bo-customer-footer"></div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -222,12 +210,16 @@
             </div>
 
         </main>
+        </turbo-frame>
     </div>
 
     <div id="bo-print-root" class="bo-print-root" aria-hidden="true"></div>
+    <script src="../js/tab-panel-transition.js"></script>
+    <script src="../js/order-tabbed-layout.js"></script>
     <script src="../js/bo-admin.js?v=1"></script>
     <script src="../js/staff-permissions.js"></script>
         <script src="../js/user-dropdown-nav.js"></script>
-    <script src="../js/sidebar-toggle.js"></script>
+        <script src="../js/staff-sidebar.js"></script>
+<script src="../js/sidebar-toggle.js"></script>
 </body>
 </html>

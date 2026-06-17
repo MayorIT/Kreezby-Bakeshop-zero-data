@@ -2,15 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+        <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="../css/shared/kreezby-turbo-nav.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kreezby Bakeshop - AI Delivery Overview (Staff)</title>
     <link rel="stylesheet" href="../css/pages/staff/aiforecast_deliveryoverview-staff.css">
 
 </head>
 <body>
+<script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
+
+
 
     <header class="top-navbar-node">
-        <div class="brand-logo-panel">Kreezby</div>
+        <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
         <div class="top-nav-links-right">            <a class="top-nav-item home-badge" href="staff.html">Home</a>
             <div class="user-dropdown">
                 <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">Staff ▾</button>
@@ -40,6 +45,7 @@
             </ul>
         </aside>
 
+        <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
         <main class="workspace-view-canvas">
             <div class="panel-data-card">
                 <div class="panel-card-title-bar">
@@ -48,7 +54,6 @@
                 </div>
                 <div class="card-body-padded">
                     <div class="ai-filter-pills" id="ai-filter-pills">
-                        <a class="pill" href="aiforecast-staff.html" data-key="all">All</a>
                         <a class="pill" href="aiforecast_salesanalysis-staff.html" data-key="sales-analysis">Sales Analysis</a>
                         <a class="pill" href="aiforecast_salestrend-staff.html" data-key="sales-trend">Sales Trend</a>
                         <a class="pill" href="aiforecast_inventoryreport-staff.html" data-key="inventory-report">Inventory Report</a>
@@ -103,11 +108,13 @@
             </div>
 
         </main>
+        </turbo-frame>
     </div>
 
     <script src="../js/aiforecast-pills.js"></script>
     <script src="../js/staff-permissions.js"></script>
         <script src="../js/user-dropdown-nav.js"></script>
-    <script src="../js/sidebar-toggle.js"></script>
+        <script src="../js/staff-sidebar.js"></script>
+<script src="../js/sidebar-toggle.js"></script>
 </body>
 </html>

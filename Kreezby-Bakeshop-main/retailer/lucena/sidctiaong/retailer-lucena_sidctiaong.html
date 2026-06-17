@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+        <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="../../../css/shared/kreezby-turbo-nav.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kreezby Bakeshop - SIDC Tiaong (Lucena)</title>
     <link rel="stylesheet" href="../../../css/pages/retailer/sidctiaong/retailer-lucena_sidctiaong.css">
@@ -9,6 +11,9 @@
     <link rel="stylesheet" href="../../../css/pages/retailer/lucena-retailer-brand.css">
 </head>
 <body>
+<script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
+
+
 
 <header class="top-navbar-node">
     <div class="brand-logo-panel">
@@ -44,7 +49,8 @@
         </ul>
     </aside>
 
-    <main class="workspace-canvas">
+    <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
+        <main class="workspace-canvas">
         <div class="workspace-container">
             <h2 class="page-title">SIDC Tiaong — Lucena</h2>
 
@@ -81,6 +87,7 @@
         </div>
 </div>
 </main>
+        </turbo-frame>
 
     <!-- Notification Modal Overlay -->
     <div class="notification-modal-overlay" id="notification-modal-overlay">
@@ -180,21 +187,6 @@
                 notificationBell.addEventListener('click', openNotificationModal);
             }
 
-            const userDropdownTrigger = document.getElementById('user-dropdown-trigger');
-            const userDropdownMenu = document.getElementById('user-dropdown-menu');
-            if (userDropdownTrigger && userDropdownMenu) {
-                userDropdownTrigger.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                    userDropdownMenu.classList.toggle('active');
-                });
-
-                document.addEventListener('click', function(event) {
-                    if (!userDropdownMenu.contains(event.target) && event.target !== userDropdownTrigger) {
-                        userDropdownMenu.classList.remove('active');
-                    }
-                });
-            }
-
             // Close modal when clicking outside
             document.getElementById('notification-modal-overlay').addEventListener('click', function(event) {
                 if (event.target === this) {
@@ -203,5 +195,7 @@
             });
         });
     </script>
-</body>
+    <script src="../../../js/notification-popover.js"></script>
+    <script src="../../../js/user-dropdown-nav.js"></script>
+    </body>
 </html>

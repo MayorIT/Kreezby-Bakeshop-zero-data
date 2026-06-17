@@ -101,6 +101,7 @@
     var currentBoCode = null;
     var menuCounter = 0;
     var PAGE_MODE = null;
+    var activeBoTab = 'retailer';
     var retailerStoreName = '';
     var SUPPLIER_LABEL = 'Kreezby Bakeshop';
 
@@ -172,25 +173,39 @@
         }
     }
 
+    function switchBoTab(tabName) {
+        var tablist = document.querySelector('.bo-order-tabs');
+        if (!tablist || !tabName) return;
+
+        if (window.KreezbyTabPanels) {
+            activeBoTab = window.KreezbyTabPanels.switch({
+                tablist: tablist,
+                tabName: tabName,
+                prefix: 'bo',
+                tabBtnSelector: '.bo-order-tab',
+                panelSelector: '.bo-tab-panel'
+            }) || tabName;
+            return;
+        }
+
+        activeBoTab = tabName;
+        tablist.querySelectorAll('.bo-order-tab').forEach(function (btn) {
+            var on = btn.getAttribute('data-tab') === tabName;
+            btn.classList.toggle('active', on);
+            btn.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        document.querySelectorAll('.bo-tab-panel').forEach(function (panel) {
+            panel.classList.toggle('active', panel.id === 'bo-tab-' + tabName);
+        });
+    }
+
     function setupAdminPage() {
         if (PAGE_MODE !== 'admin') return;
         if (/\/staff\//i.test(window.location.pathname)) {
             document.body.setAttribute('data-kreezby-portal', 'staff-bo');
         }
-        ensureTableScrollWrap('#bo-master-dashboard-split-view');
-        var cards = document.querySelectorAll('#bo-master-dashboard-split-view .panel-data-card');
-        if (cards[0]) {
-            var rtbody = cards[0].querySelector('tbody');
-            if (rtbody) rtbody.id = 'bo-retailer-tbody';
-            var rsearch = cards[0].querySelector('input[type="text"]');
-            if (rsearch) rsearch.id = 'bo-retailer-search';
-        }
-        if (cards[1]) {
-            var ctbody = cards[1].querySelector('tbody');
-            if (ctbody) ctbody.id = 'bo-customer-tbody';
-            var csearch = cards[1].querySelector('input[type="text"]');
-            if (csearch) csearch.id = 'bo-customer-search';
-        }
+        ensureTableScrollWrap('#bo-tab-retailer');
+        ensureTableScrollWrap('#bo-tab-customer');
         var details = document.getElementById(detailsBlockId());
         if (details) {
             var title = details.querySelector('.panel-card-title-bar h3');
@@ -213,6 +228,15 @@
             root.className = 'bo-print-root';
             root.setAttribute('aria-hidden', 'true');
             document.body.appendChild(root);
+        }
+
+        var tablist = document.querySelector('.bo-order-tabs');
+        if (tablist && window.KreezbyTabPanels) {
+            window.KreezbyTabPanels.wire(tablist, {
+                prefix: 'bo',
+                tabBtnSelector: '.bo-order-tab',
+                panelSelector: '.bo-tab-panel'
+            });
         }
     }
 
@@ -394,9 +418,11 @@
 
     function renderRetailerTable(filter) {
         var tbody = document.getElementById('bo-retailer-tbody');
+        var footer = document.getElementById('bo-retailer-footer');
         if (!tbody) return;
         var q = (filter || '').toLowerCase().trim();
-        var rows = ordersByType('retailer').filter(function (o) {
+        var all = ordersByType('retailer');
+        var rows = all.filter(function (o) {
             if (!q) return true;
             return [o.code, o.poCode, o.dateCreated, o.supplier, o.status, SUPPLIER_LABEL].join(' ').toLowerCase().indexOf(q) >= 0;
         });
@@ -423,13 +449,16 @@
                 '<td><span class="status-pill-badge ' + o.statusClass + ' bo-status-link" data-bo="' + o.code + '">' + o.status + '</span></td>' +
                 '<td>' + buildActionMenu(o.code) + '</td></tr>';
         }).join('');
+        if (footer) footer.textContent = 'Showing ' + rows.length + ' of ' + all.length + ' entries — sorted newest first (by date & PO code)';
     }
 
     function renderCustomerTable(filter) {
         var tbody = document.getElementById('bo-customer-tbody');
+        var footer = document.getElementById('bo-customer-footer');
         if (!tbody) return;
         var q = (filter || '').toLowerCase().trim();
-        var rows = ordersByType('customer').filter(function (o) {
+        var all = ordersByType('customer');
+        var rows = all.filter(function (o) {
             if (!q) return true;
             return [o.code, o.poCode, o.dateCreated, o.entity, o.status].join(' ').toLowerCase().indexOf(q) >= 0;
         });
@@ -443,6 +472,7 @@
                 '<td><span class="status-pill-badge ' + o.statusClass + ' bo-status-link" data-bo="' + o.code + '">' + o.status + '</span></td>' +
                 '<td>' + buildActionMenu(o.code) + '</td></tr>';
         }).join('');
+        if (footer) footer.textContent = 'Showing ' + rows.length + ' of ' + all.length + ' entries — sorted newest first (by date & PO code)';
     }
 
     function refreshTables() {

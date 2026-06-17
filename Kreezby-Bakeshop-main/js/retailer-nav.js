@@ -9,7 +9,7 @@
   var DIRECTORY = 'retailer/retailer-directory.html';
   var DEFAULT_HOME = 'retailer-batangas_sidcmain.html';
   var PORTAL_PATTERN = /^retailer-[a-z0-9]+_[a-z0-9]+\.html$/i;
-  var HIDE_MODULES_PATTERN = /(^(receive|return)-|receiving-retailer\.html$|return-retailer\.html$|pullout|pull-out|delivery)/i;
+  var HIDE_MODULES_PATTERN = /(^receive-|receiving-retailer\.html$|^return-retailer\.html$|pullout|pull-out|delivery)/i;
 
   function currentFile() {
     var path = location.pathname || '';
@@ -51,9 +51,46 @@
     });
   }
 
+  function wireRetailerInboxNav() {
+    var path = (location.pathname || '').toLowerCase();
+    if (path.indexOf('/retailer/') === -1) return;
+    if (path.indexOf('inbox-retailer') !== -1) return;
+
+    var inboxHref = 'inbox-retailer.html';
+    if (window.KreezbyUserDropdown && typeof window.KreezbyUserDropdown.inboxHref === 'function') {
+      inboxHref = window.KreezbyUserDropdown.inboxHref();
+    } else {
+      var parts = path.split('/').filter(Boolean);
+      if (parts.length && /\.html?$/i.test(parts[parts.length - 1])) parts.pop();
+      var retailerIdx = parts.indexOf('retailer');
+      if (retailerIdx >= 0) {
+        var depth = parts.length - retailerIdx - 1;
+        var prefix = '';
+        for (var d = 0; d < depth; d++) prefix += '../';
+        inboxHref = prefix + 'inbox-retailer.html';
+      }
+    }
+
+    var right = document.querySelector('.top-nav-links-right');
+    if (!right || right.querySelector('a[href*="inbox-retailer"]')) return;
+
+    var home = right.querySelector('a.home-badge, a.top-nav-item');
+    var link = document.createElement('a');
+    link.className = 'top-nav-item';
+    link.href = inboxHref;
+    link.textContent = 'Inbox';
+    link.setAttribute('data-turbo-frame', '_top');
+
+    if (home && home.parentNode) {
+      home.insertAdjacentElement('afterend', link);
+    } else {
+      right.insertBefore(link, right.firstChild);
+    }
+  }
+
   function removeRetailerDeliveryAndPulloutModules() {
-    // Remove nav/sidebar links and inline action shortcuts for receiving/return (delivery/pullout records).
-    // This keeps the HTML files intact but hides the modules across retailer pages.
+    // Remove nav/sidebar links and inline action shortcuts for receiving (delivery/pullout records).
+    // Return/P.O List (return-{store}.html) stays visible for each retailer.
     function normalizeHref(href) {
       return (href || '').split('?')[0].split('#')[0].trim();
     }
@@ -79,10 +116,10 @@
       }
     });
 
-    // Any "quick action" menu items that navigate to receiving/return modules
+    // Any "quick action" menu items that navigate to receiving modules
     document.querySelectorAll('[onclick]').forEach(function (node) {
       var onclick = node.getAttribute('onclick') || '';
-      if (/location\.href\s*=\s*['"][^'"]*(receive|return|receiving-retailer|return-retailer)[^'"]*['"]/i.test(onclick)) {
+      if (/location\.href\s*=\s*['"][^'"]*(receive|receiving-retailer)[^'"]*['"]/i.test(onclick)) {
         node.remove();
       }
     });
@@ -97,10 +134,31 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
       wireRetailerHomeLinks();
+      wireRetailerInboxNav();
       removeRetailerDeliveryAndPulloutModules();
+      schedulePortalSidebarRender();
     });
   } else {
     wireRetailerHomeLinks();
+    wireRetailerInboxNav();
     removeRetailerDeliveryAndPulloutModules();
+    schedulePortalSidebarRender();
   }
+
+  function schedulePortalSidebarRender() {
+    if (window.KreezbyPortalIconSidebar) {
+      window.KreezbyPortalIconSidebar.render();
+      return;
+    }
+    document.addEventListener('kreezby-portal-sidebar-ready', function () {
+      if (window.KreezbyPortalIconSidebar) window.KreezbyPortalIconSidebar.render();
+    }, { once: true });
+  }
+
+  document.addEventListener('kreezby:page-load', function () {
+    wireRetailerHomeLinks();
+    wireRetailerInboxNav();
+    removeRetailerDeliveryAndPulloutModules();
+    if (window.KreezbyPortalIconSidebar) window.KreezbyPortalIconSidebar.render();
+  });
 })();

@@ -1,74 +1,88 @@
-(function(){
-    // Fetch and inject remote panel content into current page's .panel-data-card
-    async function fetchPanel(href){
-        try{
-            const res = await fetch(href, {credentials: 'same-origin'});
-            if(!res.ok) throw new Error('fetch failed');
-            const text = await res.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(text, 'text/html');
-            const remotePanel = doc.querySelector('.panel-data-card');
+(function () {
+    async function fetchPanel(href) {
+        try {
+            var res = await fetch(href, { credentials: 'same-origin' });
+            if (!res.ok) throw new Error('fetch failed');
+            var text = await res.text();
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(text, 'text/html');
+            var remotePanel = doc.querySelector('.panel-data-card');
             return remotePanel ? remotePanel.innerHTML : null;
         } catch (e) {
             return null;
         }
     }
 
-    function setActive(pills, activeEl){
-        pills.forEach(p => p.classList.toggle('active', p === activeEl));
+    function filenameOf(url) {
+        try {
+            return new URL(url, location.href).pathname.split('/').pop();
+        } catch (e) {
+            return url;
+        }
     }
 
-    function filenameOf(url){
-        try{ return (new URL(url, location.href)).pathname.split('/').pop(); }catch(e){ return url; }
+    function syncActivePills(activeHref) {
+        var targetFile = activeHref
+            ? filenameOf(activeHref)
+            : location.pathname.split('/').pop();
+        var container = document.querySelector('#ai-filter-pills');
+        if (!container) return;
+
+        container.querySelectorAll('.pill').forEach(function (pill) {
+            var href = pill.getAttribute('href');
+            var isActive = href && filenameOf(href) === targetFile;
+            pill.classList.toggle('active', isActive);
+        });
     }
 
-    document.addEventListener('DOMContentLoaded', function(){
-        const pillContainers = document.querySelectorAll('#ai-filter-pills');
-        if(!pillContainers.length) return;
+    async function loadPanel(href, updateHistory) {
+        var panelHTML = await fetchPanel(href);
+        if (panelHTML === null) {
+            location.href = href;
+            return;
+        }
 
-        pillContainers.forEach(container => {
-            const pills = Array.from(container.querySelectorAll('.pill'));
+        var existing = document.querySelector('.panel-data-card');
+        if (!existing) {
+            location.href = href;
+            return;
+        }
 
-            // initial active state based on current filename
-            const currentFile = location.pathname.split('/').pop();
-            let found = false;
-            pills.forEach(p => {
-                const href = p.getAttribute('href');
-                if(href && filenameOf(href) === currentFile){ p.classList.add('active'); found = true; }
-            });
-            if(!found){ const all = container.querySelector('.pill[data-key="all"]'); if(all) all.classList.add('active'); }
+        existing.innerHTML = panelHTML;
+        syncActivePills(href);
 
-            // click handler: load via fetch and inject, else navigate
-            container.addEventListener('click', async function(ev){
-                const target = ev.target.closest('.pill');
-                if(!target) return;
-                ev.preventDefault();
-                const href = target.getAttribute('href');
-                if(!href) return;
+        if (updateHistory !== false) {
+            try {
+                history.pushState({ forecastPanel: href }, '', href);
+            } catch (e) {}
+        }
 
-                // optimistic active state
-                setActive(pills, target);
+        document.dispatchEvent(new Event('content:replaced'));
+    }
 
-                const panelHTML = await fetchPanel(href);
-                if(panelHTML !== null){
-                    const existing = document.querySelector('.panel-data-card');
-                    if(existing){
-                        existing.innerHTML = panelHTML;
-                        // update history without reloading
-                        try{ history.pushState({}, '', href); }catch(e){}
-                        // re-run sidebar-toggle init if needed
-                        const evt = new Event('content:replaced');
-                        document.dispatchEvent(evt);
-                    } else {
-                        // fallback navigate
-                        location.href = href;
-                    }
-                } else {
-                    // fetch failed -> full navigation
-                    location.href = href;
-                }
-            });
+    document.addEventListener('DOMContentLoaded', function () {
+        syncActivePills();
+
+        document.addEventListener('click', function (ev) {
+            var target = ev.target.closest('#ai-filter-pills .pill');
+            if (!target) return;
+
+            ev.preventDefault();
+            var href = target.getAttribute('href');
+            if (!href) return;
+
+            syncActivePills(href);
+            loadPanel(href);
         });
 
+        window.addEventListener('popstate', function () {
+            syncActivePills();
+            loadPanel(location.pathname + location.search, false);
+        });
+    });
+
+    window.KreezbyAiForecastPills = { boot: syncActivePills, loadPanel: loadPanel };
+    document.addEventListener('kreezby:page-load', function () {
+        syncActivePills();
     });
 })();

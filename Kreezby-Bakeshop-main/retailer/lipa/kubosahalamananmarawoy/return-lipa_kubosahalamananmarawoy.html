@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+        <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="../../../css/shared/kreezby-turbo-nav.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kreezby Bakeshop - Return/P.O List — Kubo sa Halamanan Marawoy (Lipa)</title>
     <link rel="stylesheet" href="../../../css/pages/retailer/kubosahalamananmarawoy/return-lipa_kubosahalamananmarawoy.css">
@@ -9,6 +11,9 @@
     <link rel="stylesheet" href="../../../css/pages/retailer/lipa-retailer-brand.css">
 </head>
 <body>
+<script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
+
+
 
 <header class="top-navbar-node">
     <div class="brand-logo-panel">
@@ -43,7 +48,8 @@
         </ul>
     </aside>
 
-    <main class="workspace-canvas">
+    <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
+        <main class="workspace-canvas">
         <h2 class="page-title">Kubo sa Halamanan Marawoy — Return / P.O List</h2>
         <p class="page-subtitle">Lipa · Kreezby retailer portal</p>
         <div class="retailer-module-host">
@@ -187,6 +193,7 @@
             </div>
         </div>
     </main>
+        </turbo-frame>
 </div>
 
 </div>

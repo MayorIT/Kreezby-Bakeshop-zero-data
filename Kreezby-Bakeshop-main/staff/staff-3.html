@@ -2,18 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+        <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="../css/shared/kreezby-turbo-nav.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kreezby Bakeshop - Inventory Team Dashboard</title>
     <link rel="stylesheet" href="../css/pages/staff/staff-3.css">
 
 </head>
 <body>
+<script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
+
+
 
 <header class="top-navbar-node">
-    <div class="brand-logo-panel">
-        <img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo">
-        <span>Kreezby</span>
-    </div>
+    <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
     <div class="top-nav-links-right">
         <a class="top-nav-item home-badge" href="staff-3.html">Home</a>
         <button class="notification-pill" aria-label="Notifications">🔔</button>
@@ -40,7 +42,8 @@
         </ul>
     </aside>
 
-    <main class="workspace-canvas">
+    <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
+        <main class="workspace-canvas">
         <div class="workspace-container">
             <h2 class="page-title">Inventory Team Dashboard</h2>
             <p style="color:#666;margin-bottom:20px;font-size:14px;">Assigned tasks: stock management, stock levels, inventory reports, and alerts.</p>
@@ -64,10 +67,13 @@
             </div>
         </div>
     </main>
+        </turbo-frame>
 </div>
 
 <script src="../js/staff-permissions.js"></script>
 <script src="../js/sidebar-toggle.js"></script>
 <script>KreezbyStaffPermissions.setCurrentStaffId('staff-3');</script>
+    <script src="../js/notification-popover.js"></script>
+    <script src="../js/user-dropdown-nav.js"></script>
 </body>
 </html>

@@ -1,18 +1,23 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="../css/shared/kreezby-turbo-nav.css">
     <title>Kreezby Bakeshop - System Alerts & Thresholds (Admin)</title>
     <link rel="stylesheet" href="../css/pages/admin/alert-admin.css">
+    <link rel="stylesheet" href="../css/shared/expandable-nav-tabs.css">
+    <link rel="stylesheet" href="../css/shared/kreezby-alert.css">
 
 </head>
 <body>
 
     <header class="top-navbar-node">
-        <div class="brand-logo-panel">Kreezby</div>
+        <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
         <div class="top-nav-links-right">            <a class="top-nav-item home-badge" href="admin.html">Home</a>
             <a class="top-nav-item" href="maintenance-admin.html">Maintenance</a>
+            <a class="top-nav-item" href="inbox-admin.html">Inbox</a>
             <div class="user-dropdown">
                 <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">
                     <span style="background:#fff; width:18px; height:18px; border-radius:50%; display:inline-block;"></span>
@@ -27,24 +32,28 @@
     </header>
 
     <div class="core-viewport-wrapper">
+        <aside class="dark-sidebar-panel" aria-label="Admin navigation"></aside>
 
-        <aside class="dark-sidebar-panel">
-            <div class="hamburger-row">☰</div>
-            <ul class="sidebar-menu-list">
-                <li class="menu-node-item"><a href="admin.html">Dashboard</a></li>
-                <li class="menu-node-item"><a href="po-admin.html">Purchase Order</a></li>
-                <li class="menu-node-item"><a href="receive-admin.html">Receiving</a></li>
-                <li class="menu-node-item"><a href="bo-admin.html">Back Order</a></li>
-                <li class="menu-node-item"><a href="return-admin.html">Return/P.O List</a></li>
-                <li class="menu-node-item"><a href="stocks-admin.html">Stocks</a></li>
-                <li class="menu-node-item"><a href="saleslist-admin.html">Sales List</a></li>
-                <li class="menu-node-item"><a href="aiforecast-admin.html">AI Forecast</a></li>
-                <li class="menu-node-item active"><a href="alert-admin.html">Alert</a></li>
-                <li class="menu-node-item"><a href="stocklevel-admin.html">Stock Level</a></li>
-            </ul>
-        </aside>
-
+        <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
         <main class="workspace-view-canvas">
+
+            <div class="kreezby-alert-stack" id="admin-alert-banners">
+                <div role="alert" class="kreezby-alert kreezby-alert--destructive kreezby-alert--light kreezby-alert--md" data-kreezby-alert data-kreezby-alert-static>
+                    <div class="kreezby-alert__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
+                    <div class="kreezby-alert__content">
+                        <div class="kreezby-alert__title">Critical stock alert</div>
+                        <div class="kreezby-alert__description">Mango Crinkles dropped below the safety threshold. Review restock options in the log below.</div>
+                    </div>
+                    <button type="button" class="kreezby-alert__close" data-kreezby-alert-dismiss aria-label="Dismiss"><svg viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+                </div>
+                <div role="alert" class="kreezby-alert kreezby-alert--info kreezby-alert--light kreezby-alert--md" data-kreezby-alert data-kreezby-alert-static>
+                    <div class="kreezby-alert__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div>
+                    <div class="kreezby-alert__content">
+                        <div class="kreezby-alert__title">AI back-order notice</div>
+                        <div class="kreezby-alert__description">Automated back-order entries were generated for missing batch lines. No action required unless flagged.</div>
+                    </div>
+                </div>
+            </div>
             
             <div class="panel-data-card">
                 <div class="panel-card-title-bar">
@@ -276,6 +285,7 @@
         });
     </script>
     <script src="../js/action-menu.js"></script>
+    <script src="../js/kreezby-alert.js"></script>
         <script src="../js/user-dropdown-nav.js"></script>
     <script src="../js/admin-sidebar.js"></script>
     <script src="../js/sidebar-toggle.js"></script>

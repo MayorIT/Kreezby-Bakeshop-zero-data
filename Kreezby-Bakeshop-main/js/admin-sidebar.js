@@ -1,57 +1,321 @@
 /**
- * Canonical admin sidebar — keeps Dashboard → Stock Level nav identical on every admin page.
+
+ * Canonical admin sidebar — icon nav with collapse (all admin pages).
+
  */
+
 (function () {
+
     'use strict';
 
+
+
+    var SVG_ATTRS = ' width="18" height="18" style="width:18px;height:18px;display:block;flex-shrink:0"';
+
+
+
+    var ICONS = {
+
+        home: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/><path d="M9 20v-6h6v6"/></svg>',
+
+        cart: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>',
+
+        package: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M16.5 9.4 7.55 4.24"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>',
+
+        layers: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="m12.83 2.18 8 4.5a1 1 0 0 1 0 1.73l-8 4.5a2 2 0 0 1-2 0l-8-4.5a1 1 0 0 1 0-1.73l8-4.5a2 2 0 0 1 2 0Z"/><path d="m2.83 12.18 8 4.5a1 1 0 0 0 1 0l8-4.5"/><path d="m2.83 17.18 8 4.5a1 1 0 0 0 1 0l8-4.5"/></svg>',
+
+        return: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>',
+
+        boxes: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/><path d="m7.5 4.21 4.5 2.6 4.5-2.6"/></svg>',
+
+        sales: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+
+        chart: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M3 3v18h18"/><path d="M7 16V9"/><path d="M12 16V5"/><path d="M17 16v-3"/></svg>',
+
+        bell: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>',
+
+        activity: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>'
+
+    };
+
+
+
     var NAV = [
-        { key: 'dashboard', label: 'Dashboard', href: 'admin.html' },
-        { key: 'po', label: 'Purchase Order', href: 'po-admin.html' },
-        { key: 'receive', label: 'Receiving', href: 'receive-admin.html' },
-        { key: 'bo', label: 'Back Order', href: 'bo-admin.html' },
-        { key: 'return', label: 'Return/P.O List', href: 'return-admin.html' },
-        { key: 'stocks', label: 'Stocks', href: 'stocks-admin.html' },
-        { key: 'saleslist', label: 'Sales List', href: 'saleslist-admin.html' },
-        { key: 'aiforecast', label: 'AI Forecast', href: 'aiforecast-admin.html' },
-        { key: 'alert', label: 'Alert', href: 'alert-admin.html' },
-        { key: 'stocklevel', label: 'Stock Level', href: 'stocklevel-admin.html' }
+
+        { key: 'dashboard', label: 'Dashboard', href: 'admin.html', icon: 'home' },
+
+        { key: 'po', label: 'Purchase Order', href: 'po-admin.html', icon: 'cart' },
+
+        { key: 'receive', label: 'Receiving', href: 'receive-admin.html', icon: 'package' },
+
+        { key: 'bo', label: 'Back Order', href: 'bo-admin.html', icon: 'layers' },
+
+        { key: 'return', label: 'Return/P.O List', href: 'return-admin.html', icon: 'return' },
+
+        { key: 'stocks', label: 'Stocks', href: 'stocks-admin.html', icon: 'boxes' },
+
+        { key: 'saleslist', label: 'Sales List', href: 'saleslist-admin.html', icon: 'sales' },
+
+        { key: 'aiforecast', label: 'AI Forecast', href: 'aiforecast-admin.html', icon: 'chart' },
+
+        { key: 'alert', label: 'Alert', href: 'alert-admin.html', icon: 'bell' },
+
+        { key: 'stocklevel', label: 'Stock Level', href: 'stocklevel-admin.html', icon: 'activity' }
+
     ];
 
-    function currentFilename() {
-        return (location.pathname.split('/').pop() || '').toLowerCase();
+
+
+    var CRITICAL_CSS = [
+
+        'aside.dark-sidebar-panel{overflow:hidden!important;flex-shrink:0!important}',
+
+        'aside.dark-sidebar-panel:not(.kreezby-sidebar-ready){visibility:hidden!important;pointer-events:none!important;width:256px!important;min-width:256px!important;max-width:256px!important;background:#424242!important}',
+
+        'body.sidebar-collapsed aside.dark-sidebar-panel:not(.kreezby-sidebar-ready){width:64px!important;min-width:64px!important;max-width:64px!important}',
+
+        'aside.dark-sidebar-panel svg{width:18px!important;height:18px!important;max-width:18px!important;max-height:18px!important;display:block!important}',
+
+        'turbo-frame#kreezby-main-content,.kreezby-turbo-main{display:flex!important;flex:1 1 0%!important;flex-grow:1!important;min-width:0!important;max-width:none!important;width:auto!important}',
+
+        'turbo-frame#kreezby-main-content main.workspace-view-canvas,.kreezby-turbo-main main.workspace-view-canvas{flex:1 1 auto!important;width:100%!important;min-width:0!important;max-width:100%!important}'
+
+    ].join('');
+
+
+
+    function isAdminPage() {
+
+        return location.pathname.indexOf('/admin/') !== -1;
+
     }
+
+
+
+    function ensureCriticalCss() {
+
+        if (document.getElementById('kreezby-admin-icon-sidebar-critical')) return;
+
+        var style = document.createElement('style');
+
+        style.id = 'kreezby-admin-icon-sidebar-critical';
+
+        style.textContent = CRITICAL_CSS;
+
+        document.head.appendChild(style);
+
+    }
+
+
+
+    function ensureNavSmooth() {
+        if (!document.querySelector('meta[name="view-transition"]')) {
+            var meta = document.createElement('meta');
+            meta.name = 'view-transition';
+            meta.content = 'same-origin';
+            (document.head || document.documentElement).appendChild(meta);
+        }
+        if (!document.getElementById('kreezby-page-transition-style')) {
+            var pt = document.createElement('link');
+            pt.id = 'kreezby-page-transition-style';
+            pt.rel = 'stylesheet';
+            pt.href = '../css/shared/kreezby-turbo-nav.css';
+            (document.head || document.documentElement).appendChild(pt);
+        }
+    }
+
+
+
+    function ensureCss() {
+
+        ensureCriticalCss();
+        ensureNavSmooth();
+
+        if (document.getElementById('kreezby-admin-icon-sidebar-style')) return;
+
+        var link = document.createElement('link');
+
+        link.id = 'kreezby-admin-icon-sidebar-style';
+
+        link.rel = 'stylesheet';
+
+        link.href = '../css/shared/admin-icon-sidebar.css';
+
+        document.head.appendChild(link);
+
+    }
+
+
+
+    function ensureNotificationStoreLoaded() {
+
+        if (!isAdminPage()) return;
+
+        if (window.KreezbyNotifications) return;
+
+        if (document.getElementById('kreezby-notification-store-script')) return;
+
+        var script = document.createElement('script');
+
+        script.id = 'kreezby-notification-store-script';
+
+        script.src = '../js/notification-store.js';
+
+        script.defer = true;
+
+        document.head.appendChild(script);
+
+    }
+
+
+
+    function currentFilename() {
+
+        return (location.pathname.split('/').pop() || '').toLowerCase();
+
+    }
+
+
 
     function activeKeyFor(filename) {
+
         if (!filename || filename === 'admin.html') return 'dashboard';
+
         if (filename.indexOf('stocklevel') === 0) return 'stocklevel';
+
         if (filename.indexOf('aiforecast') === 0) return 'aiforecast';
+
         if (filename === 'po-admin.html') return 'po';
+
         if (filename === 'receive-admin.html') return 'receive';
+
         if (filename === 'bo-admin.html') return 'bo';
+
         if (filename === 'return-admin.html') return 'return';
+
         if (filename === 'stocks-admin.html') return 'stocks';
+
         if (filename === 'saleslist-admin.html') return 'saleslist';
+
         if (filename === 'alert-admin.html') return 'alert';
-        if (filename === 'maintenance-admin.html') return 'dashboard';
+
         if (filename === 'inbox-admin.html') return 'dashboard';
+
         return '';
+
     }
+
+
+
+    function navItem(item, activeKey) {
+
+        var active = item.key === activeKey;
+
+
+
+        return (
+
+            '<a href="' + item.href + '" data-turbo-frame="kreezby-main-content" data-turbo-action="advance" class="kreezby-sidebar-nav-item' + (active ? ' is-active' : '') + '">' +
+
+                '<span class="kreezby-sidebar-nav-icon" aria-hidden="true">' + (ICONS[item.icon] || '') + '</span>' +
+
+                '<span class="kreezby-sidebar-nav-label">' + item.label + '</span>' +
+
+            '</a>'
+
+        );
+
+    }
+
+
+
+    function buildSidebarHtml(activeKey) {
+
+        var navHtml = NAV.map(function (item) {
+
+            return navItem(item, activeKey);
+
+        }).join('');
+
+
+
+        return (
+
+            '<nav class="kreezby-sidebar-nav" aria-label="Admin modules">' + navHtml + '</nav>'
+
+        );
+
+    }
+
+
 
     function renderAdminSidebar() {
-        if (location.pathname.indexOf('/admin/') === -1) return;
 
-        var filename = currentFilename();
-        var activeKey = activeKeyFor(filename);
+        if (!isAdminPage()) return;
 
-        document.querySelectorAll('.sidebar-menu-list').forEach(function (ul) {
-            ul.innerHTML = NAV.map(function (item) {
-                var active = item.key === activeKey ? ' active' : '';
-                return '<li class="menu-node-item' + active + '"><a href="' + item.href + '">' + item.label + '</a></li>';
-            }).join('');
+
+
+        ensureCss();
+
+        var activeKey = activeKeyFor(currentFilename());
+
+
+
+        document.querySelectorAll('aside.dark-sidebar-panel').forEach(function (aside) {
+
+            aside.classList.add('kreezby-icon-sidebar');
+
+            aside.innerHTML = buildSidebarHtml(activeKey);
+
+            aside.classList.add('kreezby-sidebar-ready');
+
         });
+
+
+
+        document.dispatchEvent(new CustomEvent('kreezby-admin-sidebar-ready'));
+
     }
 
-    document.addEventListener('DOMContentLoaded', renderAdminSidebar);
+
+
+    if (isAdminPage()) {
+
+        ensureCriticalCss();
+        ensureNavSmooth();
+
+        ensureCss();
+
+        ensureNotificationStoreLoaded();
+
+    }
+
+
+
+    function bootSidebar() {
+
+        if (document.readyState === 'loading') {
+
+            document.addEventListener('DOMContentLoaded', renderAdminSidebar);
+
+        } else {
+
+            renderAdminSidebar();
+
+        }
+
+        document.addEventListener('kreezby:page-load', renderAdminSidebar);
+
+    }
+
+
+
+    bootSidebar();
+
+
 
     window.KreezbyAdminSidebar = { render: renderAdminSidebar, NAV: NAV };
+
 })();
+
+

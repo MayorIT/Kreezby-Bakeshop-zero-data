@@ -870,9 +870,25 @@
 
 
 
-    document.addEventListener('DOMContentLoaded', boot);
+    function onPageReady() {
 
-    document.addEventListener('content:replaced', boot);
+        if (document.getElementById('stocklevel-dashboard-root')) boot();
+
+    }
+
+
+
+    document.addEventListener('DOMContentLoaded', onPageReady);
+
+    document.addEventListener('content:replaced', onPageReady);
+
+    document.addEventListener('kreezby:page-load', onPageReady);
+
+    document.addEventListener('turbo:frame-load', function (event) {
+
+        if (event.target && event.target.id === 'kreezby-main-content') onPageReady();
+
+    });
 
 
 

@@ -2,15 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+        <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="../css/shared/kreezby-turbo-nav.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kreezby Bakeshop - Inventory Receiving (Admin)</title>
     <link rel="stylesheet" href="../css/pages/staff/receive-staff.css">
+    <link rel="stylesheet" href="../css/shared/order-tabbed-layout.css">
 
 </head>
 <body data-kreezby-portal="staff-receive">
+<script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
+
+
 
     <header class="top-navbar-node">
-        <div class="brand-logo-panel">Kreezby</div>
+        <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
         <div class="top-nav-links-right">            <a class="top-nav-item home-badge" href="staff.html">Home</a>
             <div class="user-dropdown">
                 <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">
@@ -43,25 +49,27 @@
             </ul>
         </aside>
 
+        <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
         <main class="workspace-view-canvas">
 
             <div id="receiving-master-directory-panel-view">
-                <div class="panel-data-card">
+                <div class="panel-data-card order-list-card">
                     <div class="panel-card-title-bar">
                         <h3>Received Supply List</h3>
                         <button class="btn-call-to-action" id="recv-create-btn" type="button">+ Create New</button>
                     </div>
                     <div class="card-body-padded">
-                        
                         <div class="datatable-filters-line">
-                            <div>Show <select><option value="10">10</option></select> entries</div>
-                            <div>Search: <input type="text" id="receiving-search" placeholder="Search by Supplier..."></div>
+                            <div>Show <select id="receiving-page-size"><option value="10">10</option><option value="25">25</option><option value="50">50</option></select> entries</div>
+                            <div class="search-field-wrap">
+                                <input type="text" id="receiving-search" placeholder="Supplier, date, status, PO origin...">
+                            </div>
                         </div>
 
-                        <div class="recv-table-scroll-wrap">
+                        <div class="po-table-scroll-wrap">
                             <table class="data-display-table" id="receiving-supplies-table">
                                 <thead>
-                                    <tr style="background-color: var(--brand-brown); color: white;">
+                                    <tr>
                                         <th>#</th>
                                         <th>Date Received</th>
                                         <th>Supplier</th>
@@ -75,13 +83,7 @@
                             </table>
                         </div>
 
-                        <div class="legend-container-box">
-                            <span><strong>Status Legend:</strong></span>
-                            <span class="status-pill-badge received">Received</span>
-                            <span class="status-pill-badge partial">Partially Received</span>
-                            <span class="status-pill-badge pending">Pending</span>
-                        </div>
-
+                        <div class="datatable-footer-line" id="receiving-supplies-footer"></div>
                     </div>
                 </div>
             </div>
@@ -104,6 +106,7 @@
             </div>
 
         </main>
+        </turbo-frame>
     </div>
 
 
@@ -220,6 +223,7 @@
     <script src="../js/receive-admin.js"></script>
     <script src="../js/staff-permissions.js"></script>
         <script src="../js/user-dropdown-nav.js"></script>
-    <script src="../js/sidebar-toggle.js"></script>
+        <script src="../js/staff-sidebar.js"></script>
+<script src="../js/sidebar-toggle.js"></script>
 </body>
 </html>

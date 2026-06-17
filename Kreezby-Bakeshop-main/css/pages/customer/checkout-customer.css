@@ -1126,6 +1126,17 @@ main.workspace-canvas {
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
+        .checkout-section--payment .payment-method-selector {
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            background: transparent;
+        }
+
+        .checkout-section--payment .payment-method-selector__header {
+            margin-bottom: 1.25rem;
+        }
+
         .section-title {
             font-size: 20px;
             font-weight: 700;
@@ -1154,45 +1165,6 @@ main.workspace-canvas {
             border: 1px solid var(--border-color);
             border-radius: 8px;
             font-size: 14px;
-        }
-
-        .payment-methods {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .payment-option {
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .payment-option:hover {
-            border-color: var(--primary-blue);
-            background-color: #f0f7ff;
-        }
-
-        .payment-option.selected {
-            border-color: var(--primary-blue);
-            background-color: #e3f2fd;
-        }
-
-        .payment-option img {
-            width: 60px;
-            height: 40px;
-            object-fit: contain;
-            margin-bottom: 8px;
-        }
-
-        .payment-option span {
-            font-size: 12px;
-            font-weight: 600;
-            display: block;
         }
 
         .qr-section {
@@ -1227,34 +1199,6 @@ main.workspace-canvas {
             font-size: 13px;
             color: var(--text-muted);
             margin-bottom: 16px;
-        }
-
-        .order-summary {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            height: fit-content;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .summary-item:last-child {
-            border-bottom: none;
-        }
-
-        .summary-total {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--primary-blue);
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 2px solid var(--border-color);
         }
 
         .checkout-btn {

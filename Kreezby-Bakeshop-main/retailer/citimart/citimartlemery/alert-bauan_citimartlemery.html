@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+        <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="../../../css/shared/kreezby-turbo-nav.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kreezby Bakeshop - Alert — Citimart Lemery (Bauan)</title>
     <link rel="stylesheet" href="../../../css/pages/retailer/citimartlemery/alert-bauan_citimartlemery.css">
@@ -9,6 +11,9 @@
     <link rel="stylesheet" href="../../../css/pages/retailer/citimart-retailer-brand.css">
 </head>
 <body>
+<script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
+
+
 
 <header class="top-navbar-node">
     <div class="brand-logo-panel">
@@ -43,7 +48,8 @@
         </ul>
     </aside>
 
-    <main class="workspace-canvas">
+    <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
+        <main class="workspace-canvas">
         <h2 class="page-title">Citimart Lemery — Alerts</h2>
         <p class="page-subtitle">Bauan · Kreezby retailer portal</p>
         <div class="retailer-module-host">
@@ -134,6 +140,7 @@
             </div>
         </div>
     </main>
+        </turbo-frame>
 </div>
 
 </div>

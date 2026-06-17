@@ -668,6 +668,13 @@
         refreshTables();
         if (currentPoCode === editingPoCode || currentPoCode === code) openDetails(code);
         showToast('Purchase order saved: ' + code);
+        document.dispatchEvent(new CustomEvent('kreezby:activity', {
+            detail: {
+                title: 'Purchase Order Saved',
+                description: 'PO ' + code + ' was submitted',
+                source: 'po'
+            }
+        }));
     }
 
     function buildPrintReceiptHtml(order) {
@@ -701,6 +708,18 @@
     }
 
     function switchTab(tabName) {
+        var tablist = document.querySelector('.po-order-tabs');
+        if (window.KreezbyTabPanels && tablist) {
+            activeTab = window.KreezbyTabPanels.switch({
+                tablist: tablist,
+                tabName: tabName,
+                prefix: 'po',
+                tabBtnSelector: '.po-order-tab',
+                panelSelector: '.po-tab-panel'
+            }) || tabName;
+            return;
+        }
+
         activeTab = tabName;
         document.querySelectorAll('.po-order-tab').forEach(function (btn) {
             var on = btn.getAttribute('data-tab') === tabName;

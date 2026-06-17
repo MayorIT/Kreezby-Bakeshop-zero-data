@@ -1,3 +1,8 @@
+/* Icon sidebar FOUC guard */
+aside.dark-sidebar-panel:not(.kreezby-sidebar-ready){visibility:hidden}
+aside.dark-sidebar-panel{overflow:hidden!important}
+aside.dark-sidebar-panel img{max-width:40px!important;max-height:40px!important;width:28px!important;height:auto!important;display:block!important;object-fit:contain!important}
+aside.dark-sidebar-panel svg{width:18px!important;height:18px!important;max-width:18px!important;max-height:18px!important;display:block!important}
 /* Styles for saleslist-admin.html */
 /* Edit this file to change styles for this page only. */
 
@@ -252,8 +257,10 @@ main.workspace-canvas header {
 }
 
 .brand-logo-panel img {
-    width: 38px;
-    height: auto;
+    height: 38px;
+    width: auto;
+    max-width: 104px;
+    flex-shrink: 0;
     display: block;
 }
 
@@ -293,7 +300,7 @@ main.workspace-canvas header {
 }
 
 .sidebar-collapsed aside.sidebar-panel,
-.sidebar-collapsed aside.dark-sidebar-panel {
+.sidebar-collapsed aside.dark-sidebar-panel:not(.kreezby-icon-sidebar) {
     width: 0 !important;
     min-width: 0 !important;
     max-width: 0 !important;
@@ -600,8 +607,9 @@ main.workspace-canvas {
     will-change: transform;
 }
 
-body.sidebar-collapsed main.workspace-canvas {
-    transform: translateX(-12px);
+body.sidebar-collapsed main.workspace-canvas,
+body.sidebar-collapsed main.workspace-view-canvas {
+    transform: none;
 }
 
 .sidebar-panel .panel-brand {
@@ -1058,7 +1066,7 @@ main.workspace-canvas {
 }
 
 /* --- Sales list styles (from sales-list-manual.css) --- */
-/* Daily collection sheet layout â€” matches handwritten Kreezby route forms */
+/* Daily collection sheet layout — matches handwritten Kreezby route forms */
 
 .sales-ledger-stack {
   display: flex;
@@ -1268,7 +1276,7 @@ table.manual-sheet-table tfoot td {
   color: #1b5e20;
 }
 
-/* Detail inspector â€” full sheet replica */
+/* Detail inspector — full sheet replica */
 .manual-detail-layout {
   display: grid;
   grid-template-columns: 1fr minmax(220px, 260px);
@@ -1375,7 +1383,7 @@ table.manual-sheet-table tfoot td {
   }
 }
 
-/* Retailer portal â€” per-store delivery history */
+/* Retailer portal — per-store delivery history */
 #retailer-sales-panel {
   margin-top: 28px;
 }

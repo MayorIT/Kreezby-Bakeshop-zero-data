@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+        <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="../css/shared/kreezby-turbo-nav.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Report Issue - Staff</title>
     <link rel="stylesheet" href="../css/pages/staff/report_issue-staff.css">
@@ -9,10 +11,16 @@
 </head>
 <body>
 <header class="top-navbar-node">
-    <div class="brand-logo-panel">Kreezby</div>
+    <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
     <div class="top-nav-links-right">
-        <a class="top-nav-item home-badge" href="staff.html">Dashboard</a>
-        <a class="top-nav-item" href="report_issue-received-students.html">Inbox</a>
+        <a class="top-nav-item home-badge" href="staff-1.html">Home</a>
+        <div class="user-dropdown">
+            <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">Staff ▾</button>
+            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                <a href="report_issue-staff.html" class="dropdown-item">Report Issue</a>
+                <a href="../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
+            </div>
+        </div>
     </div>
 </header>
 <div class="page-shell">
@@ -86,5 +94,7 @@ function submitIssue(event, role) {
 }
 </script>
 <script src="../js/staff-permissions.js"></script>
+<script src="../js/sidebar-toggle.js"></script>
+    <script src="../js/user-dropdown-nav.js"></script>
 </body>
 </html>

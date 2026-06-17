@@ -2,18 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+        <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="../css/shared/kreezby-turbo-nav.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kreezby Bakeshop - Frontline Staff Dashboard</title>
     <link rel="stylesheet" href="../css/pages/staff/staff-1.css">
 
 </head>
 <body>
+<script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
+
+
 
 <header class="top-navbar-node">
-    <div class="brand-logo-panel">
-        <img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo">
-        <span>Kreezby</span>
-    </div>
+    <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
     <div class="top-nav-links-right">
         <a class="top-nav-item home-badge" href="staff-1.html">Home</a>
         <button class="notification-pill" aria-label="Notifications">🔔</button>
@@ -36,11 +38,12 @@
             <li class="tree-node"><a href="saleslist-staff.html">Sales List</a></li>
             <li class="tree-node"><a href="dailysales-staff.html">Daily Sales</a></li>
             <li class="tree-node"><a href="alert-staff.html">Alert</a></li>
-            <li class="tree-node"><a href="inbox-staff.html">Inbox</a></li>
+            <li class="tree-node"><a href="inbox-staff-1.html">Inbox</a></li>
         </ul>
     </aside>
 
-    <main class="workspace-canvas">
+    <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
+        <main class="workspace-canvas">
         <div class="workspace-container">
             <h2 class="page-title">Frontline Staff Dashboard</h2>
             <p style="color:#666;margin-bottom:20px;font-size:14px;">Assigned tasks: sales recording, daily sales, alerts, and customer inbox.</p>
@@ -57,17 +60,20 @@
                     <div class="stat-title">Alert</div>
                     <div class="stat-value">8</div>
                 </a>
-                <a class="stat-card blue-bar" href="inbox-staff.html">
+                <a class="stat-card blue-bar" href="inbox-staff-1.html">
                     <div class="stat-title">Inbox</div>
                     <div class="stat-value">3</div>
                 </a>
             </div>
         </div>
     </main>
+        </turbo-frame>
 </div>
 
 <script src="../js/staff-permissions.js"></script>
 <script src="../js/sidebar-toggle.js"></script>
 <script>KreezbyStaffPermissions.setCurrentStaffId('staff-1');</script>
+    <script src="../js/notification-popover.js"></script>
+    <script src="../js/user-dropdown-nav.js"></script>
 </body>
 </html>

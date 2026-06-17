@@ -11,7 +11,9 @@
             document.getElementById('receiving-retailer-directory-panel-view') ||
             document.getElementById('receiving-master-directory-panel-view') ||
             document.getElementById('bo-retailer-dashboard-view') ||
-            document.getElementById('bo-master-dashboard-split-view')
+            document.getElementById('bo-master-dashboard-split-view') ||
+            document.getElementById('returns-master-list-panel-view') ||
+            document.getElementById('returns-details-inspector-panel-view')
         );
     }
 
@@ -43,10 +45,11 @@
         try {
             localStorage.setItem('kreezbySidebarCollapsed', isCollapsed ? '1' : '0');
         } catch (e) {}
-        // update any header toggle's aria-pressed
         const btn = document.querySelector('.hamburger-toggle');
         if (btn) btn.setAttribute('aria-pressed', !!isCollapsed);
     }
+
+    window.KreezbyToggleSidebar = toggleSidebar;
 
     function addToggleButton() {
         const topNav = document.querySelector('.top-navbar-node .top-nav-links-right');
@@ -75,15 +78,82 @@
     }
 
     function wireExistingRows() {
-        const rows = document.querySelectorAll('.hamburger-row');
-        rows.forEach(row => {
+        document.querySelectorAll('.hamburger-row').forEach(function (row) {
+            if (row.dataset.sidebarBound === '1') return;
+            row.dataset.sidebarBound = '1';
             row.style.cursor = 'pointer';
             row.addEventListener('click', toggleSidebar);
         });
     }
 
+    function ensureNotificationPopoverLoaded() {
+        if (window.KreezbyNotificationPopoverLoaded) return;
+        if (document.getElementById('kreezby-notification-popover-script')) return;
+        if (!document.querySelector('.notification-pill')) return;
+
+        const path = (window.location && window.location.pathname) ? window.location.pathname : '';
+        let src = 'js/notification-popover.js';
+        let storeSrc = 'js/notification-store.js';
+        if (/\/retailer\/[^/]+\//i.test(path)) {
+            src = '../../js/notification-popover.js';
+            storeSrc = '../../js/notification-store.js';
+        } else if (/\/(admin|staff|customer|wholesaler)\//i.test(path)) {
+            src = '../js/notification-popover.js';
+            storeSrc = '../js/notification-store.js';
+        }
+        const ref = document.querySelector('script[src*="/js/sidebar-toggle.js"]');
+        if (ref && ref.getAttribute('src')) {
+            src = ref.getAttribute('src').replace(/[^/]+$/, 'notification-popover.js');
+            storeSrc = ref.getAttribute('src').replace(/[^/]+$/, 'notification-store.js');
+        }
+
+        function loadPopover() {
+            if (window.KreezbyNotificationPopoverLoaded || document.getElementById('kreezby-notification-popover-script')) return;
+            const s = document.createElement('script');
+            s.id = 'kreezby-notification-popover-script';
+            s.src = src;
+            s.defer = true;
+            document.head.appendChild(s);
+        }
+
+        if (!window.KreezbyNotifications && !document.getElementById('kreezby-notification-store-script')) {
+            const store = document.createElement('script');
+            store.id = 'kreezby-notification-store-script';
+            store.src = storeSrc;
+            store.onload = loadPopover;
+            store.defer = true;
+            document.head.appendChild(store);
+        } else {
+            loadPopover();
+        }
+    }
+
+    function ensureUserDropdownNavLoaded() {
+        if (window.KreezbyUserDropdown) return;
+        if (document.getElementById('kreezby-user-dropdown-nav-script')) return;
+
+        const path = (window.location && window.location.pathname) ? window.location.pathname : '';
+        const needsDropdownShell = /\/(staff|retailer)\//i.test(path);
+        if (!document.getElementById('user-dropdown-trigger') && !needsDropdownShell) return;
+        let src = 'js/user-dropdown-nav.js';
+        if (/\/retailer\/[^/]+\//i.test(path)) src = '../../js/user-dropdown-nav.js';
+        else if (/\/(admin|staff|customer|wholesaler)\//i.test(path)) src = '../js/user-dropdown-nav.js';
+        const ref = document.querySelector('script[src*="/js/sidebar-toggle.js"]');
+        if (ref && ref.getAttribute('src')) {
+            src = ref.getAttribute('src').replace(/[^/]+$/, 'user-dropdown-nav.js');
+        }
+
+        const s = document.createElement('script');
+        s.id = 'kreezby-user-dropdown-nav-script';
+        s.src = src;
+        s.async = false;
+        document.body.appendChild(s);
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         ensureActionMenuScriptLoaded();
+        ensureNotificationPopoverLoaded();
+        ensureUserDropdownNavLoaded();
 
         // apply stored collapsed state if present
         try {
@@ -91,6 +161,15 @@
             if (stored === '1') document.body.classList.add(collapsedClass);
         } catch (e) {}
 
+        addToggleButton();
+        wireExistingRows();
+    });
+
+    document.addEventListener('kreezby-admin-sidebar-ready', wireExistingRows);
+    document.addEventListener('kreezby-staff-sidebar-ready', wireExistingRows);
+    document.addEventListener('kreezby-portal-sidebar-ready', wireExistingRows);
+    document.addEventListener('kreezby:page-load', function () {
+        ensureUserDropdownNavLoaded();
         addToggleButton();
         wireExistingRows();
     });

@@ -13,43 +13,50 @@
             id: 'staff-1',
             name: 'Claire (Staff 1)',
             role: 'Frontline Staff',
-            dashboard: 'staff-1.html'
+            dashboard: 'staff-1.html',
+            inbox: 'inbox-staff-1.html'
         },
         'staff-2': {
             id: 'staff-2',
             name: 'Staff 2',
             role: 'Receiving Team',
-            dashboard: 'staff-2.html'
+            dashboard: 'staff-2.html',
+            inbox: 'inbox-staff-2.html'
         },
         'staff-3': {
             id: 'staff-3',
             name: 'Staff 3',
             role: 'Inventory Team',
-            dashboard: 'staff-3.html'
+            dashboard: 'staff-3.html',
+            inbox: 'inbox-staff-3.html'
         },
         'staff-4': {
             id: 'staff-4',
             name: 'Derek Lim (Staff 4)',
             role: 'Sales Floor Staff',
-            dashboard: 'staff-4.html'
+            dashboard: 'staff-4.html',
+            inbox: 'inbox-staff-4.html'
         },
         'staff-5': {
             id: 'staff-5',
             name: 'Nina Garcia (Staff 5)',
             role: 'Packaging Staff',
-            dashboard: 'staff-5.html'
+            dashboard: 'staff-5.html',
+            inbox: 'inbox-staff-5.html'
         },
         'staff-6': {
             id: 'staff-6',
             name: 'Omar Reyes (Staff 6)',
             role: 'Dispatch Staff',
-            dashboard: 'staff-6.html'
+            dashboard: 'staff-6.html',
+            inbox: 'inbox-staff-6.html'
         },
         'staff-7': {
             id: 'staff-7',
             name: 'Grace Tan (Staff 7)',
             role: 'Customer Service Staff',
-            dashboard: 'staff-7.html'
+            dashboard: 'staff-7.html',
+            inbox: 'inbox-staff-7.html'
         }
     };
 
@@ -68,7 +75,7 @@
         aiforecast: { label: 'AI Forecast', page: 'aiforecast-staff.html' },
         inbox: {
             label: 'Inbox',
-            page: 'inbox-staff.html',
+            page: null,
             hint: 'Open the inbox page for internal and staff conversations.'
         },
         inbox_retailer: {
@@ -112,6 +119,7 @@
     PAGE_TO_TASK['staff-6.html'] = 'dashboard';
     PAGE_TO_TASK['staff-7.html'] = 'dashboard';
     PAGE_TO_TASK['report_issue-staff.html'] = null;
+    PAGE_TO_TASK['report_issue-received-students.html'] = null;
     PAGE_TO_TASK['aiforecast_salestrend-staff.html'] = 'aiforecast';
     PAGE_TO_TASK['aiforecast_salesanalysis-staff.html'] = 'aiforecast';
     PAGE_TO_TASK['aiforecast_inventoryreport-staff.html'] = 'aiforecast';
@@ -125,6 +133,10 @@
     PAGE_TO_TASK['stocklevel-category-staff.html'] = 'stocklevel';
     PAGE_TO_TASK['stocklevel-slow-staff.html'] = 'stocklevel';
     PAGE_TO_TASK['stocklevel-chart-staff.html'] = 'stocklevel';
+    for (var inboxN = 1; inboxN <= 7; inboxN++) {
+        PAGE_TO_TASK['inbox-staff-' + inboxN + '.html'] = 'inbox';
+    }
+    PAGE_TO_TASK['inbox-staff.html'] = 'inbox';
 
     function getStoredPermissions() {
         try {
@@ -164,6 +176,8 @@
 
     function inferStaffIdFromPage() {
         var filename = (window.location.pathname.split('/').pop() || '').split('?')[0];
+        var inboxMatch = filename.match(/^inbox-staff-(\d+)\.html$/);
+        if (inboxMatch) return 'staff-' + inboxMatch[1];
         var match = filename.match(/^staff-(\d+)\.html$/);
         return match ? 'staff-' + match[1] : null;
     }
@@ -175,6 +189,9 @@
     function isTaskActive(taskKey, currentFile, currentTask) {
         if (taskKey === 'dashboard') {
             return /^staff-\d+\.html$/.test(currentFile) || currentFile === 'staff.html';
+        }
+        if (taskKey === 'inbox') {
+            return /^inbox-staff(-\d+)?\.html$/.test(currentFile);
         }
         return taskKey === currentTask;
     }
@@ -220,6 +237,12 @@
         return getStaffProfile(staffId).dashboard;
     }
 
+    function getInboxHref(staffId) {
+        staffId = staffId || getCurrentStaffId();
+        var profile = getStaffProfile(staffId);
+        return profile.inbox || 'inbox-staff-1.html';
+    }
+
     function renderStaffSidebar() {
         var staffId = getCurrentStaffId();
         var allowed = getStaffTasks(staffId);
@@ -235,13 +258,16 @@
                 if (allowed.indexOf(taskKey) === -1) return;
                 var task = TASKS[taskKey];
                 if (!task) return;
-                if (taskKey !== 'dashboard' && !task.page) return;
+                if (taskKey !== 'dashboard' && taskKey !== 'inbox' && !task.page) return;
 
-                var href = taskKey === 'dashboard' ? dashboardHref : task.page;
+                var href = taskKey === 'dashboard'
+                    ? dashboardHref
+                    : (taskKey === 'inbox' ? getInboxHref() : task.page);
+                var turboAttr = taskKey === 'inbox' ? ' data-turbo-frame="_top"' : '';
                 var active = isTaskActive(taskKey, currentFile, currentTask);
                 items.push(
                     '<li class="' + itemClass + (active ? ' active' : '') + '">' +
-                    '<a href="' + href + '">' + task.label + '</a>' +
+                    '<a href="' + href + '"' + turboAttr + '>' + task.label + '</a>' +
                     '</li>'
                 );
             });
@@ -280,12 +306,19 @@
                 pill.textContent = profile.name + ' ▾';
             }
         });
+
+        if (window.KreezbyUserDropdown && typeof window.KreezbyUserDropdown.init === 'function') {
+            window.KreezbyUserDropdown.init();
+        }
     }
 
     function refreshStaffChrome() {
         renderStaffSidebar();
         updateStaffHeader();
         filterDashboardCards();
+        if (window.KreezbyStaffSidebar && typeof window.KreezbyStaffSidebar.render === 'function') {
+            window.KreezbyStaffSidebar.render();
+        }
     }
 
     function applySidebarPermissions() {
@@ -385,6 +418,7 @@
             return;
         }
         if (filename === 'report_issue-staff.html') return;
+        if (filename === 'report_issue-received-students.html') return;
 
         var taskKey = getTaskForPage(filename);
         if (!taskKey) return;
@@ -412,6 +446,7 @@
         initPermissionsEditor: initPermissionsEditor,
         PERMISSION_MATRIX_ORDER: PERMISSION_MATRIX_ORDER,
         getDashboardHref: getDashboardHref,
+        getInboxHref: getInboxHref,
         applySidebarPermissions: applySidebarPermissions,
         renderStaffSidebar: renderStaffSidebar,
         updateStaffHeader: updateStaffHeader,

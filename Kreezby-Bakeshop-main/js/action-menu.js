@@ -42,10 +42,14 @@
     }
 
     function isPortalPage() {
-        return !!(window.PoAdmin || window.ReceiveAdmin || window.BoAdmin);
+        return !!(window.PoAdmin || window.ReceiveAdmin || window.BoAdmin || window.ReturnAdmin);
     }
 
     function closeAllMenus() {
+        if (window.ReturnAdmin && typeof ReturnAdmin.closeMenus === 'function') {
+            ReturnAdmin.closeMenus();
+            return;
+        }
         if (window.PoAdmin && typeof PoAdmin.closeMenus === 'function') {
             PoAdmin.closeMenus();
             return;
@@ -60,7 +64,7 @@
         }
         document.querySelectorAll('.action-popup-menu.active').forEach(function (m) {
             m.classList.remove('active', 'flip-up');
-            m.style.display = 'none';
+            m.style.removeProperty('display');
         });
     }
 
@@ -68,10 +72,10 @@
         if (!menu) return;
         if (open) {
             menu.classList.add('active');
-            menu.style.display = 'block';
+            menu.style.removeProperty('display');
         } else {
             menu.classList.remove('active', 'flip-up');
-            menu.style.display = 'none';
+            menu.style.removeProperty('display');
         }
     }
 
@@ -215,7 +219,7 @@
 
         // Handle delete menu items (including those already in HTML with class delete-type)
         var deleteItem = closest(event.target, '.action-popup-item.delete-type,[data-action="delete"]');
-        if (deleteItem) {
+        if (deleteItem && !deleteItem.getAttribute('onclick')) {
             event.preventDefault();
             event.stopPropagation();
             closeAllMenus();
@@ -228,9 +232,9 @@
             return;
         }
 
-        // Handle "View" in legacy auto menus (capture phase)
+        // Handle "View" in legacy auto menus (capture phase) — skip portal row menus
         var viewItem = closest(event.target, '.action-popup-item[data-action="view"]');
-        if (viewItem) {
+        if (viewItem && !viewItem.getAttribute('data-return') && !viewItem.closest('[data-kreezby-page-menu]')) {
             event.preventDefault();
             event.stopPropagation();
             closeAllMenus();
@@ -255,7 +259,6 @@
         }
 
         if (btn.getAttribute('onclick')) {
-            closeAllMenus();
             return;
         }
 

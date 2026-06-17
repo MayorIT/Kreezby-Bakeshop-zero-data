@@ -154,13 +154,15 @@
 
 
 
-    document.addEventListener('DOMContentLoaded', function () {
-
-        if (!document.querySelector('#stocklevel-filter-pills')) return;
-
-        initPills();
+    var clicksWired = false;
 
 
+
+    function wirePillClicks() {
+
+        if (clicksWired) return;
+
+        clicksWired = true;
 
         document.addEventListener('click', async function (ev) {
 
@@ -224,7 +226,37 @@
 
         });
 
+    }
+
+
+
+    function bootPills() {
+
+        if (!document.querySelector('#stocklevel-filter-pills')) return;
+
+        initPills();
+
+        wirePillClicks();
+
+    }
+
+
+
+    document.addEventListener('DOMContentLoaded', bootPills);
+
+    document.addEventListener('content:replaced', bootPills);
+
+    document.addEventListener('kreezby:page-load', bootPills);
+
+    document.addEventListener('turbo:frame-load', function (event) {
+
+        if (event.target && event.target.id === 'kreezby-main-content') bootPills();
+
     });
+
+
+
+    window.KreezbyStockLevelPills = { boot: bootPills, init: initPills };
 
 })();
 
