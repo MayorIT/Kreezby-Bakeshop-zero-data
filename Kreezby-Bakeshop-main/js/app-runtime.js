@@ -439,10 +439,15 @@
             lastName: fd.get('lastName') || '',
             contactInfo: fd.get('contactInfo') || '',
             email: fd.get('contactInfo') || '',
-            password: fd.get('password') || ''
+            password: fd.get('password') || '',
+            confirmPassword: fd.get('confirmPassword') || ''
           };
           if (!payload.password || String(payload.password).length < 6) {
             toast('Password must be at least 6 characters.', 'warn');
+            return;
+          }
+          if (payload.password !== payload.confirmPassword) {
+            toast('Passwords do not match. Please try again.', 'warn');
             return;
           }
           var customerName = (payload.firstName + ' ' + payload.lastName).trim();

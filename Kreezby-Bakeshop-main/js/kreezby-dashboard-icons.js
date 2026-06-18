@@ -14,11 +14,13 @@
         return: '<svg' + SVG_ATTRS + '><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>',
         boxes: '<svg' + SVG_ATTRS + '><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/><path d="m7.5 4.21 4.5 2.6 4.5-2.6"/></svg>',
         sales: '<svg' + SVG_ATTRS + '><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+        calendar: '<svg' + SVG_ATTRS + '><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>',
         chart: '<svg' + SVG_ATTRS + '><path d="M3 3v18h18"/><path d="M7 16V9"/><path d="M12 16V5"/><path d="M17 16v-3"/></svg>',
         bell: '<svg' + SVG_ATTRS + '><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>',
         activity: '<svg' + SVG_ATTRS + '><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
         mail: '<svg' + SVG_ATTRS + '><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
-        report: '<svg' + SVG_ATTRS + '><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>'
+        report: '<svg' + SVG_ATTRS + '><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>',
+        truck: '<svg' + SVG_ATTRS + '><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 13.52 9H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>'
     };
 
     function moduleRelativeRoot() {
@@ -64,11 +66,13 @@
         if (file === 'bo-staff.html' || file === 'bo-admin.html' || file.indexOf('bo-') === 0) return 'layers';
         if (file === 'return-staff.html' || file === 'return-admin.html' || file.indexOf('return-') === 0) return 'return';
         if (file === 'stocks-staff.html' || file === 'stocks-admin.html' || file.indexOf('stocks-') === 0) return 'boxes';
-        if (file.indexOf('saleslist') >= 0 || file.indexOf('dailysales') >= 0) return 'sales';
+        if (file.indexOf('saleslist') >= 0) return 'sales';
+        if (file.indexOf('dailysales') >= 0) return 'calendar';
         if (file.indexOf('aiforecast') >= 0) return 'chart';
         if (file.indexOf('inventoryreport') >= 0) return 'report';
         if (file.indexOf('stocklevel') >= 0) return 'activity';
         if (file.indexOf('alert') >= 0) return 'bell';
+        if (file.indexOf('order-tracking') >= 0) return 'truck';
         if (file.indexOf('inbox') >= 0) return 'mail';
         return 'home';
     }

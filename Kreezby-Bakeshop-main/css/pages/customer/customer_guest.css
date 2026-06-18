@@ -127,106 +127,11 @@
 
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 24px;
         }
 
-        .product-card {
-            background-color: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 16px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.06);
-        }
-
-        .image-frame {
-            background-color: #f8f9fa;
-            border-radius: 12px;
-            height: 180px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 14px;
-            overflow: hidden;
-        }
-
-        .image-frame img {
-            max-height: 100%;
-            max-width: 100%;
-            object-fit: contain;
-            transition: transform 0.2s;
-        }
-
-        .product-card:hover .image-frame img {
-            transform: scale(1.05);
-        }
-
-        .product-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: var(--text-main);
-        }
-
-        .product-meta {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .product-price {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--primary-blue);
-            margin-bottom: 12px;
-        }
-
-        .guest-action-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .btn-view-only {
-            background-color: #e8e8e8;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: default;
-            width: 100%;
-            color: #666;
-        }
-
-        .btn-guest-action {
-            background-color: var(--primary-yellow);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            width: 100%;
-            text-decoration: none;
-            display: block;
-            transition: background 0.2s;
-        }
-
-        .btn-guest-action:hover {
-            background-color: var(--hover-yellow);
-        }
+        /* Guest flavor card actions live in css/shared/product-flavor-card.css */
 
         .guest-banner {
             background-color: #e3f2fd;

@@ -73,6 +73,11 @@
         stocklevel: { label: 'Stock Level', page: 'stocklevel-staff.html' },
         inventoryreport: { label: 'Report', page: 'inventoryreport-staff.html' },
         aiforecast: { label: 'AI Forecast', page: 'aiforecast-staff.html' },
+        ordertracking: {
+            label: 'Order Tracking',
+            page: 'order-tracking-staff.html',
+            hint: 'Update customer order status and J&T Express tracking IDs.'
+        },
         inbox: {
             label: 'Inbox',
             page: null,
@@ -86,18 +91,18 @@
     };
 
     var DEFAULT_PERMISSIONS = {
-        'staff-1': ['dashboard', 'saleslist', 'dailysales', 'alert', 'inbox'],
+        'staff-1': ['dashboard', 'saleslist', 'dailysales', 'alert', 'ordertracking', 'inbox'],
         'staff-2': ['dashboard', 'po', 'receive', 'bo', 'return', 'alert'],
         'staff-3': ['dashboard', 'stocks', 'stocklevel', 'inventoryreport', 'alert'],
         'staff-4': ['dashboard', 'saleslist', 'dailysales', 'aiforecast', 'alert'],
         'staff-5': ['dashboard', 'stocks', 'stocklevel', 'alert'],
-        'staff-6': ['dashboard', 'receive', 'bo', 'return', 'alert'],
-        'staff-7': ['dashboard', 'inbox', 'inbox_retailer', 'saleslist', 'alert']
+        'staff-6': ['dashboard', 'receive', 'bo', 'return', 'alert', 'ordertracking'],
+        'staff-7': ['dashboard', 'inbox', 'inbox_retailer', 'saleslist', 'alert', 'ordertracking']
     };
 
     var TASK_ORDER = [
         'dashboard', 'po', 'receive', 'bo', 'return', 'stocks',
-        'saleslist', 'dailysales', 'aiforecast', 'alert',
+        'saleslist', 'dailysales', 'aiforecast', 'alert', 'ordertracking',
         'stocklevel', 'inventoryreport', 'inbox', 'inbox_retailer'
     ];
 
@@ -133,6 +138,7 @@
     PAGE_TO_TASK['stocklevel-category-staff.html'] = 'stocklevel';
     PAGE_TO_TASK['stocklevel-slow-staff.html'] = 'stocklevel';
     PAGE_TO_TASK['stocklevel-chart-staff.html'] = 'stocklevel';
+    PAGE_TO_TASK['order-tracking-staff.html'] = 'ordertracking';
     for (var inboxN = 1; inboxN <= 7; inboxN++) {
         PAGE_TO_TASK['inbox-staff-' + inboxN + '.html'] = 'inbox';
     }
@@ -256,14 +262,13 @@
 
             TASK_ORDER.forEach(function (taskKey) {
                 if (allowed.indexOf(taskKey) === -1) return;
+                if (taskKey === 'inbox' || taskKey === 'inbox_retailer') return;
                 var task = TASKS[taskKey];
                 if (!task) return;
-                if (taskKey !== 'dashboard' && taskKey !== 'inbox' && !task.page) return;
+                if (taskKey !== 'dashboard' && !task.page) return;
 
-                var href = taskKey === 'dashboard'
-                    ? dashboardHref
-                    : (taskKey === 'inbox' ? getInboxHref() : task.page);
-                var turboAttr = taskKey === 'inbox' ? ' data-turbo-frame="_top"' : '';
+                var href = taskKey === 'dashboard' ? dashboardHref : task.page;
+                var turboAttr = '';
                 var active = isTaskActive(taskKey, currentFile, currentTask);
                 items.push(
                     '<li class="' + itemClass + (active ? ' active' : '') + '">' +
@@ -280,6 +285,7 @@
         var staffId = getCurrentStaffId();
         var dashboardHref = getDashboardHref(staffId);
         var profile = getStaffProfile(staffId);
+        var allowed = getStaffTasks(staffId);
 
         document.querySelectorAll(
             'a.home-badge[href="staff.html"], a.home-badge[href*="staff-"], a[href="staff.html"].btn-secondary'
@@ -287,28 +293,60 @@
             link.setAttribute('href', dashboardHref);
         });
 
+        var right = document.querySelector('.top-navbar-node .top-nav-links-right');
+        if (right) {
+            var inboxLink = right.querySelector('a[data-staff-inbox]');
+            if (allowed.indexOf('inbox') === -1) {
+                if (inboxLink) inboxLink.remove();
+            } else {
+                if (!inboxLink) {
+                    inboxLink = document.createElement('a');
+                    inboxLink.className = 'top-nav-item';
+                    inboxLink.setAttribute('data-staff-inbox', '1');
+                    inboxLink.setAttribute('data-turbo-frame', '_top');
+                    var home = right.querySelector('a.home-badge');
+                    if (home && home.nextSibling) {
+                        home.parentNode.insertBefore(inboxLink, home.nextSibling);
+                    } else {
+                        var anchor = right.querySelector('.notification-pill, .user-dropdown');
+                        right.insertBefore(inboxLink, anchor || null);
+                    }
+                }
+                inboxLink.href = getInboxHref(staffId);
+                inboxLink.textContent = 'Inbox';
+                var navWrap = right.querySelector('.expandable-nav-tabs');
+                if (navWrap && !navWrap.contains(inboxLink)) {
+                    navWrap.appendChild(inboxLink);
+                }
+            }
+
+            if (!right.querySelector('.notification-pill') && !right.querySelector('.notification-popover-root')) {
+                var pill = document.createElement('button');
+                pill.type = 'button';
+                pill.className = 'notification-pill';
+                pill.setAttribute('aria-label', 'Notifications');
+                var dropdown = right.querySelector('.user-dropdown');
+                right.insertBefore(pill, dropdown || null);
+            }
+        }
+
         var trigger = document.getElementById('user-dropdown-trigger');
         if (trigger) {
-            var icon = trigger.querySelector('span');
-            if (icon && trigger.querySelector('span[style]')) {
-                trigger.innerHTML = icon.outerHTML + ' ' + profile.name + ' ▾';
-            } else {
-                trigger.textContent = profile.name + ' ▾';
-            }
+            trigger.textContent = profile.name + ' \u25be';
         }
 
         document.querySelectorAll('.user-dropdown-pill').forEach(function (pill) {
             if (pill.id === 'user-dropdown-trigger') return;
-            var icon = pill.querySelector('span[style]');
-            if (icon) {
-                pill.innerHTML = icon.outerHTML + ' ' + profile.name + ' ▾';
-            } else if (/staff|admin/i.test(pill.textContent)) {
-                pill.textContent = profile.name + ' ▾';
+            if (/staff|admin/i.test(pill.textContent)) {
+                pill.textContent = profile.name + ' \u25be';
             }
         });
 
         if (window.KreezbyUserDropdown && typeof window.KreezbyUserDropdown.init === 'function') {
             window.KreezbyUserDropdown.init();
+        }
+        if (window.KreezbyNavbarSlide && typeof window.KreezbyNavbarSlide.init === 'function') {
+            window.KreezbyNavbarSlide.init();
         }
     }
 
@@ -319,6 +357,7 @@
         if (window.KreezbyStaffSidebar && typeof window.KreezbyStaffSidebar.render === 'function') {
             window.KreezbyStaffSidebar.render();
         }
+        document.dispatchEvent(new CustomEvent('kreezby-staff-permissions-ready'));
     }
 
     function applySidebarPermissions() {
@@ -333,6 +372,10 @@
             var href = card.getAttribute('href');
             if (!href) return;
             var taskKey = getTaskForPage(href);
+            if (taskKey === 'inbox' || taskKey === 'inbox_retailer') {
+                card.style.display = 'none';
+                return;
+            }
             if (taskKey && allowed.indexOf(taskKey) === -1) {
                 card.style.display = 'none';
             } else {
@@ -432,6 +475,7 @@
     window.KreezbyStaffPermissions = {
         STAFF_PROFILES: STAFF_PROFILES,
         TASKS: TASKS,
+        TASK_ORDER: TASK_ORDER,
         DEFAULT_PERMISSIONS: DEFAULT_PERMISSIONS,
         getAllPermissions: getAllPermissions,
         saveAllPermissions: saveAllPermissions,

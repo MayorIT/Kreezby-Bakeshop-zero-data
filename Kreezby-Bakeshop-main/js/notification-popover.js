@@ -111,6 +111,7 @@
     NotificationPopoverInstance.prototype.updateVisibility = function () {
         var unread = window.KreezbyNotifications ? window.KreezbyNotifications.getUnreadCount() : 0;
         if (this.btn) this.btn.hidden = unread <= 0;
+        if (this.root) this.root.style.display = unread <= 0 ? 'none' : '';
         if (unread <= 0 && this.isOpen) this.close();
     };
 

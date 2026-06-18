@@ -1,6 +1,6 @@
 /* Shared inbox chat layout (ported from shadcn sidebar + resizable chat template) */
 
-/* Full-width inbox page (no module sidebar) */
+/* Full-width inbox page (standalone, no portal sidebar) */
 .inbox-page-main {
     width: 100%;
     min-height: calc(100vh - 72px);
@@ -17,6 +17,21 @@
     height: calc(100vh - 72px);
     min-height: 520px;
     padding: 8px;
+}
+
+/* Inbox nested inside portal shell (header + dark sidebar) */
+.core-viewport-wrapper .inbox-page-main {
+    min-height: calc(100vh - 72px);
+    flex: 1;
+    min-width: 0;
+    padding: 8px;
+}
+
+.core-viewport-wrapper .inbox-page-main .inbox-chat-root,
+.core-viewport-wrapper .inbox-chat-root {
+    flex: 1;
+    min-height: 0;
+    height: auto;
 }
 
 .inbox-resizable-group {

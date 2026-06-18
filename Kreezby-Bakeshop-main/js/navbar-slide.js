@@ -76,6 +76,7 @@
     }
 
     function enhanceLink(link) {
+        if (link.classList.contains('expandable-nav-tab')) return;
         var label = (link.textContent || '').trim();
         var icon = pickIcon(link, label);
 
@@ -113,13 +114,58 @@
         return found;
     }
 
+    function bindWrapInteractions(wrap) {
+        if (!wrap || wrap.dataset.navBound === '1') return;
+        wrap.dataset.navBound = '1';
+
+        wrap.addEventListener('click', function (event) {
+            var tab = event.target.closest('.expandable-nav-tab');
+            if (!tab || !wrap.contains(tab)) return;
+
+            var tabs = Array.prototype.slice.call(wrap.querySelectorAll('.expandable-nav-tab'));
+            var index = tabs.indexOf(tab);
+            if (index < 0) return;
+
+            if (tab.classList.contains('is-expanded') && linkPageName(tab) === pageName()) {
+                event.preventDefault();
+                return;
+            }
+
+            tabs.forEach(function (t, i) {
+                t.classList.toggle('is-expanded', i === index);
+            });
+        });
+
+        document.addEventListener('click', function (event) {
+            if (wrap.contains(event.target)) return;
+            refreshTabs(wrap);
+        });
+    }
+
     function wireContainer(container) {
-        if (!container || container.querySelector('.expandable-nav-tabs')) return;
+        if (!container) return;
+
+        var wrap = container.querySelector('.expandable-nav-tabs');
+        var orphanLinks = Array.prototype.slice.call(
+            container.querySelectorAll(':scope > a.top-nav-item')
+        );
+
+        if (wrap && orphanLinks.length) {
+            orphanLinks.forEach(function (link) {
+                enhanceLink(link);
+                wrap.appendChild(link);
+            });
+            bindWrapInteractions(wrap);
+            refreshTabs(wrap);
+            return;
+        }
+
+        if (wrap) return;
 
         var links = Array.prototype.slice.call(container.querySelectorAll('a.top-nav-item'));
         if (!links.length) return;
 
-        var wrap = document.createElement('div');
+        wrap = document.createElement('div');
         wrap.className = 'expandable-nav-tabs';
         container.insertBefore(wrap, links[0]);
 
@@ -128,37 +174,22 @@
             wrap.appendChild(link);
         });
 
+        bindWrapInteractions(wrap);
+        refreshTabs(wrap);
+    }
+
+    function refreshTabs(wrap) {
         var tabs = Array.prototype.slice.call(wrap.querySelectorAll('.expandable-nav-tab'));
         var activeIndex = pickActiveIndex(tabs);
         var selectedIndex = activeIndex >= 0 ? activeIndex : null;
 
         tabs.forEach(function (tab, i) {
-            if (i === activeIndex) {
-                tab.classList.add('is-active');
-                tab.setAttribute('aria-current', 'page');
-            }
-
-            tab.addEventListener('click', function (event) {
-                if (selectedIndex === i && linkPageName(tab) === pageName()) {
-                    event.preventDefault();
-                    return;
-                }
-                selectedIndex = i;
-                setExpanded(tabs, selectedIndex);
-            });
+            tab.classList.toggle('is-active', i === activeIndex);
+            if (i === activeIndex) tab.setAttribute('aria-current', 'page');
+            else tab.removeAttribute('aria-current');
         });
-
-        function collapseToDefault() {
-            selectedIndex = activeIndex >= 0 ? activeIndex : null;
-            setExpanded(tabs, selectedIndex);
-        }
 
         setExpanded(tabs, selectedIndex);
-
-        document.addEventListener('click', function (event) {
-            if (wrap.contains(event.target)) return;
-            collapseToDefault();
-        });
     }
 
     function init() {
@@ -171,4 +202,9 @@
     } else {
         init();
     }
+
+    document.addEventListener('kreezby-staff-permissions-ready', init);
+    document.addEventListener('kreezby:page-load', init);
+
+    window.KreezbyNavbarSlide = { init: init };
 })();

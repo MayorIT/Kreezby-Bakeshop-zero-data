@@ -230,42 +230,6 @@ main.workspace-canvas header {
     color: var(--text-main);
 }
 
-.top-navbar-node {
-    background-color: #3f2f14;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 28px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.18);
-}
-
-.brand-logo-panel {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 800;
-    font-size: 20px;
-    letter-spacing: 0.2px;
-    color: #fff;
-    text-transform: uppercase;
-}
-
-.brand-logo-panel img {
-    height: 38px;
-    width: auto;
-    max-width: 104px;
-    flex-shrink: 0;
-    display: block;
-}
-
-.top-nav-links-right {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
 .hamburger-toggle {
     display: inline-flex;
     align-items: center;
@@ -302,29 +266,6 @@ main.workspace-canvas header {
     transform: translateX(-8px) !important;
     opacity: 0 !important;
     pointer-events: none !important;
-}
-
-.top-nav-item {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 14px;
-    border-radius: 999px;
-    text-decoration: none;
-    color: #fff;
-    font-weight: 700;
-    font-size: 13px;
-    background-color: rgba(255,255,255,0.12);
-    transition: background-color 0.2s ease;
-}
-
-.top-nav-item:hover {
-    background-color: rgba(255,255,255,0.22);
-}
-
-.home-badge {
-    background-color: #ffca28;
-    color: #1f1f1f;
 }
 
 .notification-pill {

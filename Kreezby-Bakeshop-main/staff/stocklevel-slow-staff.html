@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kreezby Bakeshop - Slow Moving Stock (Staff)</title>
     <link rel="stylesheet" href="../css/pages/staff/stocklevel-staff.css">
+    <link rel="stylesheet" href="../css/shared/expandable-nav-tabs.css">
+    <link rel="stylesheet" href="../css/shared/portal-shell-layout.css">
+    <link rel="stylesheet" href="../css/shared/admin-icon-sidebar.css">
 </head>
 <body>
 <script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
@@ -16,10 +19,11 @@
     <header class="top-navbar-node">
         <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
         <div class="top-nav-links-right">
-            <a class="top-nav-item home-badge" href="staff.html">Home</a>
+            <a class="top-nav-item home-badge" href="staff-1.html">Home</a>
+            <a class="top-nav-item" data-staff-inbox="1" href="inbox-staff-1.html" data-turbo-frame="_top">Inbox</a>
+            <button type="button" class="notification-pill" aria-label="Notifications"></button>
             <div class="user-dropdown">
                 <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">
-                    <span style="background:#fff; width:18px; height:18px; border-radius:50%; display:inline-block;"></span>
                     Staff ▾
                 </button>
                 <div class="user-dropdown-menu" id="user-dropdown-menu">
@@ -31,21 +35,7 @@
     </header>
 
     <div class="core-viewport-wrapper">
-        <aside class="dark-sidebar-panel">
-            <div class="hamburger-row">☰</div>
-            <ul class="sidebar-menu-list">
-                <li class="menu-node-item"><a href="staff.html">Dashboard</a></li>
-                <li class="menu-node-item"><a href="po-staff.html">Purchase Order</a></li>
-                <li class="menu-node-item"><a href="receive-staff.html">Receiving</a></li>
-                <li class="menu-node-item"><a href="bo-staff.html">Back Order</a></li>
-                <li class="menu-node-item"><a href="return-staff.html">Return/P.O List</a></li>
-                <li class="menu-node-item"><a href="stocks-staff.html">Stocks</a></li>
-                <li class="menu-node-item"><a href="saleslist-staff.html">Sales List</a></li>
-                <li class="menu-node-item"><a href="aiforecast-staff.html">AI Forecast</a></li>
-                <li class="menu-node-item"><a href="alert-staff.html">Alert</a></li>
-                <li class="menu-node-item active"><a href="stocklevel-staff.html">Stock Level</a></li>
-            </ul>
-        </aside>
+        <aside class="dark-sidebar-panel" aria-label="Staff navigation"></aside>
 
         <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
         <main class="workspace-view-canvas">

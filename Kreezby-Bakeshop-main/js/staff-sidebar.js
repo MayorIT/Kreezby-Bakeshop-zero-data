@@ -15,11 +15,13 @@
         return: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>',
         boxes: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/><path d="m7.5 4.21 4.5 2.6 4.5-2.6"/></svg>',
         sales: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+        calendar: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>',
         chart: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M3 3v18h18"/><path d="M7 16V9"/><path d="M12 16V5"/><path d="M17 16v-3"/></svg>',
         bell: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>',
         activity: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
         mail: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
-        report: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>'
+        report: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>',
+        truck: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 13.52 9H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>'
     };
 
     var TASK_ICONS = {
@@ -30,11 +32,12 @@
         return: 'return',
         stocks: 'boxes',
         saleslist: 'sales',
-        dailysales: 'sales',
+        dailysales: 'calendar',
         aiforecast: 'chart',
         alert: 'bell',
         stocklevel: 'activity',
         inventoryreport: 'report',
+        ordertracking: 'truck',
         inbox: 'mail'
     };
 
@@ -48,13 +51,12 @@
         { key: 'saleslist', label: 'Sales List', href: 'saleslist-staff.html', icon: 'sales' },
         { key: 'aiforecast', label: 'AI Forecast', href: 'aiforecast-staff.html', icon: 'chart' },
         { key: 'alert', label: 'Alert', href: 'alert-staff.html', icon: 'bell' },
-        { key: 'inbox', label: 'Inbox', href: 'inbox-staff-1.html', icon: 'mail', turboTop: true },
         { key: 'stocklevel', label: 'Stock Level', href: 'stocklevel-staff.html', icon: 'activity' }
     ];
 
     var CRITICAL_CSS = [
         'aside.dark-sidebar-panel{overflow:hidden!important;flex-shrink:0!important}',
-        'aside.dark-sidebar-panel:not(.kreezby-sidebar-ready){visibility:hidden!important;pointer-events:none!important;width:256px!important;min-width:256px!important;max-width:256px!important;background:#424242!important}',
+        'aside.dark-sidebar-panel:not(.kreezby-sidebar-ready){width:256px!important;min-width:256px!important;max-width:256px!important;background:#424242!important}',
         'body.sidebar-collapsed aside.dark-sidebar-panel:not(.kreezby-sidebar-ready){width:64px!important;min-width:64px!important;max-width:64px!important}',
         'aside.dark-sidebar-panel svg{width:18px!important;height:18px!important;max-width:18px!important;max-height:18px!important;display:block!important}',
         'turbo-frame#kreezby-main-content,.kreezby-turbo-main{display:flex!important;flex:1 1 0%!important;flex-grow:1!important;min-width:0!important;max-width:none!important;width:auto!important}',
@@ -62,7 +64,10 @@
     ].join('');
 
     function isStaffDarkSidebarPage() {
-        return /\/staff\//i.test(location.pathname) && !!document.querySelector('aside.dark-sidebar-panel');
+        if (!document.querySelector('aside.dark-sidebar-panel')) return false;
+        var path = (location.pathname || '').replace(/\\/g, '/');
+        var file = currentFilename();
+        return /\/staff\//i.test(path) || /-staff\.html$/i.test(file) || /^staff-\d+\.html$/i.test(file);
     }
 
     function moduleRoot() {
@@ -129,16 +134,20 @@
         var dashboardHref = api.getDashboardHref(staffId);
         var items = [];
 
-        api.TASK_ORDER.forEach(function (taskKey) {
+        var taskOrder = api.TASK_ORDER || [
+            'dashboard', 'po', 'receive', 'bo', 'return', 'stocks',
+            'saleslist', 'dailysales', 'aiforecast', 'alert', 'ordertracking',
+            'stocklevel', 'inventoryreport', 'inbox', 'inbox_retailer'
+        ];
+
+        taskOrder.forEach(function (taskKey) {
             if (allowed.indexOf(taskKey) === -1) return;
-            if (taskKey === 'inbox_retailer') return;
+            if (taskKey === 'inbox' || taskKey === 'inbox_retailer') return;
             var task = api.TASKS[taskKey];
             if (!task) return;
-            if (taskKey !== 'dashboard' && taskKey !== 'inbox' && !task.page) return;
+            if (taskKey !== 'dashboard' && !task.page) return;
 
-            var href = taskKey === 'dashboard'
-                ? dashboardHref
-                : (taskKey === 'inbox' ? api.getInboxHref(staffId) : task.page);
+            var href = taskKey === 'dashboard' ? dashboardHref : task.page;
 
             items.push({
                 key: taskKey,
@@ -153,8 +162,8 @@
 
     function activeKeyFor(filename) {
         if (!filename || /^staff-\d+\.html$/.test(filename)) return 'dashboard';
-        if (filename === 'inbox-staff.html') return 'inbox';
-        if (/^inbox-staff-\d+\.html$/.test(filename)) return 'inbox';
+        if (filename === 'inbox-staff.html') return '';
+        if (/^inbox-staff-\d+\.html$/.test(filename)) return '';
         if (filename.indexOf('stocklevel') === 0) return 'stocklevel';
         if (filename.indexOf('aiforecast') === 0) return 'aiforecast';
         if (filename === 'po-staff.html') return 'po';
@@ -166,6 +175,7 @@
         if (filename === 'alert-staff.html') return 'alert';
         if (filename === 'dailysales-staff.html') return 'dailysales';
         if (filename === 'inventoryreport-staff.html') return 'inventoryreport';
+        if (filename === 'order-tracking-staff.html') return 'ordertracking';
         return '';
     }
 
@@ -188,14 +198,23 @@
     }
 
     function renderStaffSidebar() {
+        var asides = document.querySelectorAll('aside.dark-sidebar-panel');
+        if (!asides.length) return;
         if (!isStaffDarkSidebarPage()) return;
+
         ensureCss();
         var activeKey = activeKeyFor(currentFilename());
-        document.querySelectorAll('aside.dark-sidebar-panel').forEach(function (aside) {
+
+        asides.forEach(function (aside) {
             aside.classList.add('kreezby-icon-sidebar');
-            aside.innerHTML = buildSidebarHtml(activeKey);
+            try {
+                aside.innerHTML = buildSidebarHtml(activeKey);
+            } catch (err) {
+                aside.innerHTML = '<nav class="kreezby-sidebar-nav" aria-label="Staff modules"></nav>';
+            }
             aside.classList.add('kreezby-sidebar-ready');
         });
+
         document.dispatchEvent(new CustomEvent('kreezby-staff-sidebar-ready'));
         document.dispatchEvent(new CustomEvent('kreezby-admin-sidebar-ready'));
     }
@@ -207,12 +226,17 @@
     }
 
     function bootSidebar() {
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', renderStaffSidebar);
-        } else {
+        function run() {
             renderStaffSidebar();
         }
-        document.addEventListener('kreezby:page-load', renderStaffSidebar);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', run);
+        } else {
+            run();
+        }
+        window.addEventListener('load', run);
+        document.addEventListener('kreezby:page-load', run);
+        document.addEventListener('kreezby-staff-permissions-ready', run);
     }
 
     bootSidebar();

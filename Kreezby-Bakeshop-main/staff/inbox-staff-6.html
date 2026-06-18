@@ -9,17 +9,22 @@
     <link rel="stylesheet" href="../css/pages/staff/inbox-staff.css">
     <link rel="stylesheet" href="../css/shared/expandable-nav-tabs.css">
     <link rel="stylesheet" href="../css/shared/inbox-chat-layout.css">
+    <link rel="stylesheet" href="../css/shared/portal-shell-layout.css">
+    <link rel="stylesheet" href="../css/shared/admin-icon-sidebar.css">
 </head>
 <body>
+<script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
+
 
     <header class="top-navbar-node">
         <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
         <div class="top-nav-links-right">
             <a class="top-nav-item home-badge" href="staff-6.html">Home</a>
+            <a class="top-nav-item" data-staff-inbox="6" href="inbox-staff-6.html" data-turbo-frame="_top">Inbox</a>
+            <button type="button" class="notification-pill" aria-label="Notifications"></button>
             <div class="user-dropdown">
                 <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">
-                    <span style="background:#fff; width:18px; height:18px; border-radius:50%; display:inline-block;"></span>
-                    Omar Reyes (Staff 6) ▾
+                    Staff ▾
                 </button>
                 <div class="user-dropdown-menu" id="user-dropdown-menu">
                     <a href="report_issue-staff.html" class="dropdown-item">Report Issue</a>
@@ -30,21 +35,19 @@
     </header>
 
     <div class="core-viewport-wrapper">
-        <aside class="dark-sidebar-panel">
-            <div class="hamburger-row">☰</div>
-            <ul class="sidebar-menu-list">
-                <li class="menu-node-item"><a href="staff-6.html">Dashboard</a></li>
-                <li class="menu-node-item active"><a href="inbox-staff-6.html">Inbox</a></li>
-            </ul>
-        </aside>
 
-        <main class="workspace-view-canvas">
+        <aside class="dark-sidebar-panel" aria-label="Staff navigation"></aside>
+
+        <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
+        <main class="workspace-view-canvas inbox-page-main">
             <div data-inbox-role="staff" data-staff-id="staff-6"></div>
         </main>
+        </turbo-frame>
     </div>
 
     <script src="../js/inbox-chat.js"></script>
     <script src="../js/staff-permissions.js"></script>
+    <script>KreezbyStaffPermissions.setCurrentStaffId('staff-6');</script>
     <script src="../js/inbox-staff.js"></script>
     <script src="../js/user-dropdown-nav.js"></script>
     <script src="../js/staff-sidebar.js"></script>

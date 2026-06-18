@@ -335,6 +335,16 @@ body {
     color: #d4d4d8;
 }
 
+.auth-field-note {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+}
+
+.auth-field-note--error {
+    color: #f87171;
+}
+
 .auth-input-wrap {
     position: relative;
 }

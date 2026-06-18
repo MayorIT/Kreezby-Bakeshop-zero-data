@@ -5,6 +5,11 @@
     'use strict';
 
     var STATUS_STEPS = ['Processing', 'Shipped', 'Completed'];
+    var STEPPER_META = {
+        Processing: { title: 'Order Processing', desc: 'Your order is being prepared at Kreezby.' },
+        Shipped: { title: 'Shipped', desc: 'Your order is on the way!' },
+        Completed: { title: 'Delivered', desc: 'Order delivered. Enjoy your crinkles!' }
+    };
     var STATUS_COLORS = {
         Processing: '#fbc02d',
         Shipped: '#1e88e5',
@@ -12,6 +17,7 @@
     };
 
     var currentFilter = 'all';
+    var currentDetailOrder = null;
 
     function loadOrders() {
         try {
@@ -74,26 +80,69 @@
         return '<span class="order-status-pill" style="background:' + color + '">' + status + '</span>';
     }
 
-    function renderTimeline(status) {
-        var activeIdx = STATUS_STEPS.indexOf(status);
-        if (activeIdx < 0) activeIdx = 0;
+    function stepState(index, activeIdx) {
+        if (index < activeIdx) return 'completed';
+        if (index === activeIdx) return 'active';
+        return 'pending';
+    }
+
+    function stepStatusLabel(state) {
+        if (state === 'completed') return 'Complete';
+        if (state === 'active') return 'In Progress';
+        return 'Pending';
+    }
+
+    function stepTimestamp(order, stepIndex, activeIdx) {
+        if (stepIndex > activeIdx) return '';
+        var base = new Date(order.date);
+        if (isNaN(base.getTime())) return '';
+        if (stepIndex > 0) {
+            base.setHours(base.getHours() + stepIndex * 24);
+        }
+        return formatDate(base.toISOString());
+    }
+
+    function renderTrackingBlock(order) {
+        if (!order.trackingNumber) return '';
+        var carrier = order.carrier || 'J&T Express Philippines';
+        var trackUrl = window.KreezbyOrderTracking && window.KreezbyOrderTracking.jntTrackUrl
+            ? window.KreezbyOrderTracking.jntTrackUrl(order.trackingNumber)
+            : ('https://www.jtexpress.ph/track-and-trace?billCodes=' + encodeURIComponent(order.trackingNumber));
 
         return (
-            '<div class="order-status-timeline">' +
-            STATUS_STEPS.map(function (step, i) {
-                var done = i <= activeIdx;
-                var active = i === activeIdx;
-                var cls = 'timeline-step' + (done ? ' done' : '') + (active ? ' active' : '');
-                return (
-                    '<div class="' + cls + '">' +
-                    '<div class="timeline-dot">' + (done ? '✓' : (i + 1)) + '</div>' +
-                    '<div class="timeline-label">' + step + '</div>' +
-                    (i < STATUS_STEPS.length - 1 ? '<div class="timeline-line"></div>' : '') +
-                    '</div>'
-                );
-            }).join('') +
+            '<div class="order-detail-tracking-box">' +
+            '<h4>Shipment tracking</h4>' +
+            '<div class="order-detail-tracking-row"><span>Courier</span><span>' + carrier + '</span></div>' +
+            '<div class="order-detail-tracking-row"><span>Tracking ID</span><span>' + order.trackingNumber + '</span></div>' +
+            '<a class="order-detail-tracking-link" href="' + trackUrl + '" target="_blank" rel="noopener noreferrer">Track on J&amp;T Express Philippines →</a>' +
             '</div>'
         );
+    }
+
+    function renderStepper(order) {
+        var activeIdx = STATUS_STEPS.indexOf(order.status);
+        if (activeIdx < 0) activeIdx = 0;
+
+        var stepsHtml = STATUS_STEPS.map(function (stepKey, i) {
+            var state = stepState(i, activeIdx);
+            var meta = STEPPER_META[stepKey] || { title: stepKey, desc: '' };
+            var circleContent = state === 'completed' ? '✓' : String(i + 1);
+            var time = stepTimestamp(order, i, activeIdx);
+
+            return (
+                '<div class="stepper-step stepper-' + state + '">' +
+                '<div class="stepper-circle">' + circleContent + '</div>' +
+                '<div class="stepper-line"></div>' +
+                '<div class="stepper-content">' +
+                '<div class="stepper-title">' + meta.title + '</div>' +
+                '<span class="stepper-status">' + stepStatusLabel(state) + '</span>' +
+                (time ? '<div class="stepper-time">' + time + '</div>' : '') +
+                '</div>' +
+                '</div>'
+            );
+        }).join('');
+
+        return '<div class="stepper-box">' + stepsHtml + '</div>';
     }
 
     function renderOrderCard(order) {
@@ -143,6 +192,7 @@
     }
 
     function showListView() {
+        currentDetailOrder = null;
         var listView = document.getElementById('orders-list-view');
         var detailView = document.getElementById('orders-detail-view');
         var title = document.getElementById('orders-modal-title');
@@ -155,6 +205,7 @@
     }
 
     function showOrderDetail(orderNumber) {
+        currentDetailOrder = orderNumber;
         var order = findOrder(orderNumber);
         if (!order) return;
 
@@ -189,7 +240,8 @@
             '<div class="order-detail-status-banner">' +
             statusBadge(order.status) +
             '<p class="order-detail-status-msg">' + statusMessage(order.status) + '</p>' +
-            renderTimeline(order.status) +
+            renderStepper(order) +
+            renderTrackingBlock(order) +
             '</div>' +
 
             '<section class="order-detail-section">' +
@@ -222,6 +274,7 @@
 
             '<section class="order-detail-section order-detail-info">' +
             '<div class="order-detail-info-row"><span>Order Number</span><span>' + order.orderNumber + '</span></div>' +
+            (order.poCode ? '<div class="order-detail-info-row"><span>PO Code</span><span>' + order.poCode + '</span></div>' : '') +
             '<div class="order-detail-info-row"><span>Order Date</span><span>' + formatDate(order.date) + '</span></div>' +
             '</section>';
     }
@@ -285,4 +338,8 @@
     window.filterOrders = filterOrders;
 
     document.addEventListener('DOMContentLoaded', bindOrdersUi);
+    document.addEventListener('kreezby-orders-updated', function () {
+        if (currentDetailOrder) showOrderDetail(currentDetailOrder);
+        renderOrders(currentFilter);
+    });
 })();

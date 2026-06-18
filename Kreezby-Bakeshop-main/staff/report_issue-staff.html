@@ -8,8 +8,13 @@
     <title>Report Issue - Staff</title>
     <link rel="stylesheet" href="../css/pages/staff/report_issue-staff.css">
 
+    <link rel="stylesheet" href="../css/shared/expandable-nav-tabs.css">
+    <link rel="stylesheet" href="../css/shared/portal-shell-layout.css">
+    <link rel="stylesheet" href="../css/shared/admin-icon-sidebar.css">
 </head>
 <body>
+<script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
+
 <header class="top-navbar-node">
     <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
     <div class="top-nav-links-right">
@@ -96,5 +101,6 @@ function submitIssue(event, role) {
 <script src="../js/staff-permissions.js"></script>
 <script src="../js/sidebar-toggle.js"></script>
     <script src="../js/user-dropdown-nav.js"></script>
+    <script src="../js/staff-sidebar.js"></script>
 </body>
 </html>

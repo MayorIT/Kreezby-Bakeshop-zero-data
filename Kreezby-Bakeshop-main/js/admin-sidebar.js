@@ -34,7 +34,9 @@
 
         bell: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>',
 
-        activity: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>'
+        activity: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+
+        truck: '<svg viewBox="0 0 24 24"' + SVG_ATTRS + '><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 13.52 9H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>'
 
     };
 
@@ -55,6 +57,8 @@
         { key: 'stocks', label: 'Stocks', href: 'stocks-admin.html', icon: 'boxes' },
 
         { key: 'saleslist', label: 'Sales List', href: 'saleslist-admin.html', icon: 'sales' },
+
+        { key: 'ordertracking', label: 'Order Tracking', href: 'order-tracking-admin.html', icon: 'truck' },
 
         { key: 'aiforecast', label: 'AI Forecast', href: 'aiforecast-admin.html', icon: 'chart' },
 
@@ -196,6 +200,8 @@
         if (filename === 'stocks-admin.html') return 'stocks';
 
         if (filename === 'saleslist-admin.html') return 'saleslist';
+
+        if (filename === 'order-tracking-admin.html') return 'ordertracking';
 
         if (filename === 'alert-admin.html') return 'alert';
 

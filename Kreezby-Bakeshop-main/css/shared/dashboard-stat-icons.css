@@ -64,6 +64,11 @@ a.stat-card.has-stat-icon {
     color: #16a34a;
 }
 
+.stat-card[data-stat-icon="calendar"] .stat-card-icon {
+    background: #cffafe;
+    color: #0891b2;
+}
+
 .stat-card[data-stat-icon="chart"] .stat-card-icon {
     background: #e0e7ff;
     color: #4f46e5;
@@ -87,6 +92,11 @@ a.stat-card.has-stat-icon {
 .stat-card[data-stat-icon="report"] .stat-card-icon {
     background: #f3e8ff;
     color: #9333ea;
+}
+
+.stat-card[data-stat-icon="truck"] .stat-card-icon {
+    background: #ffedd5;
+    color: #c2410c;
 }
 
 .stat-card[data-stat-icon="home"] .stat-card-icon {
@@ -123,6 +133,10 @@ a.stat-card.has-stat-icon {
     border-top-color: #16a34a !important;
 }
 
+.stat-card.has-stat-icon[data-stat-icon="calendar"] {
+    border-top-color: #0891b2 !important;
+}
+
 .stat-card.has-stat-icon[data-stat-icon="chart"] {
     border-top-color: #4f46e5 !important;
 }
@@ -141,6 +155,10 @@ a.stat-card.has-stat-icon {
 
 .stat-card.has-stat-icon[data-stat-icon="report"] {
     border-top-color: #9333ea !important;
+}
+
+.stat-card.has-stat-icon[data-stat-icon="truck"] {
+    border-top-color: #c2410c !important;
 }
 
 .stat-card.has-stat-icon[data-stat-icon="home"] {

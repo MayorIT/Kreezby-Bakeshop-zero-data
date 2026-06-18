@@ -155,3 +155,24 @@ body.sidebar-collapsed aside.sidebar-panel:not(.kreezby-icon-sidebar) {
         transition-duration: 0.01ms !important;
     }
 }
+
+/* Override legacy staff page CSS that zeroes out collapsed sidebars */
+aside.dark-sidebar-panel.kreezby-icon-sidebar,
+aside.dark-sidebar-panel.kreezby-sidebar-ready {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+}
+
+body.sidebar-collapsed aside.dark-sidebar-panel.kreezby-icon-sidebar,
+body.sidebar-collapsed aside.dark-sidebar-panel.kreezby-sidebar-ready,
+.sidebar-collapsed aside.dark-sidebar-panel.kreezby-icon-sidebar,
+.sidebar-collapsed aside.dark-sidebar-panel.kreezby-sidebar-ready {
+    width: var(--kreezby-sidebar-collapsed, 64px) !important;
+    min-width: var(--kreezby-sidebar-collapsed, 64px) !important;
+    max-width: var(--kreezby-sidebar-collapsed, 64px) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+}

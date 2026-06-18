@@ -22,7 +22,8 @@
     var p = (location.pathname || '').toLowerCase();
     if (p.indexOf('stocks') >= 0) return 'stocks';
     if (p.indexOf('alert') >= 0) return 'alert';
-    if (p.indexOf('saleslist') >= 0 || p.indexOf('dailysales') >= 0) return 'sales';
+    if (p.indexOf('saleslist') >= 0) return 'sales';
+    if (p.indexOf('dailysales') >= 0) return 'calendar';
     if (p.indexOf('receive') >= 0) return 'receive';
     if (p.indexOf('return') >= 0) return 'return';
     if (p.indexOf('bo-') >= 0 || p.indexOf('/bo') >= 0) return 'backorder';

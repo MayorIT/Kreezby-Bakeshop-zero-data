@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kreezby Bakeshop - Welcome</title>
     <link rel="stylesheet" href="../css/pages/start.css">
+    <link rel="stylesheet" href="../css/shared/origin-button.css">
 
 </head>
 <body>
@@ -16,7 +17,9 @@
             <div class="brand-logo-large">Kreezby</div>
             <div class="screen-choice-prompt">How are you visiting us today?</div>
             <div class="button-group-main">
-                <button class="btn-main" onclick="showGuestOptions()">Guest</button>
+                <button type="button" class="origin-btn origin-btn--primary" onclick="showGuestOptions()">
+                    Guest
+                </button>
             </div>
         </div>
 
@@ -26,13 +29,13 @@
             <div class="guest-info-text">
                 You can browse as a guest or create an account to unlock all features.
             </div>
-            <div class="button-group-main">
-                <a href="log_in.html" class="btn-secondary">Log In with Account</a>
-                <a href="sign_up.html" class="btn-secondary">Create New Account</a>
-                <a href="../customer/customer_guest.html" class="btn-secondary">Browse as Guest</a>
+            <div class="button-group-main button-group-origin">
+                <a href="log_in.html" class="origin-btn origin-btn--secondary">Log In with Account</a>
+                <a href="sign_up.html" class="origin-btn origin-btn--secondary">Create New Account</a>
+                <a href="../customer/customer_guest.html" class="origin-btn origin-btn--secondary">Browse as Guest</a>
             </div>
             <div class="back-button-container">
-                <button class="btn-back" onclick="backToMainChoice()">← Back</button>
+                <button type="button" class="origin-btn origin-btn--ghost" onclick="backToMainChoice()">← Back</button>
             </div>
         </div>
 
@@ -55,6 +58,7 @@
             guestChoice.classList.remove('active');
         }
     </script>
+    <script src="../js/origin-button.js"></script>
 
 </body>
 </html>

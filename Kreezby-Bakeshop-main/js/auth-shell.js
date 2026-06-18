@@ -148,10 +148,46 @@
         activate(initial, false);
     }
 
+    function wireSignupPasswordConfirm() {
+        document.querySelectorAll('.signup-form').forEach(function (form) {
+            if (form.dataset.signupConfirmBound === '1') return;
+            form.dataset.signupConfirmBound = '1';
+
+            var passwordInput = form.querySelector('[name="password"]');
+            var confirmInput = form.querySelector('[name="confirmPassword"]');
+            var mismatchNote = form.querySelector('#signup-password-mismatch');
+            if (!passwordInput || !confirmInput) return;
+
+            function updateMismatch() {
+                if (!mismatchNote) return;
+                var confirmValue = confirmInput.value;
+                if (!confirmValue) {
+                    mismatchNote.hidden = true;
+                    confirmInput.setCustomValidity('');
+                    return;
+                }
+                var matches = passwordInput.value === confirmValue;
+                mismatchNote.hidden = matches;
+                confirmInput.setCustomValidity(matches ? '' : 'Passwords do not match.');
+            }
+
+            passwordInput.addEventListener('input', updateMismatch);
+            confirmInput.addEventListener('input', updateMismatch);
+            form.addEventListener('submit', function (event) {
+                updateMismatch();
+                if (!confirmInput.checkValidity()) {
+                    event.preventDefault();
+                    confirmInput.reportValidity();
+                }
+            });
+        });
+    }
+
     function init() {
         initParticles();
         wirePasswordToggles();
         wireSocialButtons();
+        wireSignupPasswordConfirm();
         initTabs();
     }
 
