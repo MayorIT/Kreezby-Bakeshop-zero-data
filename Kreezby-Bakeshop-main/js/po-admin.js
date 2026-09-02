@@ -42,12 +42,6 @@
         }
     };
 
-    var PO_STATUSES = [
-        { class: 'received', label: 'Received', value: 'RECEIVED' },
-        { class: 'partial', label: 'Partially Received', value: 'PARTIALLY RECEIVED' },
-        { class: 'pending', label: 'Pending', value: 'PENDING' }
-    ];
-
     var PO_ORDERS = {};
     var currentPoCode = null;
     var editingPoCode = null;
@@ -252,10 +246,18 @@
     }
 
     function statusMeta(statusClass) {
-        for (var i = 0; i < PO_STATUSES.length; i++) {
-            if (PO_STATUSES[i].class === statusClass) return PO_STATUSES[i];
-        }
-        return PO_STATUSES[0];
+        var statusMap = {
+            received: { class: 'received', label: 'Received', value: 'RECEIVED' },
+            partial: { class: 'partial', label: 'Partially Received', value: 'PARTIALLY RECEIVED' },
+            pending: { class: 'pending', label: 'Pending', value: 'PENDING' },
+            packed: { class: 'packed', label: 'Packed', value: 'PACKED' },
+            'ready-for-dispatch': { class: 'ready-for-dispatch', label: 'Ready for Dispatch', value: 'READY FOR DISPATCH' },
+            shipped: { class: 'shipped', label: 'Packed', value: 'PACKED' },
+            'picked-up': { class: 'picked-up', label: 'Picked Up by Courier', value: 'PICKED UP BY COURIER' },
+            'out-for-delivery': { class: 'out-for-delivery', label: 'Out for Delivery', value: 'OUT FOR DELIVERY' },
+            completed: { class: 'completed', label: 'Delivered', value: 'DELIVERED' }
+        };
+        return statusMap[statusClass] || statusMap.pending;
     }
 
     function toDatetimeLocal(str) {
@@ -389,12 +391,30 @@
         showMenuBackdrop();
     }
 
-    function buildStatusActionItems(poCode, currentClass) {
-        return PO_STATUSES.map(function (s) {
-            var current = s.class === currentClass ? ' is-current' : '';
-            return '<div class="action-popup-item action-popup-item-status' + current + '" data-action="set-status"' +
-                ' data-status-class="' + s.class + '" data-po="' + poCode + '">' + s.label + '</div>';
-        }).join('');
+    function buildCustomerActionItems(poCode, currentClass) {
+        var packedCurrent = currentClass === 'shipped' ? ' is-current' : '';
+        var pickedCurrent = currentClass === 'picked-up' ? ' is-current' : '';
+        var outCurrent = currentClass === 'out-for-delivery' ? ' is-current' : '';
+        var deliveredCurrent = currentClass === 'completed' ? ' is-current' : '';
+        return [
+            '<div class="action-popup-item action-popup-item-status' + packedCurrent + '" data-action="mark-shipped" data-po="' + poCode + '">Mark as Packed</div>',
+            '<div class="action-popup-item action-popup-item-status' + pickedCurrent + '" data-action="mark-picked-up" data-po="' + poCode + '">Picked Up by Courier</div>',
+            '<div class="action-popup-item action-popup-item-status' + outCurrent + '" data-action="mark-out-for-delivery" data-po="' + poCode + '">Out for Delivery</div>',
+            '<div class="action-popup-item action-popup-item-status' + deliveredCurrent + '" data-action="mark-delivered" data-po="' + poCode + '">Mark as Delivered</div>'
+        ].join('');
+    }
+
+    function buildRetailerActionItems(poCode, currentClass) {
+        var packedCurrent = currentClass === 'packed' ? ' is-current' : '';
+        var dispatchCurrent = currentClass === 'ready-for-dispatch' ? ' is-current' : '';
+        var outCurrent = currentClass === 'out-for-delivery' ? ' is-current' : '';
+        var deliveredCurrent = currentClass === 'completed' ? ' is-current' : '';
+        return [
+            '<div class="action-popup-item action-popup-item-status' + packedCurrent + '" data-action="mark-packed" data-po="' + poCode + '">Mark as Packed</div>',
+            '<div class="action-popup-item action-popup-item-status' + dispatchCurrent + '" data-action="mark-ready-for-dispatch" data-po="' + poCode + '">Ready for Dispatch</div>',
+            '<div class="action-popup-item action-popup-item-status' + outCurrent + '" data-action="mark-out-for-delivery" data-po="' + poCode + '">Out for Delivery</div>',
+            '<div class="action-popup-item action-popup-item-status' + deliveredCurrent + '" data-action="mark-delivered" data-po="' + poCode + '">Mark as Delivered</div>'
+        ].join('');
     }
 
     function buildActionMenu(poCode) {
@@ -402,6 +422,9 @@
         var menuId = 'po-act-menu-' + menuCounter;
         var order = PO_ORDERS[poCode];
         var currentClass = order ? (order.statusClass || 'received') : 'received';
+        var actionItems = order && order.entityType === 'customer'
+            ? buildCustomerActionItems(poCode, currentClass)
+            : buildRetailerActionItems(poCode, currentClass);
         return '<div class="action-menu-relative-container" data-kreezby-page-menu>' +
             '<button type="button" class="action-trigger-btn" data-menu="' + menuId + '">Action ▾</button>' +
             '<div class="action-popup-menu action-popup-menu-wide" id="' + menuId + '">' +
@@ -409,7 +432,7 @@
             '<div class="action-popup-item" data-action="edit" data-po="' + poCode + '">Edit Order</div>' +
             '<div class="action-popup-item" data-action="print" data-po="' + poCode + '">Print Receipt</div>' +
             '<div class="action-popup-divider" aria-hidden="true"></div>' +
-            buildStatusActionItems(poCode, currentClass) + '</div></div>';
+            actionItems + '</div></div>';
     }
 
     function renderRetailerTable(filter) {
@@ -480,6 +503,8 @@
                 '<td style="text-align:right;">' + formatMoney(it.total) + '</td></tr>';
         }).join('');
         if (!itemsHtml) itemsHtml = '<tr><td colspan="5" style="text-align:center;color:#888;">No items on this order.</td></tr>';
+        var tracking = order.trackingNumber ? ('<div class="meta-data-line"><strong>Tracking Number:</strong> ' + order.trackingNumber + '</div>') : '<div class="meta-data-line"><strong>Tracking Number:</strong> Not set</div>';
+        var courier = order.courier ? ('<div class="meta-data-line"><strong>Courier:</strong> ' + order.courier + '</div>') : '';
 
         return '<div class="details-container-view">' +
             '<div class="details-header-meta-block">' +
@@ -488,6 +513,8 @@
             '<div class="meta-data-line"><strong>Date Created:</strong> ' + order.dateCreated + '</div>' +
             '<div class="meta-data-line"><strong>Area:</strong> ' + (order.area || '—') + '</div>' +
             '<div class="meta-data-line"><strong>Remarks:</strong> ' + (order.remarks || '—') + '</div>' +
+            tracking +
+            courier +
             '</div><div>' +
             '<div class="meta-data-line"><strong>Entity:</strong> ' + order.entity + '</div>' +
             '<div class="meta-data-line"><strong>Status:</strong> <span class="status-pill-badge ' + (order.statusClass || 'received') + '" style="font-size:11px;">' + order.status + '</span></div>' +
@@ -534,10 +561,85 @@
         if (!order) return;
         order.statusClass = statusClass;
         order.status = statusMeta(statusClass).value;
+        if (statusClass === 'shipped' || statusClass === 'picked-up' || statusClass === 'out-for-delivery') {
+            order.status = 'SHIPPED';
+        }
+        if (statusClass === 'completed') {
+            order.status = 'COMPLETED';
+        }
         saveData();
+        syncCustomerOrderFromPo(order);
         refreshTables();
         if (currentPoCode === poCode) openDetails(poCode);
         showToast(poCode + ' set to ' + statusMeta(statusClass).label + '.');
+    }
+
+    function persistTrackingNotice(order, trackingNumber, courierName) {
+        if (!order) return;
+        if (trackingNumber) {
+            order.trackingNumber = trackingNumber.trim();
+        }
+        if (courierName) {
+            order.courier = courierName.trim();
+        }
+        if (!order.courier) {
+            order.courier = 'J&T Express Philippines';
+        }
+        saveData();
+        syncCustomerOrderFromPo(order);
+    }
+
+    function syncCustomerOrderFromPo(order) {
+        if (!order || order.entityType !== 'customer') return;
+        var existing = [];
+        try {
+            existing = JSON.parse(localStorage.getItem('kreezbyOrders') || '[]');
+        } catch (e) {
+            existing = [];
+        }
+        var statusText = 'Processing';
+        if (order.statusClass === 'shipped' || order.statusClass === 'picked-up' || order.statusClass === 'out-for-delivery') statusText = 'Shipped';
+        if (order.statusClass === 'completed') statusText = 'Completed';
+        var orderNumber = order.code || 'PO-CUSTOMER';
+        var mapped = {
+            orderNumber: orderNumber,
+            poCode: order.code,
+            poEntity: order.entity,
+            items: {},
+            subtotal: orderTotal(order),
+            deliveryFee: 0,
+            total: '₱' + Number(orderTotal(order)).toFixed(2),
+            paymentMethod: 'cash_on_delivery',
+            shippingInfo: {
+                fullName: order.entity,
+                phone: '',
+                address: order.area || '',
+                notes: order.remarks || ''
+            },
+            status: statusText,
+            trackingNumber: order.trackingNumber || '',
+            carrier: order.courier || 'J&T Express Philippines',
+            staffNotes: order.remarks || '',
+            date: new Date().toISOString(),
+            statusUpdatedAt: new Date().toISOString(),
+            shippedAt: (statusText === 'Shipped' && order.trackingNumber) ? new Date().toISOString() : undefined,
+            paymentVerified: true,
+            source: 'po-admin'
+        };
+
+        (order.items || []).forEach(function (item, index) {
+            mapped.items['po-item-' + index] = {
+                name: item.name,
+                cost: Number(item.cost) || 0,
+                qty: Number(item.qty) || 1
+            };
+        });
+
+        var filtered = existing.filter(function (entry) {
+            return !(entry.poCode === order.code || entry.orderNumber === order.code);
+        });
+        filtered.push(mapped);
+        localStorage.setItem('kreezbyOrders', JSON.stringify(filtered));
     }
 
     /* ---- Modal ---- */
@@ -592,6 +694,8 @@
         document.getElementById('po-modal-type').value = type === 'customer' ? 'customer' : 'retailer';
         document.getElementById('po-modal-status').value = order ? (order.statusClass || 'received') : 'pending';
         document.getElementById('po-modal-remarks').value = order ? (order.remarks || '') : '';
+        document.getElementById('po-modal-tracking').value = order ? (order.trackingNumber || '') : '';
+        document.getElementById('po-modal-courier').value = order ? (order.courier || 'J&T Express Philippines') : 'J&T Express Philippines';
         var tbody = document.getElementById('po-modal-items-injector');
         tbody.innerHTML = '';
         if (order && order.items && order.items.length) {
@@ -634,6 +738,8 @@
         var code = document.getElementById('po-modal-code').value.trim();
         var type = document.getElementById('po-modal-type').value;
         var statusClass = document.getElementById('po-modal-status').value;
+        var trackingNumber = (document.getElementById('po-modal-tracking') || {}).value || '';
+        var courierName = (document.getElementById('po-modal-courier') || {}).value || 'J&T Express Philippines';
         var items = [];
         document.querySelectorAll('#po-modal-items-injector tr').forEach(function (tr) {
             items.push(recalcItem({
@@ -658,11 +764,18 @@
             statusClass: statusClass,
             status: statusMeta(statusClass).value,
             remarks: document.getElementById('po-modal-remarks').value.trim(),
+            trackingNumber: trackingNumber.trim(),
+            courier: courierName.trim() || 'J&T Express Philippines',
             items: items
         };
 
+        if (statusClass === 'shipped' || statusClass === 'picked-up') {
+            payload.status = 'SHIPPED';
+        }
+
         if (editingPoCode && editingPoCode !== code) delete PO_ORDERS[editingPoCode];
         PO_ORDERS[code] = payload;
+        persistTrackingNotice(payload, payload.trackingNumber, payload.courier);
         saveData();
         closeModal();
         refreshTables();
@@ -735,6 +848,78 @@
         closeAllMenus();
         if (action === 'view') { openDetails(poCode); return; }
         if (action === 'edit') { openEditModal(poCode); return; }
+        if (action === 'mark-packed') {
+            var packedOrder = PO_ORDERS[poCode];
+            if (!packedOrder) return;
+            packedOrder.statusClass = 'packed';
+            packedOrder.status = 'PACKED';
+            saveData();
+            if (packedOrder.entityType === 'customer') syncCustomerOrderFromPo(packedOrder);
+            refreshTables();
+            if (currentPoCode === poCode) openDetails(poCode);
+            showToast(poCode + ' marked as packed.');
+            return;
+        }
+        if (action === 'mark-ready-for-dispatch') {
+            var dispatchOrder = PO_ORDERS[poCode];
+            if (!dispatchOrder) return;
+            dispatchOrder.statusClass = 'ready-for-dispatch';
+            dispatchOrder.status = 'READY FOR DISPATCH';
+            saveData();
+            if (dispatchOrder.entityType === 'customer') syncCustomerOrderFromPo(dispatchOrder);
+            refreshTables();
+            if (currentPoCode === poCode) openDetails(poCode);
+            showToast(poCode + ' marked as ready for dispatch.');
+            return;
+        }
+        if (action === 'mark-shipped') {
+            var shippedOrder = PO_ORDERS[poCode];
+            if (!shippedOrder) return;
+            shippedOrder.statusClass = 'shipped';
+            shippedOrder.status = 'PACKED';
+            saveData();
+            if (shippedOrder.entityType === 'customer') syncCustomerOrderFromPo(shippedOrder);
+            refreshTables();
+            if (currentPoCode === poCode) openDetails(poCode);
+            showToast(poCode + ' marked as packed.');
+            return;
+        }
+        if (action === 'mark-picked-up') {
+            var pickedOrder = PO_ORDERS[poCode];
+            if (!pickedOrder) return;
+            pickedOrder.statusClass = 'picked-up';
+            pickedOrder.status = 'PICKED UP BY COURIER';
+            saveData();
+            syncCustomerOrderFromPo(pickedOrder);
+            refreshTables();
+            if (currentPoCode === poCode) openDetails(poCode);
+            showToast(poCode + ' marked as picked up by courier.');
+            return;
+        }
+        if (action === 'mark-out-for-delivery') {
+            var outOrder = PO_ORDERS[poCode];
+            if (!outOrder) return;
+            outOrder.statusClass = 'out-for-delivery';
+            outOrder.status = 'OUT FOR DELIVERY';
+            saveData();
+            if (outOrder.entityType === 'customer') syncCustomerOrderFromPo(outOrder);
+            refreshTables();
+            if (currentPoCode === poCode) openDetails(poCode);
+            showToast(poCode + ' marked as out for delivery.');
+            return;
+        }
+        if (action === 'mark-delivered') {
+            var deliveredOrder = PO_ORDERS[poCode];
+            if (!deliveredOrder) return;
+            deliveredOrder.statusClass = 'completed';
+            deliveredOrder.status = 'DELIVERED';
+            saveData();
+            if (deliveredOrder.entityType === 'customer') syncCustomerOrderFromPo(deliveredOrder);
+            refreshTables();
+            if (currentPoCode === poCode) openDetails(poCode);
+            showToast(poCode + ' marked as delivered.');
+            return;
+        }
         if (action === 'set-status' && statusClass) { applyStatus(poCode, statusClass); return; }
         if (action === 'print') { printReceipt(poCode); }
     }

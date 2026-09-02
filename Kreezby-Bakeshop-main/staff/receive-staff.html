@@ -44,7 +44,13 @@
         <main class="workspace-view-canvas">
 
             <div id="receiving-master-directory-panel-view">
-                <div class="panel-data-card order-list-card">
+                <div class="panel-data-card po-tabbed-card">
+                    <div class="po-order-tabs" role="tablist">
+                        <button type="button" class="po-order-tab active" data-source="Supplier" role="tab" aria-selected="true">Supplier</button>
+                        <button type="button" class="po-order-tab" data-source="Retailer" role="tab" aria-selected="false">Retailer</button>
+                        <button type="button" class="po-order-tab" data-source="Customer" role="tab" aria-selected="false">Customer</button>
+                        <button type="button" class="po-order-tab" data-source="Wholesaler" role="tab" aria-selected="false">Wholesaler</button>
+                    </div>
                     <div class="panel-card-title-bar">
                         <h3>Received Supply List</h3>
                         <button class="btn-call-to-action" id="recv-create-btn" type="button">+ Create New</button>
@@ -56,14 +62,15 @@
                                 <input type="text" id="receiving-search" placeholder="Supplier, date, status, PO origin...">
                             </div>
                         </div>
-
                         <div class="po-table-scroll-wrap">
                             <table class="data-display-table" id="receiving-supplies-table">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>Date Received</th>
-                                        <th>Supplier</th>
+                                        <th>Supplier / Entity</th>
+                                        <th>Source Type</th>
+                                        <th>Type</th>
                                         <th>Items</th>
                                         <th>Status</th>
                                         <th>Remarks</th>
@@ -73,7 +80,6 @@
                                 <tbody id="receiving-supplies-tbody"></tbody>
                             </table>
                         </div>
-
                         <div class="datatable-footer-line" id="receiving-supplies-footer"></div>
                     </div>
                 </div>
@@ -128,6 +134,22 @@
                         <div class="form-field-unit">
                             <label>P.O. Origin</label>
                             <input type="text" id="recv-modal-po-origin" placeholder="e.g. PO-0001">
+                        </div>
+                        <div class="form-field-unit">
+                            <label>Source Type *</label>
+                            <select id="recv-modal-source-type" required>
+                                <option value="Supplier">Supplier</option>
+                                <option value="Retailer">Retailer</option>
+                                <option value="Customer">Customer</option>
+                                <option value="Wholesaler">Wholesaler</option>
+                            </select>
+                        </div>
+                        <div class="form-field-unit">
+                            <label>Type *</label>
+                            <select id="recv-modal-type" required>
+                                <option value="Supply">Supply</option>
+                                <option value="Returned Order">Returned Order</option>
+                            </select>
                         </div>
                         <div class="form-field-unit">
                             <label>Status *</label>

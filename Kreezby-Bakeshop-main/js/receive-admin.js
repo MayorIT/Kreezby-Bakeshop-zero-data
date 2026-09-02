@@ -11,8 +11,8 @@
 
     var DEFAULT_RECEIPTS = {
         'recv-102': {
-            id: 'recv-102', supplier: 'Supplier 102', dateReceived: '2024-05-20 10:30',
-            status: 'PARTIALLY RECEIVED', statusClass: 'partial', remarks: 'BO Receive (Partial)',
+            id: 'recv-102', supplier: 'Supplier 102', sourceType: 'Supplier', dateReceived: '2024-05-20 10:30',
+            type: 'Supply', status: 'PARTIALLY RECEIVED', statusClass: 'partial', remarks: 'BO Receive (Partial)',
             poOrigin: 'PO-0002', reference: '', subTotal: 30250,
             lineItems: [
                 { qty: 100, unit: 'Boxes', name: 'Item 102', note: 'Sample only', cost: 200, total: 20000 },
@@ -20,8 +20,8 @@
             ]
         },
         'recv-101': {
-            id: 'recv-101', supplier: 'Supplier 101', dateReceived: '2024-05-18 14:15',
-            status: 'RECEIVED', statusClass: 'received', remarks: 'Complete',
+            id: 'recv-101', supplier: 'Retailer 101', sourceType: 'Retailer', dateReceived: '2024-05-18 14:15',
+            type: 'Returned Order', status: 'RECEIVED', statusClass: 'received', remarks: 'Complete',
             poOrigin: 'PO-0001', reference: '', subTotal: 45200,
             lineItems: [
                 { qty: 100, unit: 'Boxes', name: 'Item 101', note: 'Standard batch', cost: 150, total: 15000 },
@@ -30,19 +30,19 @@
             ]
         },
         'recv-103': {
-            id: 'recv-103', supplier: 'Supplier 103', dateReceived: '2024-05-15 09:05',
-            status: 'RECEIVED', statusClass: 'received', remarks: 'Complete',
+            id: 'recv-103', supplier: 'Customer 301', sourceType: 'Customer', dateReceived: '2024-05-15 09:05',
+            type: 'Supply', status: 'RECEIVED', statusClass: 'received', remarks: 'Complete',
             poOrigin: 'PO-0003', reference: '', subTotal: 12500,
             lineItems: [{ qty: 50, unit: 'Boxes', name: 'Item 106', note: 'Full delivery', cost: 250, total: 12500 }]
         },
         'recv-105': {
-            id: 'recv-105', supplier: 'Supplier 105', dateReceived: '2024-05-12 11:45',
-            status: 'PENDING', statusClass: 'pending', remarks: 'Awaiting Delivery',
+            id: 'recv-105', supplier: 'Metro Bulk Distributors', sourceType: 'Wholesaler', dateReceived: '2024-05-12 11:45',
+            type: 'Supply', status: 'PENDING', statusClass: 'pending', remarks: 'Awaiting Delivery',
             poOrigin: 'PO-0005', reference: '', subTotal: 0, lineItems: []
         },
         'recv-104': {
-            id: 'recv-104', supplier: 'Supplier 104', dateReceived: '2024-05-10 16:20',
-            status: 'PARTIALLY RECEIVED', statusClass: 'partial', remarks: 'Partial items received',
+            id: 'recv-104', supplier: 'Supplier 104', sourceType: 'Supplier', dateReceived: '2024-05-10 16:20',
+            type: 'Returned Order', status: 'PARTIALLY RECEIVED', statusClass: 'partial', remarks: 'Partial items received',
             poOrigin: 'PO-0004', reference: '', subTotal: 18750,
             lineItems: [
                 { qty: 75, unit: 'Boxes', name: 'Item 107', note: 'Partial batch', cost: 150, total: 11250 },
@@ -57,10 +57,13 @@
         { class: 'pending', label: 'Pending', value: 'PENDING' }
     ];
 
+    var RECV_SOURCE_TYPES = ['Supplier', 'Retailer', 'Customer', 'Wholesaler'];
+
     var RECEIPTS = {};
     var currentReceiptId = null;
     var editingReceiptId = null;
     var menuCounter = 0;
+    var activeReceiveSource = 'Supplier';
 
     var PAGE_MODE = null;
     var RETAILER_SUPPLIER = 'Kreezby Bakeshop';
@@ -197,6 +200,7 @@
             '<div class="form-field-unit"><label>Supplier *</label><input type="text" id="recv-modal-supplier" value="' + RETAILER_SUPPLIER + '" readonly required></div>' +
             '<div class="form-field-unit"><label>Date Received *</label><input type="datetime-local" id="recv-modal-date" required></div>' +
             '<div class="form-field-unit"><label>P.O. Origin</label><input type="text" id="recv-modal-po-origin" placeholder="e.g. PO-0001"></div>' +
+            '<div class="form-field-unit"><label>Type *</label><select id="recv-modal-type"><option value="Supply">Supply</option><option value="Returned Order">Returned Order</option></select></div>' +
             '<div class="form-field-unit"><label>Status *</label><select id="recv-modal-status"><option value="pending">Pending</option><option value="partial">Partially Received</option><option value="received">Received</option></select></div>' +
             '<div class="form-field-unit"><label>Reference</label><input type="text" id="recv-modal-reference"></div></div>' +
             '<div class="item-builder-sub-header"><span>■</span> Items Received</div>' +
@@ -283,10 +287,16 @@
         return (receipt.lineItems || []).reduce(function (s, it) { return s + (Number(it.total) || 0); }, 0);
     }
 
+    function normalizeSourceType(value) {
+        var normalized = String(value || 'Supplier').trim();
+        return RECV_SOURCE_TYPES.indexOf(normalized) >= 0 ? normalized : 'Supplier';
+    }
+
     function syncReceiptDerived(receipt) {
         receipt.subTotal = receiptTotal(receipt);
         receipt.items = receipt.lineItems ? receipt.lineItems.length : 0;
         receipt.dateDisplay = dateDisplay(receipt.dateReceived);
+        receipt.sourceType = normalizeSourceType(receipt.sourceType);
     }
 
     function generateNextId() {
@@ -409,32 +419,47 @@
             '</div></div>';
     }
 
+    function currentReceiveSource() {
+        var tab = document.querySelector('.recv-source-tab.active');
+        if (tab) return tab.getAttribute('data-source') || activeReceiveSource;
+        return activeReceiveSource;
+    }
+
     function renderTable(filter) {
         var tbody = document.getElementById('receiving-supplies-tbody');
         var footer = document.getElementById('receiving-supplies-footer');
         if (!tbody) return;
+        var selectedSource = currentReceiveSource();
         var q = (filter || '').toLowerCase().trim();
         var list = Object.keys(RECEIPTS).map(function (k) { return RECEIPTS[k]; })
             .sort(function (a, b) { return b.dateReceived.localeCompare(a.dateReceived); });
         var rows = list.filter(function (r) {
+            var sourceType = normalizeSourceType(r.sourceType);
+            if (sourceType !== selectedSource) return false;
             if (!q) return true;
-            return [r.supplier, r.dateReceived, r.status, r.remarks, r.poOrigin].join(' ').toLowerCase().indexOf(q) >= 0;
+            return [r.supplier, sourceType, r.dateReceived, r.status, r.remarks, r.poOrigin].join(' ').toLowerCase().indexOf(q) >= 0;
         });
         tbody.innerHTML = rows.map(function (r, i) {
+            var typeLabel = r.type || 'Supply';
+            var sourceType = normalizeSourceType(r.sourceType);
             if (PAGE_MODE === 'retailer') {
                 return '<tr data-receive-id="' + r.id + '" class="recv-data-row">' +
                     '<td>' + (i + 1) + '</td>' +
                     '<td>' + r.dateReceived + '</td>' +
-                    '<td>' + buildActionMenu(r.id) + '</td>' +
                     '<td><strong>' + r.supplier + '</strong></td>' +
+                    '<td>' + sourceType + '</td>' +
+                    '<td>' + typeLabel + '</td>' +
                     '<td>' + r.items + '</td>' +
                     '<td><span class="status-pill-badge ' + r.statusClass + ' recv-status-link" data-receive-id="' + r.id + '">' + statusLabel(r) + '</span></td>' +
-                    '<td>' + r.remarks + '</td></tr>';
+                    '<td>' + r.remarks + '</td>' +
+                    '<td>' + buildActionMenu(r.id) + '</td></tr>';
             }
             return '<tr data-receive-id="' + r.id + '" class="recv-data-row">' +
                 '<td>' + (i + 1) + '</td>' +
                 '<td>' + r.dateReceived + '</td>' +
                 '<td><strong>' + r.supplier + '</strong></td>' +
+                '<td>' + sourceType + '</td>' +
+                '<td>' + typeLabel + '</td>' +
                 '<td>' + r.items + '</td>' +
                 '<td><span class="status-pill-badge ' + r.statusClass + ' recv-status-link" data-receive-id="' + r.id + '">' + statusLabel(r) + '</span></td>' +
                 '<td>' + r.remarks + '</td>' +
@@ -444,21 +469,43 @@
     }
 
     function renderDetailsView(receipt) {
-        var rowsHtml = (receipt.lineItems || []).map(function (it) {
-            return '<tr>' +
-                '<td>' + formatMoney(it.qty) + '</td>' +
-                '<td>' + it.unit + '</td>' +
-                '<td><strong>' + it.name + '</strong>' + (it.note ? '<br><small style="color:#666;">' + it.note + '</small>' : '') + '</td>' +
-                '<td style="text-align:right;">' + formatMoney(it.cost) + '</td>' +
-                '<td style="text-align:right;">' + formatMoney(it.total) + '</td></tr>';
-        }).join('');
-        if (!rowsHtml) rowsHtml = '<tr><td colspan="5" style="text-align:center;color:#888;">No items on this receipt.</td></tr>';
+        function renderItemTable(items, title) {
+            var rowsHtml = (items || []).map(function (it) {
+                return '<tr>' +
+                    '<td>' + formatMoney(it.qty) + '</td>' +
+                    '<td>' + it.unit + '</td>' +
+                    '<td><strong>' + it.name + '</strong>' + (it.note ? '<br><small style="color:#666;">' + it.note + '</small>' : '') + '</td>' +
+                    '<td style="text-align:right;">' + formatMoney(it.cost) + '</td>' +
+                    '<td style="text-align:right;">' + formatMoney(it.total) + '</td></tr>';
+            }).join('');
+            if (!rowsHtml) rowsHtml = '<tr><td colspan="5" style="text-align:center;color:#888;">No items in this section.</td></tr>';
+            var total = (items || []).reduce(function (sum, it) { return sum + (Number(it.total) || 0); }, 0);
+            return '<div style="margin-top:18px;">' +
+                '<div style="font-size:15px;font-weight:700;margin-bottom:10px;color:#1a237e;">■ ' + title + '</div>' +
+                '<table class="data-display-table"><thead><tr style="background:#1a237e;color:white;">' +
+                '<th>Qty</th><th>Unit</th><th>Item</th><th style="text-align:right;">Unit Cost</th><th style="text-align:right;">Total</th>' +
+                '</tr></thead><tbody>' + rowsHtml + '</tbody>' +
+                '<tfoot><tr style="background:#f5f5f5;font-weight:bold;">' +
+                '<td colspan="4" style="text-align:right;">Section Total</td>' +
+                '<td style="text-align:right;">₱' + formatMoney(total) + '</td>' +
+                '</tr></tfoot></table></div>';
+        }
+
+        var type = receipt.type || 'Supply';
+        var supplyItems = [];
+        var returnedItems = [];
+        (receipt.lineItems || []).forEach(function (it) {
+            if ((it.type || type) === 'Returned Order') returnedItems.push(it);
+            else supplyItems.push(it);
+        });
 
         return '<div class="details-container-view">' +
             '<div class="details-header-meta-block">' +
             '<div>' +
-            '<div class="meta-data-line"><strong>Supplier:</strong> ' + receipt.supplier + '</div>' +
+            '<div class="meta-data-line"><strong>Supplier / Entity:</strong> ' + receipt.supplier + '</div>' +
+            '<div class="meta-data-line"><strong>Source Type:</strong> ' + normalizeSourceType(receipt.sourceType) + '</div>' +
             '<div class="meta-data-line"><strong>Date Received:</strong> ' + receipt.dateReceived + '</div>' +
+            '<div class="meta-data-line"><strong>Type:</strong> ' + type + '</div>' +
             '<div class="meta-data-line"><strong>Reference:</strong> ' + (receipt.reference || '—') + '</div>' +
             '</div><div>' +
             '<div class="meta-data-line"><strong>Status:</strong> <span class="status-pill-badge ' + receipt.statusClass + '" style="font-size:11px;">' + statusLabel(receipt) + '</span></div>' +
@@ -467,10 +514,9 @@
             '<div class="meta-data-line"><strong>P.O. Origin:</strong> ' + receipt.poOrigin + '</div>' +
             '<div class="meta-data-line"><strong>Sub Total:</strong> ₱' + formatMoney(receipt.subTotal) + '</div>' +
             '</div></div>' +
-            '<div style="font-size:15px;font-weight:700;margin-bottom:12px;color:#1a237e;">■ Items Contained in Batch Receipt</div>' +
-            '<table class="data-display-table"><thead><tr style="background:#1a237e;color:white;">' +
-            '<th>Qty</th><th>Unit</th><th>Item</th><th style="text-align:right;">Unit Cost</th><th style="text-align:right;">Total</th>' +
-            '</tr></thead><tbody>' + rowsHtml + '</tbody></table></div>';
+            renderItemTable(supplyItems, 'Supply Items') +
+            renderItemTable(returnedItems, 'Returned Order Items') +
+            '</div>';
     }
 
     function openDetails(receiptId) {
@@ -549,6 +595,8 @@
         document.getElementById('recv-modal-supplier').value = receipt ? receipt.supplier : (PAGE_MODE === 'retailer' ? RETAILER_SUPPLIER : '');
         document.getElementById('recv-modal-date').value = receipt ? toDatetimeLocal(receipt.dateReceived) : nowDatetimeLocal();
         document.getElementById('recv-modal-po-origin').value = receipt ? receipt.poOrigin : '';
+        document.getElementById('recv-modal-source-type').value = receipt ? normalizeSourceType(receipt.sourceType) : 'Supplier';
+        document.getElementById('recv-modal-type').value = receipt ? (receipt.type || 'Supply') : 'Supply';
         document.getElementById('recv-modal-status').value = receipt ? receipt.statusClass : 'pending';
         document.getElementById('recv-modal-reference').value = receipt ? (receipt.reference || '') : '';
         document.getElementById('recv-modal-remarks').value = receipt ? receipt.remarks : '';
@@ -604,11 +652,15 @@
             }));
         });
         var statusClass = document.getElementById('recv-modal-status').value;
+        var entryType = document.getElementById('recv-modal-type').value || 'Supply';
+        var sourceType = normalizeSourceType(document.getElementById('recv-modal-source-type').value);
         var id = editingReceiptId || generateNextId();
         var payload = {
             id: id,
             supplier: supplier,
+            sourceType: sourceType,
             dateReceived: fromDatetimeLocal(document.getElementById('recv-modal-date').value),
+            type: entryType,
             statusClass: statusClass,
             status: statusMeta(statusClass).value,
             remarks: document.getElementById('recv-modal-remarks').value.trim(),
@@ -666,6 +718,17 @@
     function bindEvents() {
         var search = document.getElementById('receiving-search');
         if (search) search.addEventListener('input', function () { renderTable(search.value); });
+
+        document.querySelectorAll('.po-order-tab').forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.po-order-tab').forEach(function (btn) {
+                    btn.classList.toggle('active', btn === tab);
+                    btn.setAttribute('aria-selected', btn === tab ? 'true' : 'false');
+                });
+                activeReceiveSource = tab.getAttribute('data-source') || 'Supplier';
+                renderTable(search ? search.value : '');
+            });
+        });
 
         var createBtn = document.getElementById('recv-create-btn');
         if (createBtn) createBtn.addEventListener('click', openCreateModal);

@@ -27,6 +27,43 @@
         }
     }
 
+    function seedDemoOrderIfNeeded() {
+        var orders = loadOrders();
+        if (orders && orders.length) return;
+
+        var now = new Date().toISOString();
+        var demoOrder = {
+            orderNumber: 'ORD-2026-0001',
+            poCode: 'PO-TEST-001',
+            poEntity: 'Customer Demo',
+            items: {
+                'demo-1': { name: 'Chocolate Crinkles', cost: 165, qty: 2 },
+                'demo-2': { name: 'Strawberry Crinkles', cost: 165, qty: 1 }
+            },
+            subtotal: 495,
+            deliveryFee: 50,
+            total: '₱545.00',
+            paymentMethod: 'cash_on_delivery',
+            shippingInfo: {
+                fullName: 'Customer Demo',
+                phone: '09171234567',
+                address: '123 Sample Street, Batangas City',
+                notes: 'Leave at gate'
+            },
+            status: 'Shipped',
+            trackingNumber: 'JT1234567890123',
+            carrier: 'J&T Express Philippines',
+            staffNotes: 'Dispatched from factory',
+            date: now,
+            statusUpdatedAt: now,
+            shippedAt: now,
+            paymentVerified: true,
+            source: 'demo'
+        };
+
+        localStorage.setItem('kreezbyOrders', JSON.stringify([demoOrder]));
+    }
+
     function findOrder(orderNumber) {
         return loadOrders().find(function (o) { return o.orderNumber === orderNumber; });
     }
@@ -172,6 +209,7 @@
     }
 
     function renderOrders(filter) {
+        seedDemoOrderIfNeeded();
         currentFilter = filter || currentFilter;
         var container = document.getElementById('orders-container');
         if (!container) return;
@@ -316,6 +354,7 @@
     }
 
     function onOrdersModalOpen() {
+        seedDemoOrderIfNeeded();
         bindOrdersUi();
         showListView();
         renderOrders('all');

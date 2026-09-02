@@ -150,6 +150,30 @@
             container.querySelectorAll(':scope > a.top-nav-item')
         );
 
+        function repairWrappedLinks(navWrap) {
+            var changed = false;
+            var wrapped = Array.prototype.slice.call(navWrap.querySelectorAll(':scope > a'));
+
+            wrapped.forEach(function (link) {
+                var hasIcon = !!link.querySelector('.expandable-nav-tab__icon');
+                var hasLabel = !!link.querySelector('.expandable-nav-tab__label');
+
+                if (link.classList.contains('expandable-nav-tab') && hasIcon && hasLabel) return;
+
+                // Restore to legacy form first, then re-enhance into icon tabs.
+                link.classList.remove('expandable-nav-tab', 'is-active', 'is-expanded');
+                link.classList.add('top-nav-item');
+                if (!hasLabel) {
+                    var label = (link.getAttribute('title') || link.textContent || '').trim();
+                    if (label) link.textContent = label;
+                }
+                enhanceLink(link);
+                changed = true;
+            });
+
+            return changed;
+        }
+
         if (wrap && orphanLinks.length) {
             orphanLinks.forEach(function (link) {
                 enhanceLink(link);
@@ -160,7 +184,12 @@
             return;
         }
 
-        if (wrap) return;
+        if (wrap) {
+            repairWrappedLinks(wrap);
+            bindWrapInteractions(wrap);
+            refreshTabs(wrap);
+            return;
+        }
 
         var links = Array.prototype.slice.call(container.querySelectorAll('a.top-nav-item'));
         if (!links.length) return;

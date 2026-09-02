@@ -90,13 +90,23 @@
     }
 
     function ensureNavbarSlideLoaded() {
-        if (window.KreezbyNavbarSlideLoaded) return;
+        if (window.KreezbyNavbarSlideLoaded) {
+            if (window.KreezbyNavbarSlide && typeof window.KreezbyNavbarSlide.init === 'function') {
+                window.KreezbyNavbarSlide.init();
+            }
+            return;
+        }
         if (document.getElementById('kreezby-navbar-slide-script')) return;
 
         var s = document.createElement('script');
         s.id = 'kreezby-navbar-slide-script';
         s.src = jsBase() + 'navbar-slide.js';
         s.defer = true;
+        s.onload = function () {
+            if (window.KreezbyNavbarSlide && typeof window.KreezbyNavbarSlide.init === 'function') {
+                window.KreezbyNavbarSlide.init();
+            }
+        };
         document.head.appendChild(s);
     }
 
@@ -172,6 +182,135 @@
         return /\/retailer\//i.test(window.location.pathname || '');
     }
 
+    function isAdminPage() {
+        return /\/admin\//i.test(window.location.pathname || '');
+    }
+
+    function ensureAdminTopNavLinks() {
+        if (!isAdminPage()) return;
+
+        var right = document.querySelector('.top-navbar-node .top-nav-links-right');
+        if (!right) return;
+
+        var desired = [
+            { key: 'home', label: 'Home', href: moduleLocalHref('admin.html') },
+            { key: 'maintenance', label: 'Maintenance', href: moduleLocalHref('maintenance-admin.html') },
+            { key: 'inbox', label: 'Inbox', href: moduleLocalHref('inbox-admin.html') }
+        ];
+
+        function normalize(text) {
+            return (text || '').toLowerCase().replace(/\s+/g, ' ').trim();
+        }
+
+        function keyForLink(link) {
+            var text = normalize(link.textContent || '');
+            var href = (link.getAttribute('href') || '').toLowerCase();
+            var file = href.split('/').pop().split('?')[0];
+
+            if (text === 'home' || file === 'admin.html') return 'home';
+            if (text.indexOf('maintenance') >= 0 || file === 'maintenance-admin.html') return 'maintenance';
+            if (text.indexOf('inbox') >= 0 || file === 'inbox-admin.html') return 'inbox';
+            return '';
+        }
+
+        var wrap = right.querySelector('.expandable-nav-tabs');
+        var host = wrap || right;
+        var topLinks = Array.prototype.slice.call(host.querySelectorAll(':scope > a'));
+        var byKey = {};
+        var needsNavRefresh = false;
+
+        topLinks.forEach(function (link) {
+            var key = keyForLink(link);
+            if (key && !byKey[key]) byKey[key] = link;
+        });
+
+        desired.forEach(function (item) {
+            var link = byKey[item.key];
+            if (!link) {
+                link = document.createElement('a');
+                link.className = 'top-nav-item' + (item.key === 'home' ? ' home-badge' : '');
+                host.appendChild(link);
+                byKey[item.key] = link;
+                needsNavRefresh = true;
+            }
+
+            link.setAttribute('href', item.href);
+            link.setAttribute('title', item.label);
+
+            if (link.classList.contains('expandable-nav-tab')) {
+                var labelNode = link.querySelector('.expandable-nav-tab__label');
+                if (labelNode) {
+                    labelNode.textContent = item.label;
+                } else {
+                    needsNavRefresh = true;
+                }
+            } else {
+                link.classList.add('top-nav-item');
+                if (item.key === 'home') link.classList.add('home-badge');
+                else link.classList.remove('home-badge');
+                link.textContent = item.label;
+                link.removeAttribute('aria-current');
+                if (wrap) needsNavRefresh = true;
+            }
+        });
+
+        desired.forEach(function (item) {
+            host.appendChild(byKey[item.key]);
+        });
+
+        if (needsNavRefresh && window.KreezbyNavbarSlide && typeof window.KreezbyNavbarSlide.init === 'function') {
+            window.KreezbyNavbarSlide.init();
+        }
+    }
+
+    function ensureAdminNotificationPill() {
+        if (!isAdminPage()) return;
+
+        var right = document.querySelector('.top-navbar-node .top-nav-links-right');
+        if (!right) return;
+
+        var bell = right.querySelector('.notification-pill');
+        if (!bell) {
+            bell = document.createElement('button');
+            bell.type = 'button';
+            bell.className = 'notification-pill';
+            bell.setAttribute('aria-label', 'Notifications');
+            bell.textContent = '🔔';
+            right.appendChild(bell);
+        }
+    }
+
+    function ensureAdminDropdownAfterNavTabs() {
+        if (!isAdminPage()) return;
+
+        var right = document.querySelector('.top-navbar-node .top-nav-links-right');
+        if (!right) return;
+
+        var dropdown = right.querySelector('.user-dropdown');
+        if (!dropdown) return;
+
+        var bell = right.querySelector('.notification-pill');
+
+        var navWrap = right.querySelector('.expandable-nav-tabs');
+        if (navWrap || bell) {
+            var anchor = bell || navWrap;
+            if (anchor && anchor.nextElementSibling !== dropdown) {
+                if (anchor.nextSibling) right.insertBefore(dropdown, anchor.nextSibling);
+                else right.appendChild(dropdown);
+            }
+            return;
+        }
+
+        var lastTopItem = right.querySelector('a.top-nav-item:last-of-type');
+        if (lastTopItem && lastTopItem.nextSibling !== dropdown) {
+            if (lastTopItem.nextSibling) {
+                right.insertBefore(dropdown, lastTopItem.nextSibling);
+            } else {
+                right.appendChild(dropdown);
+            }
+        }
+    }
+
     function retailerDropdownLabel() {
         var brand = document.querySelector('.panel-brand');
         if (brand && brand.textContent) return brand.textContent.trim() + ' \u25be';
@@ -207,6 +346,24 @@
             retailerDropdownLabel() +
             '</button>' +
             '<div class="user-dropdown-menu" id="user-dropdown-menu"></div>';
+        right.appendChild(wrap);
+    }
+
+    function ensureAdminUserDropdownShell() {
+        if (!isAdminPage()) return;
+        if (document.getElementById('user-dropdown-trigger')) return;
+
+        var right = document.querySelector('.top-navbar-node .top-nav-links-right');
+        if (!right) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'user-dropdown';
+        wrap.innerHTML =
+            '<button type="button" class="user-dropdown-pill" id="user-dropdown-trigger" aria-haspopup="true" aria-expanded="false">Admin \u25be</button>' +
+            '<div class="user-dropdown-menu" id="user-dropdown-menu">' +
+                '<a href="' + reportIssueHref() + '" class="dropdown-item">Report Issue</a>' +
+                '<a href="' + authLoginHref() + '" class="dropdown-item">\u21a9 Log Out</a>' +
+            '</div>';
         right.appendChild(wrap);
     }
 
@@ -328,9 +485,13 @@
     }
 
     function init() {
+        ensureAdminTopNavLinks();
+        ensureAdminNotificationPill();
         bootSharedUi();
         ensureStaffUserDropdownShell();
         ensureRetailerUserDropdownShell();
+        ensureAdminUserDropdownShell();
+        ensureAdminDropdownAfterNavTabs();
         bindDropdownDelegation();
         wireUserDropdown();
     }
