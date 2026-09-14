@@ -156,7 +156,7 @@
     width: 28px;
     height: 28px;
     background: var(--card-accent);
-    border: none;
+    border: 1px solid transparent;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -176,6 +176,33 @@
     stroke-width: 2.5;
     stroke-linecap: round;
     stroke-linejoin: round;
+}
+
+.flavor-card__button.is-favorite {
+    background: transparent;
+    color: #ef476f;
+    box-shadow: none;
+    border-color: rgba(239, 71, 111, 0.24);
+}
+
+.flavor-card__button.is-favorite svg {
+    fill: currentColor;
+}
+
+.flavor-card__button.is-storing {
+    background: #ef476f;
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 10px 22px rgba(239, 71, 111, 0.35);
+    animation: favorite-store-pop 0.34s ease;
+}
+
+.flavor-card__button.is-favorite.is-storing {
+    animation: favorite-store-pop 0.34s ease;
+}
+
+.flavor-card__button.is-storing svg {
+    fill: currentColor;
 }
 
 .flavor-card__actions {
@@ -321,6 +348,10 @@
     box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);
 }
 
+.flavor-card:hover .flavor-card__button.is-favorite {
+    box-shadow: 0 0 0 4px rgba(239, 71, 111, 0.12);
+}
+
 .flavor-card:hover .flavor-card__button svg {
     animation: flavor-card-pulse 1.5s infinite;
 }
@@ -350,6 +381,18 @@
     }
 }
 
+@keyframes favorite-store-pop {
+    0% {
+        transform: scale(0.9);
+    }
+    45% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .flavor-card,
     .flavor-card__image,
@@ -362,6 +405,10 @@
 
     .flavor-card:hover .flavor-card__shine,
     .flavor-card:hover .flavor-card__button svg {
+        animation: none !important;
+    }
+
+    .flavor-card__button.is-storing {
         animation: none !important;
     }
 }

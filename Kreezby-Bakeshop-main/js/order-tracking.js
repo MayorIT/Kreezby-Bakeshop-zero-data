@@ -6,6 +6,8 @@
 
     var STORAGE_KEY = 'kreezbyOrders';
     var PO_STORAGE_KEY = 'kreezby-po-orders-v1';
+    var OWNER_RECEIPTS_KEY = 'kreezbyOwnerReceipts';
+    var CUSTOMER_RECEIPTS_KEY = 'kreezbyCustomerReceipts';
     var CARRIER = 'J&T Express Philippines';
     var JNT_TRACK_BASE = 'https://www.jtexpress.ph/track-and-trace?billCodes=';
     var STATUSES = ['Processing', 'Shipped', 'Completed'];
@@ -26,6 +28,158 @@
 
     function findOrderIndex(orderNumber) {
         return loadOrders().findIndex(function (o) { return o.orderNumber === orderNumber; });
+    }
+
+    function loadReceipts(key) {
+        try {
+            return JSON.parse(localStorage.getItem(key) || '[]');
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function paymentMethodLabel(methodId) {
+        var labels = {
+            gcash: 'GCash',
+            mayabank: 'MayaBank',
+            metrobank: 'Metrobank',
+        };
+        return labels[methodId] || String(methodId || 'Unknown').toUpperCase();
+    }
+
+    function orderTotals(order) {
+        var items = Object.values(order.items || {});
+        var subtotal = order.subtotal;
+        if (subtotal == null) {
+            subtotal = items.reduce(function (sum, item) {
+                return sum + ((Number(item.cost) || 0) * (Number(item.qty) || 0));
+            }, 0);
+        }
+        var deliveryFee = order.deliveryFee != null ? Number(order.deliveryFee) : (subtotal > 0 ? 50 : 0);
+        return {
+            subtotal: Number(subtotal) || 0,
+            deliveryFee: Number(deliveryFee) || 0,
+            total: (Number(subtotal) || 0) + (Number(deliveryFee) || 0)
+        };
+    }
+
+    function buildReceiptFromOrder(order) {
+        var totals = orderTotals(order);
+        var shipping = order.shippingInfo || {};
+        var items = Object.values(order.items || {}).map(function (item) {
+            var price = Number(item.cost) || 0;
+            var qty = Number(item.qty) || 0;
+            return {
+                name: item.name || 'Item',
+                qty: qty,
+                price: price,
+                lineTotal: price * qty
+            };
+        });
+
+        return {
+            receiptNumber: order.receiptNumber || ('RCP-' + String(order.orderNumber || 'TEMP')),
+            orderNumber: order.orderNumber,
+            issuedAt: order.date || new Date().toISOString(),
+            customerName: shipping.fullName || customerName(order),
+            customerPhone: shipping.phone || '',
+            customerAddress: shipping.address || '',
+            paymentMethod: paymentMethodLabel(order.paymentMethod),
+            subtotal: totals.subtotal,
+            deliveryFee: totals.deliveryFee,
+            total: totals.total,
+            items: items,
+            shippingNotes: shipping.notes || ''
+        };
+    }
+
+    function findOwnerReceipt(order) {
+        if (!order || !order.orderNumber) return null;
+        var ownerReceipts = loadReceipts(OWNER_RECEIPTS_KEY);
+        var ownerMatch = ownerReceipts.find(function (entry) {
+            return entry && entry.orderNumber === order.orderNumber;
+        });
+        if (ownerMatch) return ownerMatch;
+
+        var customerReceipts = loadReceipts(CUSTOMER_RECEIPTS_KEY);
+        return customerReceipts.find(function (entry) {
+            return entry && entry.orderNumber === order.orderNumber;
+        }) || null;
+    }
+
+    function openReceiptWindow(receipt) {
+        if (!receipt) return;
+
+        var rows = (receipt.items || []).map(function (item) {
+            return '<tr><td>' + escapeHtml(item.name) + '</td><td class="num">' + item.qty + '</td><td class="num">' + formatMoney(item.price) + '</td><td class="num">' + formatMoney(item.lineTotal) + '</td></tr>';
+        }).join('');
+
+        var issuedAt = new Date(receipt.issuedAt).toLocaleString('en-PH');
+        var subtotal = Number(receipt.subtotal) || 0;
+        var deliveryFee = Number(receipt.deliveryFee) || 0;
+        var grossTotal = Number(receipt.total) || 0;
+        var discount = 0;
+        var netTotal = Math.max(grossTotal - discount, 0);
+        var vatableSales = netTotal / 1.12;
+        var vatAmount = netTotal - vatableSales;
+
+        function buildCopy(label) {
+            return '<section class="receipt-copy">' +
+                '<div class="center brand">KREEZBY BAKESHOP</div>' +
+                '<div class="center sub">The Crinkle Factory</div>' +
+                '<div class="center sub">Batangas City, Philippines</div>' +
+                '<div class="rule"></div>' +
+                '<div class="center copy-type">' + label + '</div>' +
+                '<div class="center title">OFFICIAL RECEIPT</div>' +
+                '<div class="meta-block">' +
+                    '<div><span>OR No:</span> <strong>' + escapeHtml(receipt.receiptNumber) + '</strong></div>' +
+                    '<div><span>Order:</span> <strong>' + escapeHtml(receipt.orderNumber) + '</strong></div>' +
+                    '<div><span>Date:</span> <strong>' + issuedAt + '</strong></div>' +
+                    '<div><span>Pay:</span> <strong>' + escapeHtml(receipt.paymentMethod) + '</strong></div>' +
+                    '<div><span>Status:</span> <strong>PAID</strong></div>' +
+                    '<div><span>Customer Name:</span> <strong>' + escapeHtml(receipt.customerName) + '</strong></div>' +
+                    '<div><span>Phone:</span> <strong>' + escapeHtml(receipt.customerPhone || '-') + '</strong></div>' +
+                    '<div><span>Address:</span> <strong>' + escapeHtml(receipt.customerAddress || '-') + '</strong></div>' +
+                '</div>' +
+                '<table><thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead><tbody>' + rows + '</tbody><tfoot>' +
+                    '<tr><td colspan="3" class="num">Subtotal</td><td class="num">' + formatMoney(subtotal) + '</td></tr>' +
+                    '<tr><td colspan="3" class="num">Delivery Fee</td><td class="num">' + formatMoney(deliveryFee) + '</td></tr>' +
+                    '<tr><td colspan="3" class="num">Discount</td><td class="num">' + formatMoney(discount) + '</td></tr>' +
+                    '<tr><td colspan="3" class="num grand">Grand Total</td><td class="num grand">' + formatMoney(netTotal) + '</td></tr>' +
+                '</tfoot></table>' +
+                '<div class="tax-block">' +
+                    '<div><span>VATable Sales</span><strong>' + formatMoney(vatableSales) + '</strong></div>' +
+                    '<div><span>VAT-Exempt</span><strong>' + formatMoney(0) + '</strong></div>' +
+                    '<div><span>Zero-Rated</span><strong>' + formatMoney(0) + '</strong></div>' +
+                '</div>' +
+                '<div class="line"><span>Notes:</span> ' + escapeHtml(receipt.shippingNotes || '-') + '</div>' +
+                '<div class="line"><span>Cashier:</span> Online Checkout</div>' +
+                '<div class="line">--------------------------------</div>' +
+                '<div class="center thanks">THANK YOU FOR YOUR ORDER</div>' +
+                '<div class="center tiny">This serves as official receipt.</div>' +
+            '</section>';
+        }
+
+        var html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Kreezby Receipt ' + escapeHtml(receipt.receiptNumber) + '</title>' +
+            '<style>body{font-family:"Courier New",Courier,monospace;margin:0;color:#111;background:#f2f2f2}.sheet{width:100%;max-width:320px;margin:10px auto}.receipt-copy{background:#fff;border:1px solid #222;padding:10px}.center{text-align:center}.brand{font-size:16px;font-weight:700;letter-spacing:.5px}.sub{font-size:11px;margin-bottom:2px}.copy-type{font-size:11px;border-top:1px dashed #222;border-bottom:1px dashed #222;padding:3px 0;margin:5px 0 4px}.title{font-size:12px;font-weight:700;margin-bottom:6px}.rule{border-top:1px dashed #222;margin:4px 0}.meta-block{font-size:11px;line-height:1.45;margin-bottom:6px}.meta-block div{margin-bottom:1px}.line{font-size:11px;margin-top:6px}.tax-block{font-size:11px;border-top:1px dashed #222;border-bottom:1px dashed #222;padding:4px 0;margin-top:6px}.tax-block div{display:flex;justify-content:space-between;margin:1px 0}table{width:100%;border-collapse:collapse;font-size:11px}th{text-align:left;border-top:1px dashed #222;border-bottom:1px dashed #222;padding:3px 2px;font-weight:700}td{padding:3px 2px;border-bottom:1px dotted #999;vertical-align:top}.num{text-align:right;white-space:nowrap}.grand{font-weight:700}.thanks{font-size:11px;margin-top:6px}.tiny{font-size:10px;color:#444;margin-top:2px}.cut-line{border-top:2px dashed #222;margin:10px 0;text-align:center;position:relative}.cut-line span{background:#f2f2f2;font-size:10px;padding:0 4px;position:relative;top:-7px;letter-spacing:.08em}.actions{margin:8px auto 14px;display:flex;gap:6px;justify-content:center}button{padding:8px 10px;border:1px solid #222;background:#fff;cursor:pointer;font-family:inherit;font-size:11px}.print{font-weight:700}@media print{body{background:#fff}.actions{display:none}.sheet{max-width:320px;margin:0 auto}.receipt-copy{border:none;page-break-inside:avoid}}</style></head><body>' +
+            '<div class="sheet">' +
+            buildCopy('CUSTOMER COPY') +
+            '<div class="cut-line"><span>CUT HERE</span></div>' +
+            buildCopy('OWNER COPY') +
+            '<div class="actions"><button class="print" onclick="window.print()">Print Receipt</button><button class="close" onclick="window.close()">Close</button></div></div></body></html>';
+
+        var receiptWin = window.open('', '_blank', 'width=920,height=760');
+        if (!receiptWin) {
+            alert('Receipt pop-up was blocked by your browser. Please allow pop-ups to view receipt.');
+            return;
+        }
+        receiptWin.document.open();
+        receiptWin.document.write(html);
+        receiptWin.document.close();
+    }
+
+    function formatMoney(n) {
+        return '₱' + Number(n || 0).toFixed(2);
     }
 
     function formatDate(iso) {
@@ -221,6 +375,7 @@
 
         var ship = order.shippingInfo || {};
         var trackUrl = jntTrackUrl(order.trackingNumber);
+        var receipt = findOwnerReceipt(order) || buildReceiptFromOrder(order);
 
         panel.hidden = false;
         if (layout) layout.classList.add('has-detail');
@@ -260,8 +415,13 @@
                 '<label for="ot-notes">Internal notes (optional)</label>' +
                 '<textarea id="ot-notes" rows="2" placeholder="Packaging or dispatch notes">' + escapeHtml(order.staffNotes || '') + '</textarea>' +
             '</div>' +
+            '<div class="order-tracking-form-group">' +
+                '<label>Receipt</label>' +
+                '<input type="text" readonly class="order-tracking-readonly-field" value="' + escapeHtml(receipt.receiptNumber || 'Not generated') + '">' +
+            '</div>' +
             '<div class="order-tracking-form-actions">' +
                 '<button type="button" class="order-tracking-btn order-tracking-btn-primary" id="ot-save-btn">Save tracking</button>' +
+                '<button type="button" class="order-tracking-btn" id="ot-receipt-btn">View receipt</button>' +
                 (trackUrl
                     ? '<a class="order-tracking-btn order-tracking-btn-link" href="' + trackUrl + '" target="_blank" rel="noopener noreferrer">Track on J&amp;T</a>'
                     : '') +
@@ -270,6 +430,11 @@
 
         panel.querySelector('#ot-save-btn').addEventListener('click', function () {
             saveOrderUpdates(root, orderNumber);
+        });
+        panel.querySelector('#ot-receipt-btn').addEventListener('click', function () {
+            var freshOrder = loadOrders().find(function (o) { return o.orderNumber === orderNumber; }) || order;
+            var receiptData = findOwnerReceipt(freshOrder) || buildReceiptFromOrder(freshOrder);
+            openReceiptWindow(receiptData);
         });
         panel.querySelector('#ot-close-btn').addEventListener('click', function () {
             panel.hidden = true;

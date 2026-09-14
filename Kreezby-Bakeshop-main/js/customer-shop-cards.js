@@ -4,8 +4,8 @@
 (function () {
     'use strict';
 
-    var PLUS_SVG =
-        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>';
+    var HEART_SVG =
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.7-4.35-9.33-8.2C.7 9.9 1.53 5.68 5.53 4.6c2.23-.6 4.27.23 5.47 1.93 1.2-1.7 3.24-2.53 5.47-1.93 4 1.08 4.83 5.3 2.86 8.2C18.7 16.65 12 21 12 21z"/></svg>';
 
     function imgFallback(name) {
         var label = encodeURIComponent(name);
@@ -15,10 +15,11 @@
     function flavorCardHtml(prod, options) {
         var guest = options && options.guest;
         var onerror = "this.src='" + imgFallback(prod.name) + "'";
+        var isFavorite = !guest && typeof window.isFavoriteProduct === 'function' && window.isFavoriteProduct(prod.id);
         var footerButton = guest
             ? ''
-            : '<button type="button" class="flavor-card__button" onclick="commitItemToCartState(\'' + prod.id + '\')" aria-label="Add ' + prod.name + ' to cart">' +
-                PLUS_SVG +
+                        : '<button type="button" class="flavor-card__button' + (isFavorite ? ' is-favorite' : '') + '" onclick="toggleFavoriteProduct(\'' + prod.id + '\', this)" aria-label="' + (isFavorite ? 'Remove ' : 'Add ') + prod.name + ' ' + (isFavorite ? 'from' : 'to') + ' favorites" aria-pressed="' + (isFavorite ? 'true' : 'false') + '">' +
+                HEART_SVG +
               '</button>';
 
         var actions = guest
@@ -58,11 +59,63 @@
         );
     }
 
+    function resolveCategory(prod) {
+        var variant = String((prod && prod.variant) || '').toLowerCase();
+        if (variant.indexOf('jar') >= 0) {
+            return {
+                key: 'jar-specials',
+                title: 'Jar Specials',
+                description: 'Premium crinkles packed in resealable jars for sharing and gifting.'
+            };
+        }
+
+        return {
+            key: 'pouch-favorites',
+            title: 'Pouch Favorites',
+            description: 'Fresh everyday crinkle selections in easy-to-carry pouches.'
+        };
+    }
+
+    function categorySectionHtml(category, items, options) {
+        return (
+            '<section class="shop-category shop-category--' + category.key + '">' +
+                '<div class="shop-category__header">' +
+                    '<div>' +
+                        '<p class="shop-category__eyebrow">Product Category</p>' +
+                        '<h4 class="shop-category__title">' + category.title + '</h4>' +
+                        '<p class="shop-category__description">' + category.description + '</p>' +
+                    '</div>' +
+                    '<span class="shop-category__count">' + items.length + ' item' + (items.length === 1 ? '' : 's') + '</span>' +
+                '</div>' +
+                '<div class="menu-grid shop-category__grid">' +
+                    items.map(function (prod) { return flavorCardHtml(prod, options); }).join('') +
+                '</div>' +
+            '</section>'
+        );
+    }
+
     function renderShopMenuGridCards(catalog, containerId, options) {
         var grid = document.getElementById(containerId || 'shop-menu-container');
         if (!grid || !catalog || !catalog.length) return;
-        grid.innerHTML = catalog.map(function (prod) {
-            return flavorCardHtml(prod, options);
+
+        var grouped = {};
+        var order = [];
+
+        catalog.forEach(function (prod) {
+            var category = resolveCategory(prod);
+            if (!grouped[category.key]) {
+                grouped[category.key] = {
+                    meta: category,
+                    items: []
+                };
+                order.push(category.key);
+            }
+            grouped[category.key].items.push(prod);
+        });
+
+        grid.innerHTML = order.map(function (key) {
+            var group = grouped[key];
+            return categorySectionHtml(group.meta, group.items, options);
         }).join('');
     }
 

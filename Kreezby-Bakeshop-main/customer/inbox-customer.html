@@ -11,15 +11,50 @@
 
     <header class="top-navbar-node customer-inbox-header">
         <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
-        <div class="top-nav-links-right">
-            <a class="top-nav-item home-badge" href="customer.html">Shop</a>
-            <a class="top-nav-item" href="inbox-customer.html">Help Chat</a>
-            <a class="top-nav-item" href="../auth/log_in.html">Log Out</a>
-        </div>
     </header>
 
     <main class="customer-inbox-main">
-        <div data-inbox-role="customer"></div>
+        <section class="customer-inbox-hero">
+            <div class="customer-inbox-hero-copy">
+                <span class="customer-inbox-kicker">Customer Help Center</span>
+                <h1>Chat with Kreezby support without leaving your order flow.</h1>
+                <p>Ask about delivery updates, payment concerns, order changes, or product issues and keep everything in one conversation thread.</p>
+                <div class="customer-inbox-actions">
+                    <a class="customer-home-btn" href="customer.html">Back to Home</a>
+                    <a class="customer-outline-btn" href="report_issue-customer.html">Report an Issue</a>
+                </div>
+            </div>
+            <div class="customer-inbox-hero-card">
+                <h2>Fast support path</h2>
+                <ul>
+                    <li>Track follow-ups for recent orders.</li>
+                    <li>Message support for payment or delivery concerns.</li>
+                    <li>Return to shopping anytime with one tap.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="customer-inbox-layout">
+            <aside class="customer-inbox-side-panel" aria-label="Help center guide">
+                <div class="customer-inbox-tip-card customer-inbox-tip-card--warm">
+                    <span class="customer-inbox-tip-kicker">Need help faster?</span>
+                    <h2>Include your order number in the first message.</h2>
+                    <p>That helps the support team verify payment, branch, and delivery details much quicker.</p>
+                </div>
+                <div class="customer-inbox-tip-card">
+                    <span class="customer-inbox-tip-kicker">Common topics</span>
+                    <ul>
+                        <li>Order confirmation and receipt questions</li>
+                        <li>Delivery schedule follow-up</li>
+                        <li>Product concern or wrong item received</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <section class="customer-inbox-chat-shell">
+                <div data-inbox-role="customer"></div>
+            </section>
+        </section>
     </main>
 
     <script src="../js/inbox-chat.js"></script>

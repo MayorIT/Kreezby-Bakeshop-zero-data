@@ -12,25 +12,13 @@
             name: 'GCash',
             icon: '<svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" fill="#007dfe"/><path d="M9 18h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>'
         },
-        maya: {
-            name: 'Maya',
-            icon: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#00d632"/><path d="M7 12h10" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>'
+        mayabank: {
+            name: 'MayaBank',
+            icon: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#00b14f"/><path d="M7 12h10" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>'
         },
-        shopeepay: {
-            name: 'ShopeePay',
-            icon: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#ee4d2d"/><path d="M8 9h8M8 12h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>'
-        },
-        grabpay: {
-            name: 'GrabPay',
-            icon: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#00b14f"/><circle cx="12" cy="12" r="3" fill="#fff"/></svg>'
-        },
-        bpi: {
-            name: 'BPI',
-            icon: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#b11116"/><path d="M7 15V9l5-3 5 3v6" stroke="#fff" stroke-width="1.5" fill="none"/></svg>'
-        },
-        bdo: {
-            name: 'BDO',
-            icon: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#003d79"/><path d="M8 15V9h8v6" stroke="#fff" stroke-width="1.5" fill="none"/></svg>'
+        metrobank: {
+            name: 'Metrobank',
+            icon: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#004c97"/><path d="M7 15V9h10v6" stroke="#fff" stroke-width="1.5" fill="none"/></svg>'
         }
     };
 
@@ -52,10 +40,26 @@
         );
     }
 
+    function titleFromId(value) {
+        if (!value) return 'Not selected';
+        return String(value)
+            .replace(/[_-]+/g, ' ')
+            .trim()
+            .replace(/\b\w/g, function (ch) { return ch.toUpperCase(); });
+    }
+
+    function registerPaymentMethod(id, meta) {
+        if (!id || !meta || !meta.name) return;
+        PAYMENT_META[id] = {
+            name: meta.name,
+            icon: meta.icon || ''
+        };
+    }
+
     function updatePaymentMethod(root, methodId) {
         var iconEl = root.querySelector('[data-ps-payment-icon]');
         var nameEl = root.querySelector('[data-ps-payment-name]');
-        var meta = PAYMENT_META[methodId] || { name: 'Not selected', icon: '' };
+        var meta = PAYMENT_META[methodId] || { name: titleFromId(methodId), icon: '' };
 
         if (iconEl) iconEl.innerHTML = meta.icon;
         if (nameEl) nameEl.textContent = meta.name;
@@ -95,6 +99,7 @@
     window.KreezbyPaymentSummary = {
         render: render,
         updatePaymentMethod: updatePaymentMethod,
+        registerPaymentMethod: registerPaymentMethod,
         PAYMENT_META: PAYMENT_META
     };
 })();

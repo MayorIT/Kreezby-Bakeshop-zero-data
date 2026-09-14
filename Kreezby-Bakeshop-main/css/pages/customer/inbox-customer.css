@@ -1059,111 +1059,13 @@ main.workspace-canvas {
 
 /* Page-specific styles */
 body {
-            min-height: 100vh;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-        }
-        .help-center-shell {
-            width: 100%;
-            max-width: 860px;
-            background: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 18px 45px rgba(0,0,0,0.12);
-            padding: 36px;
-        }
-        .help-center-shell h1 {
-            margin-bottom: 12px;
-            font-size: 28px;
-            color: #2c2c2c;
-        }
-        .help-center-shell p {
-            margin-bottom: 24px;
-            color: #555555;
-            line-height: 1.6;
-            font-size: 15px;
-        }
-        .inbox-section {
-            margin-top: 30px;
-            border-top: 1px solid #e0e0e0;
-            padding-top: 24px;
-        }
-        .inbox-section h2 {
-            font-size: 20px;
-            color: #2c2c2c;
-            margin-bottom: 16px;
-        }
-        .live-agent-request {
-            background: #f9f9f9;
-            border: 2px solid #e0e0e0;
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        .live-agent-request h3 {
-            margin: 0 0 12px;
-            font-size: 18px;
-            color: #2c2c2c;
-        }
-        .live-agent-request p {
-            margin: 0 0 16px;
-            color: #666;
-            font-size: 14px;
-        }
-        .live-agent-form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .live-agent-form textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 14px;
-            min-height: 100px;
-            resize: vertical;
-            font-family: inherit;
-        }
-        .live-agent-form button {
-            background-color: #1e88e5;
-            color: #ffffff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .live-agent-form button:hover {
-            background-color: #1565c0;
-        }
-        .help-center-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .help-center-actions a,
-        .help-center-actions button {
-            padding: 12px 18px;
-            border-radius: 12px;
-            border: none;
-            font-weight: 700;
-            text-decoration: none;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .help-link {
-            background-color: #fbc02d;
-            color: #1f1f1f;
-        }
-        .help-center-actions a:hover,
-        .help-center-actions button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 12px 22px rgba(0,0,0,0.12);
-        }
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, rgba(251, 202, 40, 0.16), transparent 28%),
+        radial-gradient(circle at right top, rgba(30, 136, 229, 0.12), transparent 24%),
+        linear-gradient(180deg, #f7f3ea 0%, #f3f6fb 40%, #edf3fb 100%);
+    display: block;
+}
 
 .customer-inbox-header.top-navbar-node {
     background-color: #3f2f14;
@@ -1204,10 +1106,269 @@ body {
 }
 
 .customer-inbox-main {
-    padding: 8px;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 28px 24px 36px;
     min-height: calc(100vh - 72px);
 }
 
-.customer-inbox-main .inbox-chat-root {
-    height: calc(100vh - 88px);
+.customer-inbox-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.95fr);
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: 22px;
+}
+
+.customer-inbox-hero-copy,
+.customer-inbox-hero-card,
+.customer-inbox-tip-card,
+.customer-inbox-chat-shell {
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    box-shadow: 0 24px 58px rgba(58, 41, 16, 0.10);
+    backdrop-filter: blur(14px);
+}
+
+.customer-inbox-hero-copy {
+    padding: 30px 32px;
+    background:
+        radial-gradient(circle at right top, rgba(251, 202, 40, 0.22), transparent 24%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(251, 252, 255, 0.92) 100%);
+}
+
+.customer-inbox-kicker,
+.customer-inbox-tip-kicker {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: #fff3cc;
+    border: 1px solid #f2d581;
+    color: #8a5a00;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.customer-inbox-hero-copy h1 {
+    margin: 16px 0 12px;
+    max-width: 700px;
+    font-size: clamp(34px, 4.5vw, 54px);
+    line-height: 1.03;
+    letter-spacing: -0.035em;
+    color: #1f2940;
+}
+
+.customer-inbox-hero-copy p {
+    max-width: 640px;
+    font-size: 15px;
+    line-height: 1.72;
+    color: #5b677d;
+}
+
+.customer-inbox-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 22px;
+}
+
+.customer-home-btn,
+.customer-outline-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 14px 22px;
+    border-radius: 16px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.customer-home-btn {
+    background: linear-gradient(135deg, #fbc02d 0%, #f4aa1c 100%);
+    color: #1f1f1f;
+    box-shadow: 0 14px 26px rgba(244, 170, 28, 0.28);
+}
+
+.customer-outline-btn {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid #d7e0ec;
+    color: #243246;
+}
+
+.customer-home-btn:hover,
+.customer-outline-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 28px rgba(15, 23, 42, 0.12);
+}
+
+.customer-inbox-hero-card {
+    padding: 26px 24px;
+    background: linear-gradient(165deg, #3d2e14 0%, #5a4120 100%);
+    color: #fffdf8;
+}
+
+.customer-inbox-hero-card h2 {
+    margin: 16px 0 14px;
+    font-size: 24px;
+    line-height: 1.1;
+}
+
+.customer-inbox-hero-card ul,
+.customer-inbox-tip-card ul {
+    margin: 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 10px;
+    line-height: 1.65;
+}
+
+.customer-inbox-layout {
+    display: grid;
+    grid-template-columns: minmax(250px, 0.82fr) minmax(0, 1.78fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.customer-inbox-side-panel {
+    display: grid;
+    gap: 18px;
+}
+
+.customer-inbox-tip-card {
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.customer-inbox-tip-card--warm {
+    background:
+        radial-gradient(circle at top right, rgba(251, 202, 40, 0.18), transparent 28%),
+        linear-gradient(180deg, rgba(255, 252, 244, 0.96) 0%, rgba(255, 255, 255, 0.94) 100%);
+}
+
+.customer-inbox-tip-card h2 {
+    margin: 14px 0 10px;
+    font-size: 26px;
+    line-height: 1.1;
+    color: #243246;
+}
+
+.customer-inbox-tip-card p,
+.customer-inbox-tip-card li {
+    color: #5b677d;
+    font-size: 14px;
+    line-height: 1.68;
+}
+
+.customer-inbox-chat-shell {
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.78);
+}
+
+.customer-inbox-chat-shell .inbox-chat-root {
+    height: min(760px, calc(100vh - 190px));
+    min-height: 620px;
+    padding: 0;
+}
+
+.customer-inbox-chat-shell .inbox-resizable-group {
+    border-radius: 24px;
+    border: 1px solid #dde5ef;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    overflow: hidden;
+}
+
+.customer-inbox-chat-shell .inbox-chat-list-panel {
+    background: linear-gradient(180deg, #fffdf8 0%, #ffffff 100%);
+}
+
+.customer-inbox-chat-shell .inbox-chat-main-panel {
+    background:
+        linear-gradient(180deg, rgba(248, 250, 252, 0.96) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.customer-inbox-chat-shell .inbox-chat-header,
+.customer-inbox-chat-shell .inbox-composer-bar {
+    background: rgba(255, 255, 255, 0.96);
+}
+
+.customer-inbox-chat-shell .inbox-messages-viewport {
+    background:
+        radial-gradient(circle at top, rgba(30, 136, 229, 0.06), transparent 26%),
+        linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+}
+
+.customer-inbox-chat-shell .inbox-contact-item:hover,
+.customer-inbox-chat-shell .inbox-contact-item.is-active {
+    background: #f8fafc;
+}
+
+.customer-inbox-chat-shell .inbox-message-row.is-outgoing .inbox-message-bubble,
+.customer-inbox-chat-shell .message-row.outgoing-node .speech-bubble {
+    background: #ffe8a3;
+}
+
+.customer-inbox-chat-shell .inbox-icon-btn:hover {
+    background: #f5f7fb;
+}
+
+@media (max-width: 1100px) {
+    .customer-inbox-hero,
+    .customer-inbox-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .customer-inbox-header.top-navbar-node {
+        padding: 14px 16px;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .customer-inbox-header .top-nav-links-right {
+        width: 100%;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+
+    .customer-inbox-main {
+        padding: 16px 12px 26px;
+    }
+
+    .customer-inbox-hero-copy,
+    .customer-inbox-hero-card,
+    .customer-inbox-tip-card,
+    .customer-inbox-chat-shell {
+        border-radius: 22px;
+    }
+
+    .customer-inbox-hero-copy,
+    .customer-inbox-hero-card,
+    .customer-inbox-tip-card {
+        padding: 20px 18px;
+    }
+
+    .customer-inbox-actions {
+        flex-direction: column;
+    }
+
+    .customer-home-btn,
+    .customer-outline-btn {
+        width: 100%;
+    }
+
+    .customer-inbox-chat-shell {
+        padding: 10px;
+    }
+
+    .customer-inbox-chat-shell .inbox-chat-root {
+        height: auto;
+        min-height: 720px;
+    }
+}
 }

@@ -21,13 +21,15 @@
         <div class="checkout-main">
             <div class="checkout-section">
                 <h2 class="section-title">Shipping Information</h2>
-                <div class="form-group">
-                    <label for="full-name">Full Name</label>
-                    <input type="text" id="full-name" placeholder="Enter your full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" placeholder="09XX XXX XXXX" required>
+                <div class="shipping-grid">
+                    <div class="form-group">
+                        <label for="full-name">Full Name</label>
+                        <input type="text" id="full-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="09XX XXX XXXX" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="address">Delivery Address</label>
@@ -43,10 +45,6 @@
                 <div class="payment-method-selector" id="payment-selector" data-payment-selector data-default-id="gcash">
                     <div class="payment-method-selector__header">
                         <h3 class="payment-method-selector__title">Payment Method</h3>
-                        <button type="button" class="payment-method-selector__action" data-payment-add>
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            Add method
-                        </button>
                     </div>
 
                     <div class="payment-method-selector__list" role="radiogroup" aria-label="Payment method">
@@ -61,65 +59,44 @@
                             <div class="payment-method-selector__radio" aria-hidden="true"><span class="payment-method-selector__dot"></span></div>
                         </div>
 
-                        <div class="payment-method-selector__item" data-payment-id="maya" tabindex="-1" aria-checked="false">
+                        <div class="payment-method-selector__item" data-payment-id="mayabank" tabindex="-1" aria-checked="false">
                             <div class="payment-method-selector__icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#00d632"/><path d="M7 12h10" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#00b14f"/><path d="M7 12h10" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
                             </div>
                             <div class="payment-method-selector__body">
-                                <p class="payment-method-selector__label">Maya</p>
-                                <p class="payment-method-selector__desc">Pay with Maya (PayMaya)</p>
+                                <p class="payment-method-selector__label">MayaBank</p>
+                                <p class="payment-method-selector__desc">Bank transfer via MayaBank</p>
                             </div>
                             <div class="payment-method-selector__radio" aria-hidden="true"><span class="payment-method-selector__dot"></span></div>
                         </div>
 
-                        <div class="payment-method-selector__item" data-payment-id="shopeepay" tabindex="-1" aria-checked="false">
+                        <div class="payment-method-selector__item" data-payment-id="maribank" tabindex="-1" aria-checked="false">
                             <div class="payment-method-selector__icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#ee4d2d"/><path d="M8 9h8M8 12h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#f4b000"/><path d="M7 15l3-4 2 2 4-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
                             </div>
                             <div class="payment-method-selector__body">
-                                <p class="payment-method-selector__label">ShopeePay</p>
-                                <p class="payment-method-selector__desc">Pay using ShopeePay</p>
+                                <p class="payment-method-selector__label">MariBank</p>
+                                <p class="payment-method-selector__desc">Bank transfer via MariBank</p>
                             </div>
                             <div class="payment-method-selector__radio" aria-hidden="true"><span class="payment-method-selector__dot"></span></div>
                         </div>
 
-                        <div class="payment-method-selector__item" data-payment-id="grabpay" tabindex="-1" aria-checked="false">
+                        <div class="payment-method-selector__item" data-payment-id="metrobank" tabindex="-1" aria-checked="false">
                             <div class="payment-method-selector__icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#00b14f"/><circle cx="12" cy="12" r="3" fill="#fff"/></svg>
+                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#004c97"/><path d="M7 15V9h10v6" stroke="#fff" stroke-width="1.5" fill="none"/></svg>
                             </div>
                             <div class="payment-method-selector__body">
-                                <p class="payment-method-selector__label">GrabPay</p>
-                                <p class="payment-method-selector__desc">Pay using GrabPay wallet</p>
+                                <p class="payment-method-selector__label">Metrobank</p>
+                                <p class="payment-method-selector__desc">Bank transfer via Metrobank</p>
                             </div>
                             <div class="payment-method-selector__radio" aria-hidden="true"><span class="payment-method-selector__dot"></span></div>
                         </div>
 
-                        <div class="payment-method-selector__item" data-payment-id="bpi" tabindex="-1" aria-checked="false">
-                            <div class="payment-method-selector__icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#b11116"/><path d="M7 15V9l5-3 5 3v6" stroke="#fff" stroke-width="1.5" fill="none"/></svg>
-                            </div>
-                            <div class="payment-method-selector__body">
-                                <p class="payment-method-selector__label">BPI</p>
-                                <p class="payment-method-selector__desc">Bank transfer via BPI</p>
-                            </div>
-                            <div class="payment-method-selector__radio" aria-hidden="true"><span class="payment-method-selector__dot"></span></div>
-                        </div>
-
-                        <div class="payment-method-selector__item" data-payment-id="bdo" tabindex="-1" aria-checked="false">
-                            <div class="payment-method-selector__icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#003d79"/><path d="M8 15V9h8v6" stroke="#fff" stroke-width="1.5" fill="none"/></svg>
-                            </div>
-                            <div class="payment-method-selector__body">
-                                <p class="payment-method-selector__label">BDO</p>
-                                <p class="payment-method-selector__desc">Bank transfer via BDO</p>
-                            </div>
-                            <div class="payment-method-selector__radio" aria-hidden="true"><span class="payment-method-selector__dot"></span></div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="qr-section" id="qr-section">
-                    <h3 style="margin-bottom: 12px; font-size: 18px;">Scan QR Code to Pay</h3>
+                    <h3 class="qr-title">Scan QR Code to Pay</h3>
                     <div class="qr-placeholder">
                         <div>
                             <div style="font-size: 48px; margin-bottom: 8px;">📷</div>
@@ -134,10 +111,10 @@
                         4. Complete the payment<br>
                         5. Click "Verify Payment" below after payment
                     </p>
-                    <button type="button" class="checkout-btn" onclick="verifyPayment()" style="background-color: #4caf50;">
+                    <button type="button" class="checkout-btn checkout-btn--verify" id="verify-payment-btn" onclick="verifyPayment()">
                         ✓ Verify Payment
                     </button>
-                    <div class="verification-status" id="verification-status"></div>
+                    <div class="verification-status" id="verification-status" aria-live="polite"></div>
                 </div>
             </div>
         </div>
@@ -177,201 +154,15 @@
     </div>
 
     <script src="../js/payment-summary.js"></script>
-    <script src="../js/payment-method-selector.js"></script>
     <script>
-        let selectedPaymentMethod = 'gcash';
-        let cartData = {};
-        let isPaymentVerified = false;
-        let orderNumber = '';
-
-        function initCheckout() {
-            const paymentSelector = document.getElementById('payment-selector');
-            const summaryRoot = document.getElementById('payment-summary');
-
-            if (window.KreezbyPaymentSummary && summaryRoot) {
-                KreezbyPaymentSummary.updatePaymentMethod(summaryRoot, selectedPaymentMethod);
-            }
-
-            const savedCart = localStorage.getItem('kreezbyCart');
-            if (savedCart) {
-                cartData = JSON.parse(savedCart);
-                renderOrderSummary();
-            } else {
-                renderOrderSummary();
-            }
-
-            if (paymentSelector) {
-                paymentSelector.addEventListener('paymentchange', (e) => {
-                    selectPayment(e.detail.id, { userInitiated: true });
-                });
-            }
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initCheckout);
-        } else {
-            initCheckout();
-        }
-
-        function renderOrderSummary() {
-            const summaryRoot = document.getElementById('payment-summary');
-            const keys = Object.keys(cartData);
-
-            if (keys.length === 0) {
-                if (window.KreezbyPaymentSummary) {
-                    KreezbyPaymentSummary.render(summaryRoot, {
-                        paymentMethod: selectedPaymentMethod || 'gcash',
-                        items: [],
-                        total: { label: 'Total', value: '₱0.00' }
-                    });
-                }
-                document.getElementById('qr-amount').textContent = '₱0.00';
-                return;
-            }
-
-            let subtotal = 0;
-            const lineItems = keys.map(key => {
-                const item = cartData[key];
-                const lineTotal = item.cost * item.qty;
-                subtotal += lineTotal;
-                return {
-                    label: `${item.name} (x${item.qty})`,
-                    value: `₱${lineTotal.toFixed(2)}`,
-                    valueClassName: 'payment-summary__value--muted'
-                };
+        if (window.KreezbyPaymentSummary && window.KreezbyPaymentSummary.registerPaymentMethod) {
+            window.KreezbyPaymentSummary.registerPaymentMethod('maribank', {
+                name: 'MariBank',
+                icon: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#f4b000"/><path d="M7 15l3-4 2 2 4-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>'
             });
-
-            const deliveryFee = subtotal > 0 ? 50.00 : 0;
-            const total = subtotal + deliveryFee;
-
-            lineItems.push(
-                { label: 'Subtotal', value: `₱${subtotal.toFixed(2)}` },
-                { label: 'Delivery Fee', value: `₱${deliveryFee.toFixed(2)}` }
-            );
-
-            if (window.KreezbyPaymentSummary) {
-                KreezbyPaymentSummary.render(summaryRoot, {
-                    paymentMethod: selectedPaymentMethod || 'gcash',
-                    items: lineItems,
-                    total: { label: 'Total', value: `₱${total.toFixed(2)}` }
-                });
-            }
-
-            document.getElementById('qr-amount').textContent = `₱${total.toFixed(2)}`;
-        }
-
-        function selectPayment(method, options) {
-            options = options || {};
-            const methodChanged = selectedPaymentMethod !== method;
-            selectedPaymentMethod = method;
-
-            if (window.KreezbyPaymentSummary) {
-                KreezbyPaymentSummary.updatePaymentMethod(
-                    document.getElementById('payment-summary'),
-                    method
-                );
-            }
-
-            if (options.userInitiated || methodChanged) {
-                document.getElementById('qr-section').classList.add('active');
-                isPaymentVerified = false;
-                document.getElementById('verification-status').style.display = 'none';
-                document.getElementById('place-order-btn').disabled = true;
-            }
-        }
-
-        function verifyPayment() {
-            if (!selectedPaymentMethod) {
-                alert('Please select a payment method first.');
-                return;
-            }
-
-            const verificationStatus = document.getElementById('verification-status');
-            verificationStatus.style.display = 'block';
-            verificationStatus.className = 'verification-status pending';
-            verificationStatus.textContent = '⏳ Verifying payment... Please wait.';
-
-            // Simulate payment verification (in real app, this would call an API)
-            setTimeout(() => {
-                isPaymentVerified = true;
-                verificationStatus.className = 'verification-status verified';
-                verificationStatus.textContent = '✓ Payment verified successfully!';
-                document.getElementById('place-order-btn').disabled = false;
-            }, 2000);
-        }
-
-        function placeOrder() {
-            if (!isPaymentVerified) {
-                alert('Please verify your payment first.');
-                return;
-            }
-
-            const fullName = document.getElementById('full-name').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-
-            if (!fullName || !phone || !address) {
-                alert('Please fill in all shipping information.');
-                return;
-            }
-
-            // Generate order number
-            orderNumber = 'ORD-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 10000)).padStart(4, '0');
-
-            const subtotal = Object.values(cartData).reduce((sum, item) => sum + item.cost * item.qty, 0);
-            const deliveryFee = subtotal > 0 ? 50 : 0;
-
-            const order = {
-                orderNumber: orderNumber,
-                items: cartData,
-                subtotal: subtotal,
-                deliveryFee: deliveryFee,
-                total: document.getElementById('total-amount').textContent,
-                paymentMethod: selectedPaymentMethod,
-                shippingInfo: {
-                    fullName,
-                    phone,
-                    address,
-                    notes: document.getElementById('notes').value
-                },
-                status: 'Processing',
-                date: new Date().toISOString(),
-                paymentVerified: true
-            };
-
-            // Save order to localStorage
-            let orders = JSON.parse(localStorage.getItem('kreezbyOrders') || '[]');
-            orders.push(order);
-            localStorage.setItem('kreezbyOrders', JSON.stringify(orders));
-
-            try {
-                var note = {
-                    id: 'n-order-' + orderNumber,
-                    title: 'Customer Order Placed',
-                    description: 'New order ' + orderNumber + ' from ' + fullName,
-                    timestamp: new Date().toISOString(),
-                    read: false,
-                    source: 'order'
-                };
-                var notes = JSON.parse(localStorage.getItem('kreezbyNotifications') || '[]');
-                notes.unshift(note);
-                localStorage.setItem('kreezbyNotifications', JSON.stringify(notes));
-                var cursor = JSON.parse(localStorage.getItem('kreezbyNotificationCursor') || '{"initialized":true,"orders":{}}');
-                cursor.orders = cursor.orders || {};
-                cursor.orders[orderNumber] = true;
-                cursor.initialized = true;
-                localStorage.setItem('kreezbyNotificationCursor', JSON.stringify(cursor));
-            } catch (e) {}
-
-            // Clear cart
-            localStorage.removeItem('kreezbyCart');
-
-            // Show success message and redirect
-            alert(`Order placed successfully!\n\nOrder Number: ${orderNumber}\nTotal: ${order.total}\n\nYour order will be processed and shipped soon. You can track your order in "My Orders".`);
-            
-            // Redirect to customer page
-            window.location.href='customer.html';
         }
     </script>
+    <script src="../js/payment-method-selector.js"></script>
+    <script src="../js/checkout-customer.js"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@
 </head>
 <body>
 <header class="top-navbar-node">
-    <div class="brand-logo-panel">Kreezby</div>
+    <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
     <div class="top-nav-links-right">
         <a class="top-nav-item home-badge" href="customer.html">Home</a>
         <a class="top-nav-item" href="inbox-customer.html">Help Center</a>
@@ -18,53 +18,86 @@
 <div class="page-shell">
     <div class="report-panel">
         <div class="report-header">
+            <span class="report-kicker">Customer Support</span>
             <h1>Report an Issue — Customer</h1>
             <p>Submit product, ordering, or account issues so our support team can assist you quickly.</p>
+            <div class="report-highlights">
+                <span class="report-highlight-chip">Order concerns</span>
+                <span class="report-highlight-chip">Payment follow-up</span>
+                <span class="report-highlight-chip">Product quality support</span>
+            </div>
         </div>
         <div class="report-body">
-            <form class="report-form" onsubmit="submitIssue(event, 'Customer');">
-                <div class="form-grid">
-                    <div class="form-row">
-                        <label for="customer-name">Full Name</label>
-                        <input id="customer-name" name="fullName" type="text" placeholder="Your full name" required>
+            <div class="report-layout">
+                <form class="report-form" onsubmit="submitIssue(event, 'Customer');">
+                    <div class="form-section-head">
+                        <h2>Issue Details</h2>
+                        <p>Fill in the key order and contact information so the team can respond faster.</p>
                     </div>
-                    <div class="form-row">
-                        <label for="customer-contact">Email or Phone</label>
-                        <input id="customer-contact" name="contact" type="text" placeholder="you@example.com or 0917 123 4567" required>
+                    <div class="form-grid">
+                        <div class="form-row">
+                            <label for="customer-name">Full Name</label>
+                            <input id="customer-name" name="fullName" type="text" placeholder="Your full name" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="customer-contact">Email or Phone</label>
+                            <input id="customer-contact" name="contact" type="text" placeholder="you@example.com or 0917 123 4567" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="customer-order">Order Number</label>
+                            <input id="customer-order" name="orderNumber" type="text" placeholder="E.g. ORD-2026-005" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="customer-issue-type">Issue Type</label>
+                            <select id="customer-issue-type" name="issueType" required>
+                                <option value="">Select issue type</option>
+                                <option>Order Status</option>
+                                <option>Product Quality</option>
+                                <option>Payment / Refund</option>
+                                <option>Website Issue</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-row full-width">
+                            <label for="customer-description">Issue Description</label>
+                            <textarea id="customer-description" name="description" placeholder="Tell us what happened and when." required></textarea>
+                        </div>
+                        <div class="form-row full-width">
+                            <label for="customer-notes">Additional Details</label>
+                            <textarea id="customer-notes" name="notes" placeholder="Any supporting details, preferences, or timeline."></textarea>
+                        </div>
+                        <div class="form-row full-width form-row-file">
+                            <label for="customer-attachment">Attach Screenshot / Receipt</label>
+                            <span class="field-help">Optional, but helpful for faster verification.</span>
+                            <input id="customer-attachment" name="attachment" type="file">
+                        </div>
                     </div>
-                    <div class="form-row">
-                        <label for="customer-order">Order Number</label>
-                        <input id="customer-order" name="orderNumber" type="text" placeholder="E.g. ORD-2026-005" required>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">Submit Report</button>
+                        <a href="customer.html" class="btn-secondary">Return to Shop</a>
                     </div>
-                    <div class="form-row">
-                        <label for="customer-issue-type">Issue Type</label>
-                        <select id="customer-issue-type" name="issueType" required>
-                            <option value="">Select issue type</option>
-                            <option>Order Status</option>
-                            <option>Product Quality</option>
-                            <option>Payment / Refund</option>
-                            <option>Website Issue</option>
-                            <option>Other</option>
-                        </select>
+                </form>
+
+                <aside class="report-side-panel" aria-label="Support information">
+                    <div class="support-card support-card-primary">
+                        <span class="support-card-kicker">Response Flow</span>
+                        <h3>What happens next?</h3>
+                        <ul class="support-steps">
+                            <li>Your report is logged for review.</li>
+                            <li>Kreezby support checks order and payment details.</li>
+                            <li>You receive a follow-up update through the help center.</li>
+                        </ul>
                     </div>
-                    <div class="form-row full-width">
-                        <label for="customer-description">Issue Description</label>
-                        <textarea id="customer-description" name="description" placeholder="Tell us what happened and when." required></textarea>
+                    <div class="support-card">
+                        <span class="support-card-kicker">Helpful Tips</span>
+                        <ul class="support-tips">
+                            <li>Use the exact order number when available.</li>
+                            <li>Add dates, product names, and branch details.</li>
+                            <li>Attach screenshots for delivery or billing concerns.</li>
+                        </ul>
                     </div>
-                    <div class="form-row full-width">
-                        <label for="customer-notes">Additional Details</label>
-                        <textarea id="customer-notes" name="notes" placeholder="Any supporting details, preferences, or timeline." ></textarea>
-                    </div>
-                    <div class="form-row full-width">
-                        <label for="customer-attachment">Attach Screenshot / Receipt (optional)</label>
-                        <input id="customer-attachment" name="attachment" type="file">
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn-submit">Submit Report</button>
-                    <a href="customer.html" class="btn-secondary">Return to Shop</a>
-                </div>
-            </form>
+                </aside>
+            </div>
         </div>
     </div>
 </div>

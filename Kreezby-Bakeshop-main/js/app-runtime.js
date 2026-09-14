@@ -142,6 +142,11 @@
       accountType: 'Customer',
       redirectUrl: 'customer/customer.html'
     },
+    mariasantosemailcom: {
+      userName: 'Maria Santos',
+      accountType: 'Customer',
+      redirectUrl: 'customer/customer.html'
+    },
     guest: {
       userName: 'Guest Customer',
       accountType: 'Customer',
@@ -151,6 +156,33 @@
 
   function normalizeLoginKey(identity) {
     return String(identity || '').trim().toLowerCase().replace(/[\s._-]+/g, '');
+  }
+
+  function loadJsonSafe(key, fallback) {
+    try {
+      var raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function resolveExpectedPassword(identity, resolved) {
+    var creds = loadJsonSafe('kreezbyAuthCredentials', {});
+    var lookupKeys = [
+      normalizeLoginKey(identity),
+      normalizeLoginKey(resolved && resolved.identity),
+      normalizeLoginKey(resolved && resolved.userName)
+    ].filter(Boolean);
+
+    for (var i = 0; i < lookupKeys.length; i++) {
+      var key = lookupKeys[i];
+      if (creds[key] && creds[key].password) {
+        return String(creds[key].password);
+      }
+    }
+
+    return DEMO_PASSWORD;
   }
 
   function resolveLoginIdentity(identity) {
@@ -406,13 +438,14 @@
             toast('Enter your password.', 'warn');
             return;
           }
-          if (password !== DEMO_PASSWORD) {
-            toast('Invalid password. Demo password is ' + DEMO_PASSWORD, 'warn');
-            return;
-          }
           var resolved = resolveLoginIdentity(identity);
           if (!resolved) {
             toast('Account not found. Try brent_admin, staff1, retailer, customer, or maria.santos@email.com', 'warn');
+            return;
+          }
+          var expectedPassword = resolveExpectedPassword(identity, resolved);
+          if (password !== expectedPassword) {
+            toast('Invalid password. Please try again.', 'warn');
             return;
           }
           if (window.KreezbyMaintenanceSettings) {
