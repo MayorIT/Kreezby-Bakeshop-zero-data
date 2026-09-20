@@ -80,6 +80,7 @@
     }
 
     function ensurePageTransitionLoaded() {
+        if (/\/customer\//i.test(window.location.pathname || '')) return;
         if (document.getElementById('kreezby-turbo-nav-script')) return;
         if (document.getElementById('kreezby-page-transition-script')) return;
 

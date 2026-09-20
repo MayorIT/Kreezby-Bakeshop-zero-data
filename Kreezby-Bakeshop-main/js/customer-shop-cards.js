@@ -15,7 +15,12 @@
     function flavorCardHtml(prod, options) {
         var guest = options && options.guest;
         var onerror = "this.src='" + imgFallback(prod.name) + "'";
-        var isFavorite = !guest && typeof window.isFavoriteProduct === 'function' && window.isFavoriteProduct(prod.id);
+        var isFavorite = false;
+        try {
+            isFavorite = !guest && typeof window.isFavoriteProduct === 'function' && window.isFavoriteProduct(prod.id);
+        } catch (err) {
+            isFavorite = false;
+        }
         var footerButton = guest
             ? ''
                         : '<button type="button" class="flavor-card__button' + (isFavorite ? ' is-favorite' : '') + '" onclick="toggleFavoriteProduct(\'' + prod.id + '\', this)" aria-label="' + (isFavorite ? 'Remove ' : 'Add ') + prod.name + ' ' + (isFavorite ? 'from' : 'to') + ' favorites" aria-pressed="' + (isFavorite ? 'true' : 'false') + '">' +

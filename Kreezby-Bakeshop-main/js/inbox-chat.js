@@ -18,15 +18,19 @@
         users: '<svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
         image: '<svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>',
         camera: '<svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>',
-        file: '<svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>'
+        file: '<svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>',
+        archive: '<svg viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>',
+        check: '<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>',
+        mail: '<svg viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
+        arrowLeft: '<svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>'
     };
 
     var PRESETS = {
         admin: {
             contacts: [
-                { id: 'sidc', name: 'SIDC Retailer', preview: 'Next delivery inventory data is auto-synced...', time: '15:31', initials: 'S', online: true },
-                { id: 'r101', name: 'Retailer 101', preview: 'Stock reorder verification flag code updated...', time: 'Yesterday', initials: 'R' },
-                { id: 'claire', name: 'Claire (Staff 1)', preview: 'AI Forecasting report compiled successfully.', time: 'May 14', initials: 'C', online: true }
+                { id: 'sidc', name: 'SIDC Retailer', preview: 'Next delivery inventory data is auto-synced...', time: '15:31', initials: 'S', online: true, unread: true },
+                { id: 'r101', name: 'Retailer 101', preview: 'Stock reorder verification flag code updated...', time: 'Yesterday', initials: 'R', unread: false },
+                { id: 'claire', name: 'Claire (Staff 1)', preview: 'AI Forecasting report compiled successfully.', time: 'May 14', initials: 'C', online: true, archived: true }
             ],
             messages: {
                 sidc: [
@@ -39,9 +43,9 @@
         },
         staff: {
             contacts: [
-                { id: 'sidc', name: 'SIDC Retailer', preview: 'You: Next delivery inventory data is auto-synced...', time: '15:31', initials: 'S', online: true, channel: 'retailer' },
-                { id: 'r101', name: 'Retailer 101', preview: 'Stock reorder verification flag code updated...', time: 'Yesterday', initials: 'R', channel: 'retailer' },
-                { id: 'claire', name: 'Claire (Staff 1)', preview: 'AI Forecasting report compiled successfully.', time: 'May 14', initials: 'C', online: true, channel: 'staff' }
+                { id: 'sidc', name: 'SIDC Retailer', preview: 'You: Next delivery inventory data is auto-synced...', time: '15:31', initials: 'S', online: true, channel: 'retailer', unread: true },
+                { id: 'r101', name: 'Retailer 101', preview: 'Stock reorder verification flag code updated...', time: 'Yesterday', initials: 'R', channel: 'retailer', unread: false },
+                { id: 'claire', name: 'Claire (Staff 1)', preview: 'AI Forecasting report compiled successfully.', time: 'May 14', initials: 'C', online: true, channel: 'staff', archived: true }
             ],
             messages: {
                 sidc: [
@@ -54,10 +58,10 @@
         },
         retailer: {
             contacts: [
-                { id: 'brent', name: 'Brent Ramos (Admin)', preview: 'Next delivery schedule will be on May 27 po', time: '1h', initials: 'B', online: true },
-                { id: 'maricel', name: 'Maricel Ramos', preview: 'Next delivery will be...', time: '1h', initials: 'M' },
-                { id: 'staff1', name: 'Staff 1', preview: 'Next delivery will be...', time: '1h', initials: 'S' },
-                { id: 'kobe', name: 'Kobe Bryan', preview: 'Sales running by the...', time: '1h', initials: 'K', online: true }
+                { id: 'brent', name: 'Brent Ramos (Admin)', preview: 'Next delivery schedule will be on May 27 po', time: '1h', initials: 'B', online: true, unread: true },
+                { id: 'maricel', name: 'Maricel Ramos', preview: 'Next delivery will be...', time: '1h', initials: 'M', unread: false },
+                { id: 'staff1', name: 'Staff 1', preview: 'Next delivery will be...', time: '1h', initials: 'S', unread: false },
+                { id: 'kobe', name: 'Kobe Bryan', preview: 'Sales running by the...', time: '1h', initials: 'K', online: true, archived: true }
             ],
             messages: {
                 brent: [
@@ -71,14 +75,24 @@
         },
         customer: {
             contacts: [
-                { id: 'support', name: 'Kreezby Support', preview: 'How can we help you today?', time: 'Now', initials: 'K', online: true },
-                { id: 'orders', name: 'Order Assistance', preview: 'Your order #1042 is being prepared.', time: '2h', initials: 'O' }
+                { id: 'support', name: 'Kreezby Support', preview: 'How can we help you today?', time: 'Now', initials: 'K', online: true, unread: true },
+                { id: 'orders', name: 'Order Assistance', preview: 'Your order #1042 is being prepared.', time: '2h', initials: 'O', unread: false },
+                { id: 'past', name: 'Past Order Help', preview: 'Thanks for confirming the replacement pouch.', time: 'Apr 12', initials: 'P', archived: true }
             ],
             messages: {
                 support: [
                     { type: 'incoming', text: 'Welcome to Kreezby Help Center! Describe your issue and our team will assist you.' },
                     { type: 'outgoing', text: 'Hi, I need help tracking my recent order.' },
                     { type: 'incoming', text: 'Sure — please share your order reference number and we will check status right away.' }
+                ],
+                orders: [
+                    { type: 'incoming', text: 'Your order #1042 is being prepared.', time: '2h' },
+                    { type: 'incoming', text: 'We will notify you when it is ready for delivery.' }
+                ],
+                past: [
+                    { type: 'incoming', text: 'We replaced the torn chocolate pouch from order #980.', time: 'Apr 12' },
+                    { type: 'outgoing', text: 'Received, thank you!' },
+                    { type: 'incoming', text: 'Thanks for confirming the replacement pouch.' }
                 ]
             }
         }
@@ -101,31 +115,30 @@
             '<div class="inbox-resizable-group" id="inbox-resizable-group">' +
                 '<div class="inbox-chat-list-panel" id="inbox-list-panel">' +
                     '<div class="inbox-chat-list-header">' +
-                        '<p class="inbox-chat-list-title">Chats</p>' +
+                        '<div class="inbox-chat-list-heading">' +
+                            '<button type="button" class="inbox-icon-btn inbox-archive-back-btn" id="inbox-archive-back-btn" title="Back to chats" hidden>' + SVG.arrowLeft + '</button>' +
+                            '<p class="inbox-chat-list-title">Chats</p>' +
+                        '</div>' +
                         '<div class="inbox-chat-list-actions">' +
-                            '<div class="inbox-dropdown" data-dropdown="compose">' +
-                                iconBtn(SVG.pen, 'New chat') +
-                                '<div class="inbox-dropdown-menu align-right">' +
-                                    '<button type="button" class="inbox-dropdown-item" data-action="new-contact">' + SVG.user + ' New Contact</button>' +
-                                    '<button type="button" class="inbox-dropdown-item" data-action="new-group">' + SVG.users + ' New Group</button>' +
-                                '</div>' +
-                            '</div>' +
                             '<div class="inbox-dropdown" data-dropdown="filter">' +
                                 iconBtn(SVG.filter, 'Filter chats') +
-                                '<div class="inbox-dropdown-menu align-right">' +
-                                    '<div class="inbox-dropdown-label">Filter Chats By</div>' +
-                                    '<button type="button" class="inbox-dropdown-item">Unread</button>' +
-                                    '<button type="button" class="inbox-dropdown-item">Favorites</button>' +
-                                    '<button type="button" class="inbox-dropdown-item">Contacts</button>' +
-                                    '<div class="inbox-dropdown-separator"></div>' +
-                                    '<button type="button" class="inbox-dropdown-item">Groups</button>' +
-                                    '<button type="button" class="inbox-dropdown-item">Drafts</button>' +
+                                '<div class="inbox-dropdown-menu inbox-filter-menu align-right">' +
+                                    '<div class="inbox-dropdown-label">Filter chats by</div>' +
+                                    '<button type="button" class="inbox-dropdown-item" data-filter="unread">' +
+                                        '<span class="inbox-dropdown-icon">' + SVG.mail + '</span>' +
+                                        '<span class="inbox-dropdown-copy"><span>Unread</span><small>New messages only</small></span>' +
+                                    '</button>' +
+                                    '<button type="button" class="inbox-dropdown-item" data-filter="read">' +
+                                        '<span class="inbox-dropdown-icon">' + SVG.check + '</span>' +
+                                        '<span class="inbox-dropdown-copy"><span>Read</span><small>Already opened chats</small></span>' +
+                                    '</button>' +
                                 '</div>' +
                             '</div>' +
+                            '<button type="button" class="inbox-icon-btn" id="inbox-archive-view-btn" title="View archived chats" aria-pressed="false">' + SVG.archive + '</button>' +
                         '</div>' +
                     '</div>' +
                     '<div class="inbox-chat-search">' + SVG.search +
-                        '<input type="text" id="inbox-search-input" placeholder="Search or start new chat" aria-label="Search chats">' +
+                        '<input type="text" id="inbox-search-input" placeholder="Search chats" aria-label="Search chats">' +
                     '</div>' +
                     '<div class="inbox-contact-scroll" id="inbox-contact-list">' +
                         '<p id="inbox-threads-empty" class="inbox-threads-empty" style="display:none;">No conversations available.</p>' +
@@ -144,7 +157,7 @@
                         '<div class="inbox-chat-header-actions">' +
                             iconBtn(SVG.video, 'Video call') +
                             iconBtn(SVG.phone, 'Phone call') +
-                            iconBtn(SVG.search, 'Search in chat') +
+                            '<button type="button" class="inbox-icon-btn" id="inbox-header-search-btn" title="Search chats">' + SVG.search + '</button>' +
                         '</div>' +
                     '</div>' +
                     '<div id="inbox-retailer-access-banner" class="inbox-retailer-access-banner" style="display:none;"></div>' +
@@ -154,9 +167,9 @@
                         '<div class="inbox-dropdown" data-dropdown="attach">' +
                             '<button type="button" class="inbox-icon-btn btn-attachment-trigger" title="Attach file">' + SVG.paperclip + '</button>' +
                             '<div class="inbox-dropdown-menu">' +
-                                '<button type="button" class="inbox-dropdown-item">' + SVG.image + ' Photos &amp; Videos</button>' +
-                                '<button type="button" class="inbox-dropdown-item">' + SVG.camera + ' Camera</button>' +
-                                '<button type="button" class="inbox-dropdown-item">' + SVG.file + ' Document</button>' +
+                                '<button type="button" class="inbox-dropdown-item" data-attach="photos"><span class="inbox-dropdown-icon">' + SVG.image + '</span><span>Photos &amp; Videos</span></button>' +
+                                '<button type="button" class="inbox-dropdown-item" data-attach="camera"><span class="inbox-dropdown-icon">' + SVG.camera + '</span><span>Camera</span></button>' +
+                                '<button type="button" class="inbox-dropdown-item" data-attach="document"><span class="inbox-dropdown-icon">' + SVG.file + '</span><span>Document</span></button>' +
                             '</div>' +
                         '</div>' +
                         '<input type="text" class="composition-input-element" id="chat-type-input" placeholder="Type a message">' +
@@ -172,31 +185,53 @@
     function renderContacts(root, contacts, activeId) {
         var list = root.querySelector('#inbox-contact-list');
         var empty = root.querySelector('#inbox-threads-empty');
+        if (!list) return;
         list.querySelectorAll('.inbox-contact-item').forEach(function (node) { node.remove(); });
 
+        if (empty) {
+            empty.style.display = contacts.length ? 'none' : '';
+        }
+
         contacts.forEach(function (contact) {
-            var btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'inbox-contact-item thread-item-card' + (contact.id === activeId ? ' is-active selected-active' : '');
-            btn.setAttribute('data-thread-id', contact.id);
-            if (contact.channel) btn.setAttribute('data-channel', contact.channel);
+            var row = document.createElement('div');
+            var isUnread = Boolean(contact.unread) && !contact.archived;
+            row.className = 'inbox-contact-item thread-item-card' +
+                (contact.id === activeId ? ' is-active selected-active' : '') +
+                (isUnread ? ' is-unread' : ' is-read') +
+                (contact.archived ? ' is-archived' : '');
+            row.setAttribute('data-thread-id', contact.id);
+            if (contact.channel) row.setAttribute('data-channel', contact.channel);
 
             var avatarClass = 'inbox-avatar' + (contact.online ? ' is-online' : '');
             var avatarHtml = contact.image
                 ? '<img src="' + escapeHtml(contact.image) + '" alt="">'
                 : escapeHtml(contact.initials || contact.name.charAt(0));
 
-            btn.innerHTML =
-                '<div class="' + avatarClass + '">' + avatarHtml + '</div>' +
-                '<div class="inbox-contact-meta thread-meta-pane">' +
-                    '<div class="inbox-contact-row thread-head-row">' +
-                        '<span class="inbox-contact-name thread-client-name">' + escapeHtml(contact.name) + '</span>' +
-                        '<span class="inbox-contact-time thread-timestamp">' + escapeHtml(contact.time || '') + '</span>' +
-                    '</div>' +
-                    '<div class="inbox-contact-preview thread-snippet-preview">' + escapeHtml(contact.preview || '') + '</div>' +
-                '</div>';
+            var statusHtml = contact.archived
+                ? '<span class="inbox-status-pill is-archived">' + SVG.archive + 'Archived</span>'
+                : (isUnread
+                    ? '<span class="inbox-status-pill is-unread"><span class="inbox-unread-dot" aria-hidden="true"></span>Unread</span>'
+                    : '<span class="inbox-status-pill is-read">' + SVG.check + 'Read</span>');
 
-            list.insertBefore(btn, empty);
+            var archiveLabel = contact.archived ? 'Unarchive chat' : 'Archive chat';
+
+            row.innerHTML =
+                '<button type="button" class="inbox-contact-select">' +
+                    '<div class="' + avatarClass + '">' + avatarHtml + '</div>' +
+                    '<div class="inbox-contact-meta thread-meta-pane">' +
+                        '<div class="inbox-contact-row thread-head-row">' +
+                            '<span class="inbox-contact-name thread-client-name">' + escapeHtml(contact.name) + '</span>' +
+                            '<span class="inbox-contact-time thread-timestamp">' + escapeHtml(contact.time || '') + '</span>' +
+                        '</div>' +
+                        '<div class="inbox-contact-preview thread-snippet-preview">' + escapeHtml(contact.preview || '') + '</div>' +
+                        '<div class="inbox-contact-status-row">' + statusHtml + '</div>' +
+                    '</div>' +
+                '</button>' +
+                '<button type="button" class="inbox-thread-archive" data-archive-id="' + escapeHtml(contact.id) + '" title="' + archiveLabel + '" aria-label="' + archiveLabel + '">' +
+                    SVG.archive +
+                '</button>';
+
+            list.insertBefore(row, empty);
         });
     }
 
@@ -215,6 +250,15 @@
         container.scrollTop = container.scrollHeight;
     }
 
+    function closeInboxDropdown(wrap) {
+        if (!wrap) return;
+        wrap.classList.remove('is-open');
+        var menu = wrap.querySelector('.inbox-dropdown-menu');
+        var trigger = wrap.querySelector('.inbox-icon-btn, .btn-attachment-trigger');
+        if (menu) menu.classList.remove('is-open');
+        if (trigger) trigger.classList.remove('is-open');
+    }
+
     function wireDropdowns(root) {
         root.querySelectorAll('.inbox-dropdown').forEach(function (wrap) {
             var trigger = wrap.querySelector('.inbox-icon-btn, .btn-attachment-trigger');
@@ -223,15 +267,38 @@
 
             trigger.addEventListener('click', function (event) {
                 event.stopPropagation();
-                var open = menu.classList.contains('is-open');
-                root.querySelectorAll('.inbox-dropdown-menu.is-open').forEach(function (m) { m.classList.remove('is-open'); });
-                if (!open) menu.classList.add('is-open');
+                var open = wrap.classList.contains('is-open');
+                root.querySelectorAll('.inbox-dropdown').forEach(function (other) {
+                    closeInboxDropdown(other);
+                });
+                if (!open) {
+                    wrap.classList.add('is-open');
+                    menu.classList.add('is-open');
+                    trigger.classList.add('is-open');
+                }
+            });
+
+            menu.addEventListener('click', function (event) {
+                event.stopPropagation();
+                var item = event.target.closest('.inbox-dropdown-item');
+                if (!item) return;
+                menu.querySelectorAll('.inbox-dropdown-item').forEach(function (btn) {
+                    btn.classList.remove('is-active');
+                });
+                item.classList.add('is-active');
+                if (wrap.getAttribute('data-dropdown') === 'filter') {
+                    closeInboxDropdown(wrap);
+                }
             });
         });
 
         document.addEventListener('click', function () {
-            root.querySelectorAll('.inbox-dropdown-menu.is-open').forEach(function (menu) {
-                menu.classList.remove('is-open');
+            root.querySelectorAll('.inbox-dropdown').forEach(function (wrap) {
+                wrap.classList.remove('is-open');
+                var menu = wrap.querySelector('.inbox-dropdown-menu');
+                var trigger = wrap.querySelector('.inbox-icon-btn, .btn-attachment-trigger');
+                if (menu) menu.classList.remove('is-open');
+                if (trigger) trigger.classList.remove('is-open');
             });
         });
     }
@@ -269,7 +336,9 @@
         var preset = PRESETS[role] || PRESETS.admin;
         var contacts = preset.contacts.slice();
         var messages = preset.messages || {};
-        var activeId = contacts[0] ? contacts[0].id : null;
+        var activeId = null;
+        var listFilter = 'all';
+        var searchQuery = '';
 
         mount.classList.add('inbox-chat-root');
         mount.innerHTML = buildShell(role);
@@ -284,6 +353,97 @@
         var sendIcon = sendIcons[sendIcons.length - 2];
         var hiddenSend = mount.querySelector('#inbox-send-btn');
 
+        function visibleContacts() {
+            return contacts.filter(function (contact) {
+                var archived = Boolean(contact.archived);
+                var unread = Boolean(contact.unread) && !archived;
+                if (listFilter === 'unread' && !unread) return false;
+                if (listFilter === 'read' && (unread || archived)) return false;
+                if (listFilter === 'archive' && !archived) return false;
+                if (listFilter === 'all' && archived) return false;
+                if (searchQuery) {
+                    var haystack = (contact.name + ' ' + (contact.preview || '')).toLowerCase();
+                    if (haystack.indexOf(searchQuery) < 0) return false;
+                }
+                return true;
+            });
+        }
+
+        function closeFilterMenu() {
+            closeInboxDropdown(mount.querySelector('[data-dropdown="filter"]'));
+        }
+
+        function syncFilterUi() {
+            var title = mount.querySelector('.inbox-chat-list-title');
+            if (title) {
+                title.textContent = listFilter === 'archive'
+                    ? 'Archived'
+                    : (listFilter === 'unread' ? 'Unread' : (listFilter === 'read' ? 'Read' : 'Chats'));
+            }
+
+            mount.querySelectorAll('[data-dropdown="filter"] [data-filter]').forEach(function (other) {
+                other.classList.toggle('is-active', other.getAttribute('data-filter') === listFilter);
+            });
+
+            var filterTrigger = mount.querySelector('[data-dropdown="filter"] > .inbox-icon-btn');
+            if (filterTrigger) {
+                filterTrigger.classList.toggle('is-filtered', listFilter === 'unread' || listFilter === 'read');
+            }
+
+            var archiveBackBtn = mount.querySelector('#inbox-archive-back-btn');
+            if (archiveBackBtn) {
+                archiveBackBtn.hidden = listFilter === 'all';
+            }
+
+            var archiveViewBtn = mount.querySelector('#inbox-archive-view-btn');
+            if (archiveViewBtn) {
+                var onArchive = listFilter === 'archive';
+                archiveViewBtn.classList.toggle('is-open', onArchive);
+                archiveViewBtn.setAttribute('aria-pressed', onArchive ? 'true' : 'false');
+                archiveViewBtn.title = onArchive ? 'Back to all chats' : 'View archived chats';
+            }
+        }
+
+        function setListFilter(nextFilter) {
+            listFilter = nextFilter || 'all';
+            syncFilterUi();
+            refreshContactList();
+            var shown = visibleContacts();
+            if (shown.length && shown.every(function (item) { return item.id !== activeId; })) {
+                selectContact(shown[0].id, { keepUnread: true });
+            }
+        }
+
+        function refreshContactList() {
+            var shown = visibleContacts();
+            renderContacts(mount, shown, activeId);
+            var empty = mount.querySelector('#inbox-threads-empty');
+            if (empty) {
+                empty.style.display = shown.length ? 'none' : '';
+                if (!shown.length) {
+                    empty.textContent = searchQuery
+                        ? 'No chats match your search.'
+                        : (listFilter === 'archive' ? 'No archived chats.' : 'No conversations in this filter.');
+                }
+            }
+            bindContactClicks();
+        }
+
+        function toggleArchive(id) {
+            var contact = getContact(id);
+            if (!contact) return;
+            contact.archived = !contact.archived;
+            if (contact.archived) contact.unread = false;
+            refreshContactList();
+
+            var shown = visibleContacts();
+            if (shown.length && shown.every(function (item) { return item.id !== activeId; })) {
+                selectContact(shown[0].id, { keepUnread: true });
+            } else if (!shown.length) {
+                activeId = null;
+            }
+        }
+
         function getContact(id) {
             for (var i = 0; i < contacts.length; i++) {
                 if (contacts[i].id === id) return contacts[i];
@@ -291,13 +451,13 @@
             return null;
         }
 
-        function selectContact(id) {
-            if (id === activeId) return;
+        function selectContact(id, options) {
+            var contact = getContact(id);
+            if (!contact) return;
+            if (!options || !options.keepUnread) contact.unread = false;
 
-            var switchPanel = function () {
+            var applySelection = function () {
                 activeId = id;
-                var contact = getContact(id);
-                if (!contact) return;
 
                 mount.querySelectorAll('.inbox-contact-item').forEach(function (item) {
                     item.classList.toggle('is-active', item.getAttribute('data-thread-id') === id);
@@ -311,6 +471,7 @@
 
                 if (!messages[id]) messages[id] = [];
                 renderMessages(messageContainer, messages[id]);
+                refreshContactList();
 
                 if (window.KreezbyStaffInbox && typeof window.KreezbyStaffInbox.onThreadSelected === 'function') {
                     window.KreezbyStaffInbox.onThreadSelected(contact);
@@ -322,7 +483,7 @@
             };
 
             messageContainer.classList.add('is-switching');
-            window.setTimeout(switchPanel, 160);
+            window.setTimeout(applySelection, activeId ? 160 : 0);
         }
 
         function sendMessage() {
@@ -338,32 +499,92 @@
 
             var contact = getContact(activeId);
             if (contact) contact.preview = 'You: ' + text;
-            renderContacts(mount, contacts, activeId);
-            bindContactClicks();
+            refreshContactList();
             if (window.KreezbyStaffInbox && typeof window.KreezbyStaffInbox.onThreadSelected === 'function') {
                 window.KreezbyStaffInbox.onThreadSelected(contact);
             }
         }
 
         function bindContactClicks() {
-            mount.querySelectorAll('.inbox-contact-item').forEach(function (item) {
+            mount.querySelectorAll('.inbox-contact-select').forEach(function (item) {
                 item.onclick = function () {
-                    selectContact(item.getAttribute('data-thread-id'));
+                    var row = item.closest('.inbox-contact-item');
+                    if (row) selectContact(row.getAttribute('data-thread-id'));
+                };
+            });
+            mount.querySelectorAll('.inbox-thread-archive').forEach(function (btn) {
+                btn.onclick = function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    toggleArchive(btn.getAttribute('data-archive-id'));
                 };
             });
         }
 
-        renderContacts(mount, contacts, activeId);
-        bindContactClicks();
-        if (activeId) selectContact(activeId);
+        refreshContactList();
+        var firstVisible = visibleContacts()[0];
+        if (firstVisible) selectContact(firstVisible.id, { keepUnread: true });
 
-        mount.querySelector('#inbox-search-input').addEventListener('input', function (event) {
-            var query = event.target.value.toLowerCase();
-            mount.querySelectorAll('.inbox-contact-item').forEach(function (item) {
-                var text = item.textContent.toLowerCase();
-                item.style.display = text.indexOf(query) >= 0 ? '' : 'none';
+        var searchInput = mount.querySelector('#inbox-search-input');
+        var headerSearchBtn = mount.querySelector('#inbox-header-search-btn');
+
+        function focusChatSearch() {
+            if (!searchInput) return;
+            searchInput.focus();
+            searchInput.select();
+            var searchWrap = mount.querySelector('.inbox-chat-search');
+            if (searchWrap) {
+                searchWrap.classList.add('is-focused');
+                window.setTimeout(function () { searchWrap.classList.remove('is-focused'); }, 900);
+            }
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function (event) {
+                searchQuery = String(event.target.value || '').trim().toLowerCase();
+                refreshContactList();
+            });
+            searchInput.addEventListener('keydown', function (event) {
+                if (event.key !== 'Enter') return;
+                event.preventDefault();
+                var shown = visibleContacts();
+                if (shown[0]) selectContact(shown[0].id);
+            });
+        }
+
+        var searchIcon = mount.querySelector('.inbox-chat-search svg');
+        if (searchIcon) {
+            searchIcon.style.cursor = 'pointer';
+            searchIcon.addEventListener('click', focusChatSearch);
+        }
+        if (headerSearchBtn) {
+            headerSearchBtn.addEventListener('click', focusChatSearch);
+        }
+
+        mount.querySelectorAll('[data-dropdown="filter"] [data-filter]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var next = btn.getAttribute('data-filter') || 'unread';
+                if (listFilter === next) next = 'all';
+                setListFilter(next);
+                closeFilterMenu();
             });
         });
+
+        var archiveViewBtn = mount.querySelector('#inbox-archive-view-btn');
+        if (archiveViewBtn) {
+            archiveViewBtn.addEventListener('click', function (event) {
+                event.stopPropagation();
+                setListFilter(listFilter === 'archive' ? 'all' : 'archive');
+            });
+        }
+
+        var archiveBackBtn = mount.querySelector('#inbox-archive-back-btn');
+        if (archiveBackBtn) {
+            archiveBackBtn.addEventListener('click', function (event) {
+                event.stopPropagation();
+                setListFilter('all');
+            });
+        }
 
         if (input) {
             input.addEventListener('keydown', function (event) {

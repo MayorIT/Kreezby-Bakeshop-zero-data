@@ -53,6 +53,15 @@
         return /\/(admin|staff|retailer|customer|wholesaler)\//i.test(window.location.pathname || '');
     }
 
+    function isCustomerShopPage(href) {
+        try {
+            var file = new URL(href || window.location.href, window.location.href).pathname.split('/').pop() || '';
+            return /^(customer|customer_guest|checkout-customer)\.html$/i.test(file);
+        } catch (e) {
+            return /(customer|customer_guest|checkout-customer)\.html/i.test(href || '');
+        }
+    }
+
     function isInboxPage(href) {
         try {
             var file = new URL(href, window.location.href).pathname.split('/').pop() || '';
@@ -76,6 +85,7 @@
         if (link.dataset.turbo === 'false') return false;
         if (isInboxPage(link.href)) return false;
         if (isReportIssuePage(link.href)) return false;
+        if (isCustomerShopPage(link.href)) return false;
         if (link.target && link.target !== '_self') return false;
         if (link.hasAttribute('download')) return false;
         if (link.closest('.user-dropdown-menu')) return false;
@@ -101,7 +111,8 @@
         (root || document).querySelectorAll('a[href]').forEach(function (link) {
             if (!link.href) return;
 
-            if (isInboxPage(link.href) || isReportIssuePage(link.href)) {
+            if (isInboxPage(link.href) || isReportIssuePage(link.href) || isCustomerShopPage(link.href)) {
+                link.setAttribute('data-turbo', 'false');
                 link.setAttribute('data-turbo-frame', '_top');
                 link.removeAttribute('data-turbo-action');
                 return;
@@ -409,6 +420,7 @@
 
     function boot() {
         if (!isModulePage()) return;
+        if (isCustomerShopPage()) return;
         ensureMeta();
         ensureNavCss();
         loadTurbo(configureTurbo);

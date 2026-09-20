@@ -104,6 +104,69 @@
         }, 0);
     }
 
+    var PRODUCT_IMAGES_BY_ID = {
+        'flavor-choc': 'flavors/chocolate.jpg',
+        'flavor-almond': 'flavors/choco-almond.jpg',
+        'flavor-cashew': 'flavors/choco-cashew.jpg',
+        'flavor-mint': 'flavors/choco-mint.jpg',
+        'flavor-straw': 'flavors/strawberry.jpg',
+        'flavor-velvet': 'flavors/redvelvet.jpg',
+        'flavor-lemon': 'flavors/lemon.jpg',
+        'flavor-melon': 'flavors/melon.jpg',
+        'flavor-pandan': 'flavors/pandan.jpg',
+        'flavor-ube': 'flavors/ube.jpg',
+        'flavor-mango': 'flavors/mango.jpg',
+        'flavor-butternut': 'flavors/chocobutternut.jpg'
+    };
+
+    var PRODUCT_IMAGES_BY_NAME = {
+        'Chocolate Crinkles': 'flavors/chocolate.jpg',
+        'Choco-Almond Crinkles': 'flavors/choco-almond.jpg',
+        'Choco-Cashew Crinkles': 'flavors/choco-cashew.jpg',
+        'Choco-Mint Crinkles': 'flavors/choco-mint.jpg',
+        'Strawberry Crinkles': 'flavors/strawberry.jpg',
+        'Red Velvet Crinkles': 'flavors/redvelvet.jpg',
+        'Lemon Crinkles': 'flavors/lemon.jpg',
+        'Melon Crinkles': 'flavors/melon.jpg',
+        'Pandan Crinkles': 'flavors/pandan.jpg',
+        'Ube Crinkles': 'flavors/ube.jpg',
+        'Mango Crinkles': 'flavors/mango.jpg',
+        'Choco Butternut Crinkles': 'flavors/chocobutternut.jpg'
+    };
+
+    function imgFallback(name) {
+        var label = encodeURIComponent(name || 'Order');
+        return "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%25' height='100%25' fill='%23eef2f7'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='10' fill='%2394a3b8'>" + label + '</text></svg>';
+    }
+
+    function resolveItemImage(itemId, item) {
+        if (item && item.img) return item.img;
+        if (itemId && PRODUCT_IMAGES_BY_ID[itemId]) return PRODUCT_IMAGES_BY_ID[itemId];
+        if (item && item.name && PRODUCT_IMAGES_BY_NAME[item.name]) return PRODUCT_IMAGES_BY_NAME[item.name];
+        return imgFallback(item && item.name);
+    }
+
+    function firstOrderItem(order) {
+        var entries = Object.entries(order.items || {});
+        if (!entries.length) return { id: '', item: { name: 'Order' } };
+        return { id: entries[0][0], item: entries[0][1] || {} };
+    }
+
+    function updateOrdersTriggerState() {
+        var badge = document.getElementById('orders-trigger-badge');
+        var trigger = document.querySelector('.orders-trigger-btn');
+        var count = loadOrders().length;
+        if (badge) {
+            badge.hidden = count <= 0;
+            badge.textContent = String(count);
+        }
+        if (trigger) {
+            trigger.setAttribute('aria-label', count > 0
+                ? 'Order Notification, ' + count + ' order' + (count === 1 ? '' : 's')
+                : 'Order Notification');
+        }
+    }
+
     function firstItemName(order) {
         var items = Object.values(order.items || {});
         if (!items.length) return 'No items';
@@ -186,6 +249,12 @@
         var totals = orderTotals(order);
         var count = itemCount(order);
         var dateStr = formatDate(order.date);
+        var first = firstOrderItem(order);
+        var imageSrc = resolveItemImage(first.id, first.item);
+        var imageAlt = first.item.name || 'Ordered crinkles';
+        var countBadge = count > 1
+            ? '<span class="order-list-thumb-count">' + count + '</span>'
+            : '';
 
         return (
             '<button type="button" class="order-list-card" data-order-id="' + order.orderNumber + '">' +
@@ -197,7 +266,10 @@
             statusBadge(order.status) +
             '</div>' +
             '<div class="order-list-card-body">' +
-            '<div class="order-list-thumb">' + count + ' item' + (count !== 1 ? 's' : '') + '</div>' +
+            '<div class="order-list-thumb">' +
+            '<img src="' + imageSrc + '" alt="' + imageAlt + '" onerror="this.src=\'' + imgFallback(imageAlt) + '\'">' +
+            countBadge +
+            '</div>' +
             '<div class="order-list-preview">' +
             '<div class="order-list-items">' + firstItemName(order) + '</div>' +
             '<div class="order-list-total">' + totals.total + '</div>' +
@@ -223,10 +295,12 @@
 
         if (!filtered.length) {
             container.innerHTML = '<div class="orders-empty-state"><p>No orders found.</p></div>';
+            updateOrdersTriggerState();
             return;
         }
 
         container.innerHTML = filtered.slice().reverse().map(renderOrderCard).join('');
+        updateOrdersTriggerState();
     }
 
     function showListView() {
@@ -238,7 +312,7 @@
 
         if (listView) listView.style.display = '';
         if (detailView) detailView.style.display = 'none';
-        if (title) title.textContent = 'My Orders';
+        if (title) title.textContent = 'Order Notification';
         if (backBtn) backBtn.style.display = 'none';
     }
 
@@ -261,10 +335,16 @@
         var shipping = order.shippingInfo || {};
         var paymentLabel = (order.paymentMethod || '—').toUpperCase();
 
-        var itemsHtml = Object.values(order.items || {}).map(function (item) {
+        var itemsHtml = Object.entries(order.items || {}).map(function (entry) {
+            var itemId = entry[0];
+            var item = entry[1];
             var lineTotal = item.cost * item.qty;
+            var imageSrc = resolveItemImage(itemId, item);
             return (
                 '<div class="order-detail-item">' +
+                '<div class="order-detail-item-thumb">' +
+                '<img src="' + imageSrc + '" alt="' + (item.name || 'Ordered item') + '" onerror="this.src=\'' + imgFallback(item.name) + '\'">' +
+                '</div>' +
                 '<div class="order-detail-item-info">' +
                 '<div class="order-detail-item-name">' + item.name + '</div>' +
                 '<div class="order-detail-item-qty">₱' + item.cost.toFixed(2) + ' × ' + item.qty + '</div>' +
@@ -371,14 +451,37 @@
         filterOrders: filterOrders,
         showOrderDetail: showOrderDetail,
         showListView: showListView,
-        onOrdersModalOpen: onOrdersModalOpen
+        onOrdersModalOpen: onOrdersModalOpen,
+        refreshTrigger: updateOrdersTriggerState
     };
 
     window.filterOrders = filterOrders;
 
-    document.addEventListener('DOMContentLoaded', bindOrdersUi);
+    function bootOrdersUi() {
+        bindOrdersUi();
+        updateOrdersTriggerState();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootOrdersUi);
+    } else {
+        bootOrdersUi();
+    }
+    window.addEventListener('pageshow', function () {
+        bootOrdersUi();
+        renderOrders(currentFilter || 'all');
+    });
+    document.addEventListener('turbo:load', function () {
+        bootOrdersUi();
+        renderOrders(currentFilter || 'all');
+    });
+    document.addEventListener('turbo:render', function () {
+        bootOrdersUi();
+        renderOrders(currentFilter || 'all');
+    });
     document.addEventListener('kreezby-orders-updated', function () {
         if (currentDetailOrder) showOrderDetail(currentDetailOrder);
         renderOrders(currentFilter);
+        updateOrdersTriggerState();
     });
 })();

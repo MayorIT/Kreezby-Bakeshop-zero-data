@@ -7,44 +7,53 @@
     <link rel="stylesheet" href="../css/pages/customer/customer_guest.css">
     <link rel="stylesheet" href="../css/shared/testimonial.css">
     <link rel="stylesheet" href="../css/shared/product-flavor-card.css">
-
-    
 </head>
 <body>
 
-    <header>
-        <div class="logo-area">
+    <a class="skip-link" href="#guest-main">Skip to catalog</a>
+
+    <header class="site-header">
+        <a href="../auth/start.html" class="logo-area">
             <span class="logo-title">Kreezby</span>
             <span class="logo-tagline">The Crinkle Factory</span>
-        </div>
-        <div class="nav-actions">
-            <a href="../auth/log_in.html" class="nav-btn">Log In</a>
-            <a href="../auth/sign_up.html" class="nav-btn nav-btn-primary">Create Account</a>
-            <a href="../auth/start.html" class="nav-btn" style="color: var(--primary-blue);">← Back</a>
-        </div>
+        </a>
     </header>
 
-    <div class="pricing-banner">
-        Premium Taste, Simple Pricing: ₱165 for all standard pouches | ₱200 for Choco Butternut specialty jars
+    <div class="pricing-banner" role="note">
+        <span class="pricing-banner__label">Simple pricing</span>
+        <div class="pricing-chips">
+            <span class="pricing-chip">₱165 standard pouches</span>
+            <span class="pricing-chip pricing-chip--specialty">₱200 Choco Butternut jars</span>
+        </div>
     </div>
 
     <div class="main-layout">
-        <div class="content-workspace">
-            <div class="guest-banner">
-                <div class="guest-banner-title">👋 Browsing as Guest</div>
-                <div class="guest-banner-text">You can view our delicious crinkles collection. Create an account or log in to place an order.</div>
-                <div class="guest-banner-buttons">
+        <main class="content-workspace" id="guest-main">
+            <section class="guest-hero" aria-labelledby="guest-hero-title">
+                <div class="guest-hero__copy">
+                    <p class="guest-hero__eyebrow">Guest preview</p>
+                    <h1 class="guest-hero__title" id="guest-hero-title">Browse our fresh crinkles</h1>
+                    <p class="guest-hero__text">Look through every flavor in the collection. Log in or create an account when you are ready to place an order.</p>
+                </div>
+                <div class="guest-hero__actions">
                     <a href="../auth/log_in.html" class="banner-btn banner-btn-secondary">Log In</a>
                     <a href="../auth/sign_up.html" class="banner-btn banner-btn-primary">Create Account</a>
                 </div>
-            </div>
+            </section>
 
-            <h3 class="menu-section-title">Explore Our Fresh Crinkles</h3>
-            
-            <div class="menu-grid" id="shop-menu-container"></div>
+            <section class="catalog-section" aria-labelledby="catalog-heading">
+                <div class="section-heading">
+                    <h2 class="menu-section-title" id="catalog-heading">Explore Our Fresh Crinkles</h2>
+                    <p class="section-heading__hint">Pouches for everyday favorites, jars for sharing and gifts.</p>
+                </div>
+                <div id="shop-menu-container"></div>
+            </section>
 
             <section class="testimonials-section" aria-label="Customer reviews">
-                <h3 class="menu-section-title">What Our Customers Say</h3>
+                <div class="section-heading">
+                    <h2 class="menu-section-title">What Our Customers Say</h2>
+                    <p class="section-heading__hint">Real notes from people who keep coming back for another pouch.</p>
+                </div>
                 <div class="testimonials-grid">
 
                     <article class="testimonial">
@@ -133,7 +142,7 @@
 
                 </div>
             </section>
-        </div>
+        </main>
     </div>
 
     <script src="../js/customer-shop-cards.js"></script>

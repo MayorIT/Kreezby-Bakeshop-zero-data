@@ -5,35 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Report Issue - Customer</title>
     <link rel="stylesheet" href="../css/pages/customer/report_issue-customer.css">
-
 </head>
 <body>
-<header class="top-navbar-node">
-    <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
-    <div class="top-nav-links-right">
-        <a class="top-nav-item home-badge" href="customer.html">Home</a>
-        <a class="top-nav-item" href="inbox-customer.html">Help Center</a>
-    </div>
+<header class="top-navbar-node customer-report-header">
+    <a class="brand-logo-panel" href="customer.html" title="Back to Home">
+        <img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo">
+    </a>
+    <nav class="customer-report-header-actions" aria-label="Page shortcuts">
+        <a class="customer-home-btn" href="customer.html" data-turbo="false">Back to Home</a>
+        <a class="customer-outline-btn" href="inbox-customer.html">Help Center</a>
+    </nav>
 </header>
-<div class="page-shell">
+
+<main class="page-shell">
     <div class="report-panel">
         <div class="report-header">
             <span class="report-kicker">Customer Support</span>
-            <h1>Report an Issue — Customer</h1>
+            <h1>Report an Issue</h1>
             <p>Submit product, ordering, or account issues so our support team can assist you quickly.</p>
-            <div class="report-highlights">
-                <span class="report-highlight-chip">Order concerns</span>
-                <span class="report-highlight-chip">Payment follow-up</span>
-                <span class="report-highlight-chip">Product quality support</span>
+            <div class="report-highlights" role="group" aria-label="Quick issue types">
+                <button type="button" class="report-highlight-chip" data-issue-type="Order Status">Order concerns</button>
+                <button type="button" class="report-highlight-chip" data-issue-type="Payment / Refund">Payment follow-up</button>
+                <button type="button" class="report-highlight-chip" data-issue-type="Product Quality">Product quality support</button>
             </div>
         </div>
+
         <div class="report-body">
             <div class="report-layout">
-                <form class="report-form" onsubmit="submitIssue(event, 'Customer');">
+                <form class="report-form" id="customer-report-form" novalidate>
                     <div class="form-section-head">
                         <h2>Issue Details</h2>
                         <p>Fill in the key order and contact information so the team can respond faster.</p>
                     </div>
+                    <p class="form-status" id="customer-report-status" hidden></p>
                     <div class="form-grid">
                         <div class="form-row">
                             <label for="customer-name">Full Name</label>
@@ -69,14 +73,29 @@
                         <div class="form-row full-width form-row-file">
                             <label for="customer-attachment">Attach Screenshot / Receipt</label>
                             <span class="field-help">Optional, but helpful for faster verification.</span>
-                            <input id="customer-attachment" name="attachment" type="file">
+                            <label class="file-drop-label" for="customer-attachment">
+                                <span id="customer-attachment-label">Choose a file or take a photo of your receipt</span>
+                            </label>
+                            <input id="customer-attachment" name="attachment" type="file" accept="image/*,.pdf">
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn-submit">Submit Report</button>
+                        <button type="submit" class="btn-submit" id="customer-report-submit">Submit Report</button>
+                        <button type="reset" class="btn-secondary" id="customer-report-reset">Clear Form</button>
                         <a href="customer.html" class="btn-secondary">Return to Shop</a>
                     </div>
                 </form>
+
+                <section class="report-success" id="customer-report-success" hidden>
+                    <span class="report-kicker">Report received</span>
+                    <h2>Thanks — your issue is on file.</h2>
+                    <p id="customer-report-success-copy">Our support team will review your details and follow up in Help Center.</p>
+                    <div class="form-actions">
+                        <a href="inbox-customer.html" class="btn-submit">Open Help Center</a>
+                        <button type="button" class="btn-secondary" id="customer-report-another">Report another issue</button>
+                        <a href="customer.html" class="btn-secondary">Back to Home</a>
+                    </div>
+                </section>
 
                 <aside class="report-side-panel" aria-label="Support information">
                     <div class="support-card support-card-primary">
@@ -87,6 +106,7 @@
                             <li>Kreezby support checks order and payment details.</li>
                             <li>You receive a follow-up update through the help center.</li>
                         </ul>
+                        <a class="support-card-link" href="inbox-customer.html">Go to Help Center</a>
                     </div>
                     <div class="support-card">
                         <span class="support-card-kicker">Helpful Tips</span>
@@ -100,13 +120,118 @@
             </div>
         </div>
     </div>
-</div>
+</main>
+
 <script>
-function submitIssue(event, role) {
-    event.preventDefault();
-    alert(role + ' issue report submitted successfully. Redirecting to the received issues inbox.');
-    window.location.href='report_issue-received-students.html';
-}
+(function () {
+    var form = document.getElementById('customer-report-form');
+    var success = document.getElementById('customer-report-success');
+    var statusEl = document.getElementById('customer-report-status');
+    var typeSelect = document.getElementById('customer-issue-type');
+    var fileInput = document.getElementById('customer-attachment');
+    var fileLabel = document.getElementById('customer-attachment-label');
+    var chips = document.querySelectorAll('.report-highlight-chip');
+    var STORAGE_KEY = 'kreezbyCustomerIssueReports';
+
+    function showStatus(message, isError) {
+        if (!statusEl) return;
+        statusEl.hidden = !message;
+        statusEl.textContent = message || '';
+        statusEl.classList.toggle('is-error', Boolean(isError));
+    }
+
+    function syncChips() {
+        var current = typeSelect ? typeSelect.value : '';
+        chips.forEach(function (chip) {
+            chip.classList.toggle('is-active', chip.getAttribute('data-issue-type') === current);
+        });
+    }
+
+    chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            if (!typeSelect) return;
+            typeSelect.value = chip.getAttribute('data-issue-type') || '';
+            syncChips();
+            typeSelect.focus();
+        });
+    });
+
+    if (typeSelect) typeSelect.addEventListener('change', syncChips);
+
+    if (fileInput && fileLabel) {
+        fileInput.addEventListener('change', function () {
+            var file = fileInput.files && fileInput.files[0];
+            fileLabel.textContent = file
+                ? 'Attached: ' + file.name
+                : 'Choose a file or take a photo of your receipt';
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            if (!form.checkValidity()) {
+                showStatus('Please complete the required fields before submitting.', true);
+                form.reportValidity();
+                return;
+            }
+
+            var reports = [];
+            try {
+                reports = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                if (!Array.isArray(reports)) reports = [];
+            } catch (err) {
+                reports = [];
+            }
+
+            var file = fileInput && fileInput.files && fileInput.files[0];
+            var report = {
+                id: 'ISS-' + Date.now(),
+                fullName: document.getElementById('customer-name').value.trim(),
+                contact: document.getElementById('customer-contact').value.trim(),
+                orderNumber: document.getElementById('customer-order').value.trim(),
+                issueType: typeSelect.value,
+                description: document.getElementById('customer-description').value.trim(),
+                notes: document.getElementById('customer-notes').value.trim(),
+                attachmentName: file ? file.name : '',
+                submittedAt: new Date().toISOString()
+            };
+            reports.unshift(report);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
+
+            form.hidden = true;
+            if (success) {
+                success.hidden = false;
+                var copy = document.getElementById('customer-report-success-copy');
+                if (copy) {
+                    copy.textContent = 'Report ' + report.id + ' for order ' + report.orderNumber +
+                        ' is saved. Continue in Help Center for follow-up.';
+                }
+                success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+
+        form.addEventListener('reset', function () {
+            window.setTimeout(function () {
+                if (fileLabel) fileLabel.textContent = 'Choose a file or take a photo of your receipt';
+                showStatus('');
+                syncChips();
+            }, 0);
+        });
+    }
+
+    var anotherBtn = document.getElementById('customer-report-another');
+    if (anotherBtn) {
+        anotherBtn.addEventListener('click', function () {
+            if (success) success.hidden = true;
+            if (form) {
+                form.hidden = false;
+                form.reset();
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    }
+})();
 </script>
 </body>
 </html>

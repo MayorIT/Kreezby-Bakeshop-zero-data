@@ -1410,3 +1410,174 @@ textarea {
         border-radius: 20px;
     }
 }
+
+.customer-report-header.top-navbar-node {
+    gap: 16px;
+    padding: 12px 24px;
+}
+
+.customer-report-header .brand-logo-panel {
+    text-decoration: none;
+}
+
+.customer-report-header .brand-logo-panel img {
+    height: 38px;
+    width: auto;
+}
+
+.customer-report-header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.customer-home-btn,
+.customer-outline-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 13px;
+    transition: transform 0.16s ease, background 0.16s ease;
+}
+
+.customer-home-btn {
+    background: #ffca28;
+    color: #1f1f1f;
+}
+
+.customer-outline-btn {
+    background: #2b2114;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.customer-home-btn:hover,
+.customer-outline-btn:hover {
+    transform: translateY(-1px);
+}
+
+.report-highlight-chip {
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+}
+
+.report-highlight-chip:hover {
+    transform: translateY(-1px);
+    border-color: #f1b82a;
+    background: #fff8e4;
+}
+
+.report-highlight-chip.is-active {
+    background: #1e88e5;
+    border-color: #1565c0;
+    color: #ffffff;
+}
+
+.form-status {
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: #ecfdf3;
+    color: #166534;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.form-status.is-error {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.file-drop-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 54px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid #d2dceb;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+}
+
+.file-drop-label:hover {
+    border-color: #f1b82a;
+    background: #fffdf6;
+}
+
+.form-row-file input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.form-row-file {
+    position: relative;
+}
+
+.report-success {
+    background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+    border: 1px solid #e6edf6;
+    border-radius: 24px;
+    padding: 28px 26px;
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.06);
+}
+
+.report-success h2 {
+    margin: 12px 0 10px;
+    font-size: 28px;
+    color: #1e293b;
+}
+
+.report-success p {
+    margin: 0 0 8px;
+    color: #526079;
+    line-height: 1.7;
+}
+
+.support-card-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 18px;
+    min-height: 42px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #ffca28;
+    color: #1f1f1f;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.support-card-link:hover {
+    background: #f9a825;
+}
+
+.btn-submit:active,
+.btn-secondary:active,
+.customer-home-btn:active,
+.customer-outline-btn:active,
+.report-highlight-chip:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 720px) {
+    .customer-report-header.top-navbar-node {
+        padding: 12px 14px;
+    }
+}

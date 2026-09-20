@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store">
+    <meta name="turbo-visit-control" content="reload">
+    <meta name="turbo-cache-control" content="no-cache">
     <title>Kreezby Crinkles - Premium Taste, Simple Pricing</title>
     <link rel="stylesheet" href="../css/pages/customer/customer.css">
     <link rel="stylesheet" href="../css/shared/testimonial.css">
@@ -14,44 +17,81 @@
 </head>
 <body>
 
-    <header>
+    <header class="site-header">
         <div class="logo-area">
             <span class="logo-title">Kreezby</span>
             <span class="logo-tagline">The Crinkle Factory</span>
         </div>
-        <div class="nav-actions">
-            <button class="nav-btn notifications-trigger-btn" onclick="openModal('favorites-modal')">
-                Favorites
+        <nav class="nav-actions" aria-label="Customer account">
+            <button class="nav-btn notifications-trigger-btn" data-nav="favorites" onclick="openModal('favorites-modal')">
+                <span class="nav-btn__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 21s-6.7-4.35-9.33-8.2C.7 9.9 1.53 5.68 5.53 4.6c2.23-.6 4.27.23 5.47 1.93 1.2-1.7 3.24-2.53 5.47-1.93 4 1.08 4.83 5.3 2.86 8.2C18.7 16.65 12 21 12 21z"/></svg>
+                </span>
+                <span class="nav-btn__label">Favorites</span>
                 <span class="notifications-trigger-badge" id="favorites-trigger-badge" hidden>0</span>
             </button>
-            <button class="nav-btn" onclick="openModal('orders-tracker-modal')">Order Notification</button>
-            <button class="nav-btn" onclick="openModal('profile-settings-modal')">My Profile</button>
-            <button class="nav-btn cart-toggle-btn" onclick="toggleCartSidebar()">Cart (<span id="global-cart-count">0</span>)</button>
+            <button class="nav-btn orders-trigger-btn" data-nav="orders" onclick="openModal('orders-tracker-modal')" aria-label="Order Notification">
+                <span class="nav-btn__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 22a2.2 2.2 0 0 0 2.2-2.2H9.8A2.2 2.2 0 0 0 12 22zm7-5.5V11a7 7 0 1 0-14 0v5.5L3 18v1h18v-1l-2-1.5z"/></svg>
+                </span>
+                <span class="nav-btn__label">Order Notification</span>
+                <span class="notifications-trigger-badge" id="orders-trigger-badge" hidden>0</span>
+            </button>
+            <button class="nav-btn profile-trigger-btn" data-nav="profile" onclick="openModal('profile-settings-modal')">
+                <span class="nav-btn__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 12a4.2 4.2 0 1 0-4.2-4.2A4.2 4.2 0 0 0 12 12zm0 2.2c-3.5 0-8.2 1.7-8.2 5.1V21h16.4v-1.7c0-3.4-4.7-5.1-8.2-5.1z"/></svg>
+                </span>
+                <span class="nav-btn__label">My Profile</span>
+            </button>
+            <button class="nav-btn cart-toggle-btn" data-nav="cart" onclick="toggleCartSidebar()" aria-label="Cart">
+                <span class="nav-btn__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M7 7V6a5 5 0 0 1 10 0v1h3l-1.5 13H5.5L4 7h3zm2 0h6V6a3 3 0 0 0-6 0v1z"/></svg>
+                </span>
+                <span class="nav-btn__label">Cart</span>
+                <span class="notifications-trigger-badge" id="global-cart-count" hidden>0</span>
+            </button>
             <div class="user-dropdown-wrapper">
-                <button class="nav-btn" type="button" id="user-dropdown-trigger">Customer ▾</button>
+                <button class="nav-btn" type="button" id="user-dropdown-trigger" data-nav="customer">
+                    <span class="nav-btn__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 5a3 3 0 1 1-3 3 3 3 0 0 1 3-3zm0 12.2a7.2 7.2 0 0 1-5.4-2.4 5.5 5.5 0 0 1 10.8 0A7.2 7.2 0 0 1 12 19.2z"/></svg>
+                    </span>
+                    <span class="nav-btn__label">Customer</span>
+                    <span class="nav-btn__caret" aria-hidden="true">▾</span>
+                </button>
                 <div class="user-dropdown-menu" id="user-dropdown-menu">
                     <a href="inbox-customer.html" class="dropdown-item">Help Center</a>
                     <a href="report_issue-customer.html" class="dropdown-item">Report Issue</a>
                     <a href="../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
                 </div>
             </div>
-        </div>
+        </nav>
     </header>
 
-    <div class="pricing-banner">
-        Premium Taste, Simple Pricing: ₱165 for all standard pouches | ₱200 for Choco Butternut specialty jars
+    <div class="pricing-banner" role="note">
+        <span class="pricing-banner__label">Simple pricing</span>
+        <div class="pricing-chips">
+            <span class="pricing-chip">₱165 standard pouches</span>
+            <span class="pricing-chip pricing-chip--specialty">₱200 Choco Butternut jars</span>
+        </div>
     </div>
 
     <div class="main-layout">
         
         <div class="content-workspace">
-            <h3 class="menu-section-title">Explore Our Fresh Crinkles</h3>
+            <section class="catalog-section" aria-labelledby="catalog-heading">
+            <div class="section-heading">
+                <h2 class="menu-section-title" id="catalog-heading">Explore Our Fresh Crinkles</h2>
+                <p class="section-heading__hint">Pouches for everyday favorites, jars for sharing and gifts.</p>
+            </div>
             
-            <div class="menu-grid" id="shop-menu-container">
-                </div>
+            <div id="shop-menu-container"></div>
+            </section>
 
             <section class="testimonials-section" aria-label="Customer reviews">
-                <h3 class="menu-section-title">What Our Customers Say</h3>
+                <div class="section-heading">
+                    <h2 class="menu-section-title">What Our Customers Say</h2>
+                    <p class="section-heading__hint">Real notes from people who keep coming back for another pouch.</p>
+                </div>
                 <div class="testimonials-grid" id="customer-testimonials-grid">
 
                     <article class="testimonial">
@@ -415,7 +455,44 @@
         }
 
         function renderCatalogCards() {
-            KreezbyFlavorCards.render(productFlavorsCatalog, 'shop-menu-container');
+            if (!window.KreezbyFlavorCards || typeof window.KreezbyFlavorCards.render !== 'function') return;
+            window.KreezbyFlavorCards.render(productFlavorsCatalog, 'shop-menu-container');
+        }
+
+        function bootCustomerShop() {
+            try { renderCatalogCards(); } catch (err) {}
+            try { updateFavoritesTriggerState(); } catch (err) {}
+            try { loadPersistedCart(); } catch (err) {}
+            try {
+                if (typeof refreshGlobalCartInterfaceState === 'function') {
+                    refreshGlobalCartInterfaceState();
+                }
+            } catch (err) {}
+            try {
+                if (window.KreezbyCustomerOrders) {
+                    if (typeof window.KreezbyCustomerOrders.refreshTrigger === 'function') {
+                        window.KreezbyCustomerOrders.refreshTrigger();
+                    }
+                    if (typeof window.KreezbyCustomerOrders.renderOrders === 'function') {
+                        window.KreezbyCustomerOrders.renderOrders('all');
+                    }
+                }
+            } catch (err) {}
+            try { openOrdersIfReturningFromCheckout(); } catch (err) {}
+        }
+
+        renderCatalogCards();
+
+        function openOrdersIfReturningFromCheckout() {
+            try {
+                if (localStorage.getItem('kreezbyOpenOrdersAfterCheckout') !== '1') return;
+                localStorage.removeItem('kreezbyOpenOrdersAfterCheckout');
+            } catch (err) {
+                return;
+            }
+            if (typeof openModal === 'function') {
+                openModal('orders-tracker-modal');
+            }
         }
 
         function favoriteCategoryOf(product) {
@@ -631,9 +708,19 @@
         }
 
         // Window Init Execution hook lifecycle bindings
-        window.addEventListener('DOMContentLoaded', () => {
-            renderCatalogCards();
+        if (document.readyState === 'loading') {
+            window.addEventListener('DOMContentLoaded', bootCustomerShop);
+        } else {
+            bootCustomerShop();
+        }
+        window.bootCustomerShop = bootCustomerShop;
+        window.addEventListener('pageshow', bootCustomerShop);
+        document.addEventListener('visibilitychange', function () {
+            if (!document.hidden) bootCustomerShop();
         });
+        document.addEventListener('turbo:load', bootCustomerShop);
+        document.addEventListener('turbo:render', bootCustomerShop);
+        document.addEventListener('kreezby:page-load', bootCustomerShop);
 
         function adjustCardWidgetQtyState(prodId, modifierValue) {
             const targetLabel = document.getElementById(`qty-val-${prodId}`);
@@ -644,18 +731,56 @@
         }
 
         // Cart core functions execution matrix blocks
+        function pulseHeaderNav(navKey) {
+            const btn = document.querySelector('.nav-actions .nav-btn[data-nav="' + navKey + '"]');
+            if (!btn) return;
+            btn.classList.remove('is-tapped');
+            void btn.offsetWidth;
+            btn.classList.add('is-tapped');
+        }
+
+        function setActiveHeaderNav(navKey) {
+            document.querySelectorAll('.nav-actions .nav-btn[data-nav]').forEach((btn) => {
+                const isActive = Boolean(navKey) && navKey !== 'cart' && btn.dataset.nav === navKey;
+                btn.classList.toggle('is-active', isActive);
+            });
+            if (navKey) pulseHeaderNav(navKey);
+        }
+
+        function closeCustomerDropdown() {
+            const dropdownMenu = document.getElementById('user-dropdown-menu');
+            if (dropdownMenu) dropdownMenu.classList.remove('active');
+        }
+
         function setCartSidebarOpen(shouldOpen) {
             const sidePanel = document.getElementById('interactive-cart-sidebar');
             if (!sidePanel) return;
 
             sidePanel.classList.toggle('open', Boolean(shouldOpen));
             document.body.classList.toggle('cart-sidebar-open', Boolean(shouldOpen));
+            if (shouldOpen) {
+                closeCustomerDropdown();
+                document.getElementById('global-modal-overlay-context').classList.remove('active');
+                setActiveHeaderNav(null);
+                pulseHeaderNav('cart');
+            } else if (!document.getElementById('global-modal-overlay-context').classList.contains('active')) {
+                setActiveHeaderNav(null);
+            }
         }
 
         function toggleCartSidebar() {
             const sidePanel = document.getElementById('interactive-cart-sidebar');
             if (!sidePanel) return;
-            setCartSidebarOpen(!sidePanel.classList.contains('open'));
+            const willOpen = !sidePanel.classList.contains('open');
+            if (!willOpen) pulseHeaderNav('cart');
+            setCartSidebarOpen(willOpen);
+        }
+
+        function loadPersistedCart() {
+            const stored = safelyReadJson('kreezbyCart', {});
+            if (stored && typeof stored === 'object' && !Array.isArray(stored)) {
+                shoppingCartStateMap = stored;
+            }
         }
 
         function commitItemToCartState(prodId) {
@@ -669,6 +794,7 @@
                     name: itemConfig.name,
                     cost: itemConfig.cost,
                     variant: itemConfig.variant,
+                    img: itemConfig.img,
                     qty: inputQtyVal
                 };
             }
@@ -707,16 +833,20 @@
             let computedBillTotal = 0;
 
             if (keys.length === 0) {
-                rowsContainer.innerHTML = `<div class="cart-empty-state"><strong>Your shopping cart is empty.</strong><span>Add crinkles to see them here instantly.</span></div>`;
+                if (rowsContainer) {
+                    rowsContainer.innerHTML = `<div class="cart-empty-state"><strong>Your shopping cart is empty.</strong><span>Add crinkles to see them here instantly.</span></div>`;
+                }
             } else {
-                rowsContainer.innerHTML = keys.map(key => {
+                keys.forEach((key) => {
                     const line = shoppingCartStateMap[key];
-                    const lineCostTotal = line.cost * line.qty;
-                    
-                    accumulatedItemsCount += line.qty;
-                    computedBillTotal += lineCostTotal;
-
-                    return `
+                    accumulatedItemsCount += Number(line && line.qty) || 0;
+                    computedBillTotal += (Number(line && line.cost) || 0) * (Number(line && line.qty) || 0);
+                });
+                if (rowsContainer) {
+                    rowsContainer.innerHTML = keys.map(key => {
+                        const line = shoppingCartStateMap[key];
+                        const lineCostTotal = line.cost * line.qty;
+                        return `
                         <div class="cart-item-row">
                             <div class="cart-item-details">
                                 <div class="cart-item-name">${line.name}</div>
@@ -733,12 +863,19 @@
                             </div>
                         </div>
                     `;
-                }).join('');
+                    }).join('');
+                }
             }
 
-            document.getElementById('global-cart-count').textContent = accumulatedItemsCount;
-            document.getElementById('summary-items-count').textContent = accumulatedItemsCount;
-            document.getElementById('summary-bill-total').textContent = `₱${computedBillTotal.toFixed(2)}`;
+            const cartCountBadge = document.getElementById('global-cart-count');
+            if (cartCountBadge) {
+                cartCountBadge.hidden = accumulatedItemsCount <= 0;
+                cartCountBadge.textContent = String(accumulatedItemsCount);
+            }
+            const summaryCount = document.getElementById('summary-items-count');
+            if (summaryCount) summaryCount.textContent = accumulatedItemsCount;
+            const summaryTotal = document.getElementById('summary-bill-total');
+            if (summaryTotal) summaryTotal.textContent = `₱${computedBillTotal.toFixed(2)}`;
             const cartPanelCountPill = document.getElementById('cart-panel-count-pill');
             if (cartPanelCountPill) {
                 cartPanelCountPill.textContent = `${accumulatedItemsCount} item${accumulatedItemsCount === 1 ? '' : 's'}`;
@@ -766,15 +903,38 @@
         function openModal(modalBoxId) {
             document.getElementById('global-modal-overlay-context').classList.add('active');
             
-            // Deactivate other existing target cards if present context inside layout loop frame loop
             const boxes = document.querySelectorAll('.modal-box');
             boxes.forEach(b => b.classList.remove('active'));
 
             document.getElementById(modalBoxId).classList.add('active');
+            setCartSidebarOpen(false);
+            closeCustomerDropdown();
+
+            const navByModal = {
+                'favorites-modal': 'favorites',
+                'orders-tracker-modal': 'orders',
+                'profile-settings-modal': 'profile'
+            };
+            setActiveHeaderNav(navByModal[modalBoxId] || null);
+            if (modalBoxId === 'orders-tracker-modal' && window.KreezbyCustomerOrders) {
+                window.KreezbyCustomerOrders.onOrdersModalOpen();
+            }
+            if (modalBoxId === 'profile-settings-modal') {
+                resetAccountSettingsModal();
+            }
+            if (modalBoxId === 'favorites-modal') {
+                renderFavoritesPanel();
+            }
         }
 
         function closeCurrentModal() {
             document.getElementById('global-modal-overlay-context').classList.remove('active');
+            const dropdownMenu = document.getElementById('user-dropdown-menu');
+            if (dropdownMenu && dropdownMenu.classList.contains('active')) {
+                setActiveHeaderNav('customer');
+            } else {
+                setActiveHeaderNav(null);
+            }
         }
 
         function closeAllSystemModals(event) {
@@ -790,12 +950,26 @@
             if (dropdownTrigger && dropdownMenu) {
                 dropdownTrigger.addEventListener('click', (event) => {
                     event.stopPropagation();
-                    dropdownMenu.classList.toggle('active');
+                    const willOpen = !dropdownMenu.classList.contains('active');
+                    dropdownMenu.classList.toggle('active', willOpen);
+                    if (willOpen) {
+                        document.getElementById('global-modal-overlay-context').classList.remove('active');
+                        setCartSidebarOpen(false);
+                        setActiveHeaderNav('customer');
+                    } else {
+                        setActiveHeaderNav(null);
+                    }
                 });
 
                 document.addEventListener('click', (event) => {
                     if (!dropdownMenu.contains(event.target) && event.target !== dropdownTrigger) {
                         dropdownMenu.classList.remove('active');
+                        if (!document.getElementById('global-modal-overlay-context').classList.contains('active')) {
+                            const sidePanel = document.getElementById('interactive-cart-sidebar');
+                            if (!sidePanel || !sidePanel.classList.contains('open')) {
+                                setActiveHeaderNav(null);
+                            }
+                        }
                     }
                 });
             }
@@ -1745,19 +1919,7 @@
         window.switchProfileEditMode = switchProfileEditMode;
         window.updateAddressLabelInputState = updateAddressLabelInputState;
 
-        const originalOpenModal = openModal;
-        openModal = function(modalBoxId) {
-            originalOpenModal(modalBoxId);
-            if (modalBoxId === 'orders-tracker-modal' && window.KreezbyCustomerOrders) {
-                window.KreezbyCustomerOrders.onOrdersModalOpen();
-            }
-            if (modalBoxId === 'profile-settings-modal') {
-                resetAccountSettingsModal();
-            }
-            if (modalBoxId === 'favorites-modal') {
-                renderFavoritesPanel();
-            }
-        };
+        bootCustomerShop();
     </script>
 </body>
 </html>
