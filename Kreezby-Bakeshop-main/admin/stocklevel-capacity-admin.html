@@ -6,7 +6,7 @@
     <meta name="view-transition" content="same-origin">
     <link rel="stylesheet" href="../css/shared/kreezby-turbo-nav.css">
     <title>Kreezby Bakeshop - Stock Capacity (Admin)</title>
-    <link rel="stylesheet" href="../css/pages/admin/stocklevel-admin.css">
+    <link rel="stylesheet" href="../css/pages/admin/stocklevel-admin.css?v=sl8">
     <link rel="stylesheet" href="../css/shared/expandable-nav-tabs.css">
 </head>
 <body>
@@ -35,9 +35,12 @@
 
         <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
         <main class="workspace-view-canvas">
-            <div class="panel-data-card">
-                <div class="panel-card-title-bar">
-                    <h3>Inventory Dashboard</h3>
+            <a class="admin-back-dashboard" href="admin.html" data-turbo="false">← Back to Dashboard</a>
+            <div class="panel-data-card stocklevel-shell">
+                <div class="stocklevel-page-head">
+                    <p class="stocklevel-kicker">Inventory</p>
+                    <h1>Stock Level</h1>
+                    <p>Switch a view to check units, value, capacity, health, and alerts.</p>
                 </div>
                 <div class="card-body-padded">
                     <div class="ai-filter-pills" id="stocklevel-filter-pills"></div>
@@ -47,9 +50,9 @@
         </main>
 </turbo-frame>
 </div>
-    <script src="../js/stocklevel-dashboard.js"></script>
-    <script src="../js/stocklevel-pills.js"></script>
-    <script src="../js/user-dropdown-nav.js"></script>
+    <script src="../js/stocklevel-dashboard.js?v=sl2"></script>
+    <script src="../js/stocklevel-pills.js?v=sl2"></script>
+    <script src="../js/user-dropdown-nav.js?v=al6"></script>
     <script src="../js/admin-sidebar.js"></script>
     <script src="../js/sidebar-toggle.js"></script>
 </body>

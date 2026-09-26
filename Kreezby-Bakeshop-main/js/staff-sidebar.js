@@ -83,12 +83,9 @@
     }
 
     function ensureNavSmooth() {
-        if (!document.querySelector('meta[name="view-transition"]')) {
-            var meta = document.createElement('meta');
-            meta.name = 'view-transition';
-            meta.content = 'same-origin';
-            (document.head || document.documentElement).appendChild(meta);
-        }
+        document.querySelectorAll('meta[name="view-transition"]').forEach(function (meta) {
+            meta.remove();
+        });
         if (!document.getElementById('kreezby-page-transition-style')) {
             var pt = document.createElement('link');
             pt.id = 'kreezby-page-transition-style';

@@ -386,6 +386,8 @@
         if (backBtn) backBtn.addEventListener('click', backToList);
 
         document.addEventListener('click', function (e) {
+            if (!document.getElementById('returns-master-list-panel-view')) return;
+            if (e.target.closest('.alert-log-card, #alert-modal-overlay')) return;
             var actionBtn = e.target.closest('#returns-master-list-panel-view .action-trigger-btn[data-menu]');
             if (actionBtn) {
                 e.preventDefault();
@@ -439,6 +441,8 @@
         loadData();
         refreshTables();
         bindEvents();
+        var openCode = new URLSearchParams(window.location.search).get('open');
+        if (openCode && RETURNS[openCode]) openDetails(openCode);
     }
 
     window.ReturnAdmin = {

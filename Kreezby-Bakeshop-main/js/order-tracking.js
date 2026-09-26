@@ -43,8 +43,15 @@
             gcash: 'GCash',
             mayabank: 'MayaBank',
             metrobank: 'Metrobank',
+            cash_on_delivery: 'Cash on delivery',
+            cod: 'Cash on delivery',
+            po: 'Purchase order'
         };
-        return labels[methodId] || String(methodId || 'Unknown').toUpperCase();
+        if (labels[methodId]) return labels[methodId];
+        if (!methodId) return '—';
+        return String(methodId).replace(/_/g, ' ').replace(/\b\w/g, function (letter) {
+            return letter.toUpperCase();
+        });
     }
 
     function orderTotals(order) {
@@ -161,14 +168,12 @@
         }
 
         var html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Kreezby Receipt ' + escapeHtml(receipt.receiptNumber) + '</title>' +
-            '<style>body{font-family:"Courier New",Courier,monospace;margin:0;color:#111;background:#f2f2f2}.sheet{width:100%;max-width:320px;margin:10px auto}.receipt-copy{background:#fff;border:1px solid #222;padding:10px}.center{text-align:center}.brand{font-size:16px;font-weight:700;letter-spacing:.5px}.sub{font-size:11px;margin-bottom:2px}.copy-type{font-size:11px;border-top:1px dashed #222;border-bottom:1px dashed #222;padding:3px 0;margin:5px 0 4px}.title{font-size:12px;font-weight:700;margin-bottom:6px}.rule{border-top:1px dashed #222;margin:4px 0}.meta-block{font-size:11px;line-height:1.45;margin-bottom:6px}.meta-block div{margin-bottom:1px}.line{font-size:11px;margin-top:6px}.tax-block{font-size:11px;border-top:1px dashed #222;border-bottom:1px dashed #222;padding:4px 0;margin-top:6px}.tax-block div{display:flex;justify-content:space-between;margin:1px 0}table{width:100%;border-collapse:collapse;font-size:11px}th{text-align:left;border-top:1px dashed #222;border-bottom:1px dashed #222;padding:3px 2px;font-weight:700}td{padding:3px 2px;border-bottom:1px dotted #999;vertical-align:top}.num{text-align:right;white-space:nowrap}.grand{font-weight:700}.thanks{font-size:11px;margin-top:6px}.tiny{font-size:10px;color:#444;margin-top:2px}.cut-line{border-top:2px dashed #222;margin:10px 0;text-align:center;position:relative}.cut-line span{background:#f2f2f2;font-size:10px;padding:0 4px;position:relative;top:-7px;letter-spacing:.08em}.actions{margin:8px auto 14px;display:flex;gap:6px;justify-content:center}button{padding:8px 10px;border:1px solid #222;background:#fff;cursor:pointer;font-family:inherit;font-size:11px}.print{font-weight:700}@media print{body{background:#fff}.actions{display:none}.sheet{max-width:320px;margin:0 auto}.receipt-copy{border:none;page-break-inside:avoid}}</style></head><body>' +
+            '<style>body{font-family:"Courier New",Courier,monospace;margin:0;color:#111;background:#f2f2f2}.sheet{width:100%;max-width:320px;margin:10px auto}.receipt-copy{background:#fff;border:1px solid #222;padding:10px}.center{text-align:center}.brand{font-size:16px;font-weight:700;letter-spacing:.5px}.sub{font-size:11px;margin-bottom:2px}.copy-type{font-size:11px;border-top:1px dashed #222;border-bottom:1px dashed #222;padding:3px 0;margin:5px 0 4px}.title{font-size:12px;font-weight:700;margin-bottom:6px}.rule{border-top:1px dashed #222;margin:4px 0}.meta-block{font-size:11px;line-height:1.45;margin-bottom:6px}.meta-block div{margin-bottom:1px}.line{font-size:11px;margin-top:6px}.tax-block{font-size:11px;border-top:1px dashed #222;border-bottom:1px dashed #222;padding:4px 0;margin-top:6px}.tax-block div{display:flex;justify-content:space-between;margin:1px 0}table{width:100%;border-collapse:collapse;font-size:11px}th{text-align:left;border-top:1px dashed #222;border-bottom:1px dashed #222;padding:3px 2px;font-weight:700}td{padding:3px 2px;border-bottom:1px dotted #999;vertical-align:top}.num{text-align:right;white-space:nowrap}.grand{font-weight:700}.thanks{font-size:11px;margin-top:6px}.tiny{font-size:10px;color:#444;margin-top:2px}.actions{margin:8px auto 14px;display:flex;gap:6px;justify-content:center}button{padding:8px 10px;border:1px solid #222;background:#fff;cursor:pointer;font-family:inherit;font-size:11px}.print{font-weight:700}@media print{body{background:#fff}.actions{display:none}.sheet{max-width:320px;margin:0 auto}.receipt-copy{border:none;page-break-inside:avoid}}</style></head><body>' +
             '<div class="sheet">' +
-            buildCopy('CUSTOMER COPY') +
-            '<div class="cut-line"><span>CUT HERE</span></div>' +
             buildCopy('OWNER COPY') +
             '<div class="actions"><button class="print" onclick="window.print()">Print Receipt</button><button class="close" onclick="window.close()">Close</button></div></div></body></html>';
 
-        var receiptWin = window.open('', '_blank', 'width=920,height=760');
+        var receiptWin = window.open('', '_blank', 'width=420,height=760');
         if (!receiptWin) {
             alert('Receipt pop-up was blocked by your browser. Please allow pop-ups to view receipt.');
             return;
@@ -259,14 +264,16 @@
         return '₱' + sum.toFixed(2);
     }
 
-    function showToast(root, message) {
-        var toast = root.querySelector('#order-tracking-toast');
-        if (!toast) return;
-        var desc = toast.querySelector('.kreezby-alert__description');
-        if (desc) desc.textContent = message;
-        else toast.textContent = message;
-        toast.hidden = false;
-        setTimeout(function () { toast.hidden = true; }, 2500);
+    function showFormNote(root, message) {
+        var panel = document.getElementById('order-tracking-detail');
+        if (!panel) return;
+        var note = panel.querySelector('.order-tracking-inline-note');
+        if (!note) {
+            note = document.createElement('p');
+            note.className = 'order-tracking-inline-note';
+            panel.insertBefore(note, panel.firstChild);
+        }
+        note.textContent = message;
     }
 
     function statusClass(status) {
@@ -336,7 +343,7 @@
 
         if (!orders.length) {
             tableBody.innerHTML =
-                '<tr><td colspan="7" class="order-tracking-empty">No customer orders found.</td></tr>';
+                '<tr><td colspan="8" class="order-tracking-empty">No customer orders found.</td></tr>';
             if (layout) layout.classList.remove('has-detail');
             return;
         }
@@ -356,13 +363,77 @@
                     escapeHtml(order.status || 'Processing') + '</span></td>' +
                 '<td>' + tracking + '</td>' +
                 '<td>' + escapeHtml(order.carrier || CARRIER) + '</td>' +
+                '<td><button type="button" class="order-tracking-open">Open</button></td>' +
                 '</tr>'
             );
         }).join('');
     }
 
+    function sheetRow(label, value) {
+        return '<div class="order-sheet-row"><span>' + escapeHtml(label) + '</span><strong>' + escapeHtml(value || '—') + '</strong></div>';
+    }
+
+    function orderItemSummary(order) {
+        var items = Object.values(order.items || {});
+        if (!items.length) return '—';
+        return items.map(function (item) {
+            var qty = Number(item.qty) || 0;
+            var price = Number(item.cost) || 0;
+            return qty + ' × ' + (item.name || 'Item') + ' (' + formatMoney(price) + ')';
+        }).join('\n');
+    }
+
+    var detailSlideTimer = 0;
+
+    function detailBackdrop() {
+        var backdrop = document.getElementById('order-tracking-backdrop');
+        if (backdrop) return backdrop;
+        backdrop = document.createElement('button');
+        backdrop.type = 'button';
+        backdrop.id = 'order-tracking-backdrop';
+        backdrop.className = 'order-tracking-backdrop';
+        backdrop.setAttribute('aria-label', 'Close order');
+        backdrop.hidden = true;
+        backdrop.addEventListener('click', function () {
+            var page = document.querySelector('[data-order-tracking-page]');
+            if (page) closeDetail(page);
+        });
+        document.body.appendChild(backdrop);
+        return backdrop;
+    }
+
+    function openSlide(panel) {
+        if (!panel) return;
+        if (panel.parentElement !== document.body) document.body.appendChild(panel);
+        window.clearTimeout(detailSlideTimer);
+        panel.hidden = false;
+        var backdrop = detailBackdrop();
+        backdrop.hidden = false;
+        window.requestAnimationFrame(function () {
+            window.requestAnimationFrame(function () {
+                panel.classList.add('is-open');
+                backdrop.classList.add('is-open');
+            });
+        });
+    }
+
+    function closeDetail(root) {
+        var panel = document.getElementById('order-tracking-detail');
+        var layout = root.querySelector('.order-tracking-layout');
+        var backdrop = document.getElementById('order-tracking-backdrop');
+        if (layout) layout.classList.remove('has-detail');
+        if (panel) panel.classList.remove('is-open');
+        if (backdrop) backdrop.classList.remove('is-open');
+        window.clearTimeout(detailSlideTimer);
+        detailSlideTimer = window.setTimeout(function () {
+            if (panel && !panel.classList.contains('is-open')) panel.hidden = true;
+            if (backdrop && !backdrop.classList.contains('is-open')) backdrop.hidden = true;
+        }, 280);
+        renderTable(root, null);
+    }
+
     function renderDetail(root, orderNumber) {
-        var panel = root.querySelector('#order-tracking-detail');
+        var panel = document.getElementById('order-tracking-detail');
         var layout = root.querySelector('.order-tracking-layout');
         if (!panel) return;
 
@@ -374,6 +445,7 @@
         }
 
         var ship = order.shippingInfo || {};
+        var totals = orderTotals(order);
         var trackUrl = jntTrackUrl(order.trackingNumber);
         var receipt = findOwnerReceipt(order) || buildReceiptFromOrder(order);
 
@@ -381,51 +453,65 @@
         if (layout) layout.classList.add('has-detail');
 
         panel.innerHTML =
-            '<h3 class="order-tracking-detail-title">' + escapeHtml(order.orderNumber) + '</h3>' +
-            '<p class="order-tracking-detail-sub">' + escapeHtml(customerName(order)) + ' · ' + formatDate(order.date) + '</p>' +
-            (order.poCode
-                ? '<div class="order-tracking-form-group"><label>Linked PO Code</label><input type="text" readonly class="order-tracking-readonly-field" value="' + escapeHtml(order.poCode) + '"></div>'
-                : '') +
-            '<div class="order-tracking-form-group">' +
-                '<label>Delivery address</label>' +
-                '<textarea readonly rows="2">' + escapeHtml(ship.address || '—') + '</textarea>' +
+            '<div class="order-sheet-head">' +
+                '<div>' +
+                    '<h3 class="order-tracking-detail-title">' + escapeHtml(order.orderNumber) + '</h3>' +
+                    '<p class="order-tracking-detail-sub">Placed ' + escapeHtml(formatDate(order.date)) + '</p>' +
+                '</div>' +
+                '<div class="order-sheet-head-actions">' +
+                    '<span class="order-tracking-status-pill ' + statusClass(order.status) + '">' + escapeHtml(order.status || 'Processing') + '</span>' +
+                    '<button type="button" class="order-sheet-close" id="ot-close-btn">Close</button>' +
+                '</div>' +
             '</div>' +
-            '<div class="order-tracking-form-group">' +
-                '<label>Phone</label>' +
-                '<input type="text" readonly value="' + escapeHtml(ship.phone || '—') + '">' +
-            '</div>' +
-            '<div class="order-tracking-form-group">' +
-                '<label for="ot-status">Order status</label>' +
-                '<select id="ot-status">' +
-                    STATUSES.map(function (s) {
-                        var sel = order.status === s ? ' selected' : '';
-                        return '<option value="' + s + '"' + sel + '>' + s + '</option>';
-                    }).join('') +
-                '</select>' +
-            '</div>' +
-            '<div class="order-tracking-form-group">' +
-                '<label for="ot-carrier">Courier</label>' +
-                '<input type="text" id="ot-carrier" readonly value="' + escapeHtml(order.carrier || CARRIER) + '">' +
-            '</div>' +
-            '<div class="order-tracking-form-group">' +
-                '<label for="ot-tracking">J&amp;T Express tracking ID</label>' +
-                '<input type="text" id="ot-tracking" placeholder="e.g. JT1234567890123" value="' + escapeHtml(order.trackingNumber || '') + '">' +
-            '</div>' +
-            '<div class="order-tracking-form-group">' +
-                '<label for="ot-notes">Internal notes (optional)</label>' +
-                '<textarea id="ot-notes" rows="2" placeholder="Packaging or dispatch notes">' + escapeHtml(order.staffNotes || '') + '</textarea>' +
-            '</div>' +
-            '<div class="order-tracking-form-group">' +
-                '<label>Receipt</label>' +
-                '<input type="text" readonly class="order-tracking-readonly-field" value="' + escapeHtml(receipt.receiptNumber || 'Not generated') + '">' +
-            '</div>' +
-            '<div class="order-tracking-form-actions">' +
-                '<button type="button" class="order-tracking-btn order-tracking-btn-primary" id="ot-save-btn">Save tracking</button>' +
-                '<button type="button" class="order-tracking-btn" id="ot-receipt-btn">View receipt</button>' +
-                (trackUrl
-                    ? '<a class="order-tracking-btn order-tracking-btn-link" href="' + trackUrl + '" target="_blank" rel="noopener noreferrer">Track on J&amp;T</a>'
-                    : '') +
-                '<button type="button" class="order-tracking-btn" id="ot-close-btn">Close</button>' +
+            '<section class="order-sheet-block">' +
+                '<h4>Customer</h4>' +
+                sheetRow('Name', customerName(order)) +
+                sheetRow('Phone', ship.phone) +
+                sheetRow('Address', ship.address) +
+                sheetRow('Notes', ship.notes) +
+            '</section>' +
+            '<section class="order-sheet-block">' +
+                '<h4>Order</h4>' +
+                sheetRow('Items', orderItemSummary(order)) +
+                sheetRow('Payment', paymentMethodLabel(order.paymentMethod)) +
+                sheetRow('Subtotal', formatMoney(totals.subtotal)) +
+                sheetRow('Delivery', formatMoney(totals.deliveryFee)) +
+                sheetRow('Total', formatMoney(totals.total)) +
+                sheetRow('PO code', order.poCode) +
+                sheetRow('Receipt', receipt.receiptNumber || 'Not generated') +
+            '</section>' +
+            '<section class="order-sheet-block">' +
+                '<h4>Delivery</h4>' +
+                sheetRow('Courier', order.carrier || CARRIER) +
+                sheetRow('Tracking ID', order.trackingNumber || 'Not set') +
+            '</section>' +
+            '<div class="order-tracking-update">' +
+                '<h4 class="order-tracking-update-title">Update tracking</h4>' +
+                '<div class="order-tracking-form-group">' +
+                    '<label for="ot-status">Order status</label>' +
+                    '<select id="ot-status">' +
+                        STATUSES.map(function (s) {
+                            var sel = order.status === s ? ' selected' : '';
+                            return '<option value="' + s + '"' + sel + '>' + s + '</option>';
+                        }).join('') +
+                    '</select>' +
+                '</div>' +
+                '<div class="order-tracking-form-group">' +
+                    '<label for="ot-tracking">J&amp;T Express tracking ID</label>' +
+                    '<input type="text" id="ot-tracking" placeholder="e.g. JT1234567890123" value="' + escapeHtml(order.trackingNumber || '') + '">' +
+                '</div>' +
+                '<div class="order-tracking-form-group">' +
+                    '<label for="ot-notes">Internal notes</label>' +
+                    '<textarea id="ot-notes" rows="2" placeholder="Packaging or dispatch notes">' + escapeHtml(order.staffNotes || '') + '</textarea>' +
+                '</div>' +
+                '<div class="order-tracking-form-actions">' +
+                    '<button type="button" class="order-tracking-btn order-tracking-btn-primary" id="ot-save-btn">Save tracking</button>' +
+                    '<button type="button" class="order-tracking-btn" id="ot-receipt-btn">View receipt</button>' +
+                    (trackUrl
+                        ? '<a class="order-tracking-btn order-tracking-btn-link" href="' + trackUrl + '" target="_blank" rel="noopener noreferrer">Track on J&amp;T</a>'
+                        : '') +
+                    '<button type="button" class="order-tracking-btn" id="ot-cancel-btn">Cancel</button>' +
+                '</div>' +
             '</div>';
 
         panel.querySelector('#ot-save-btn').addEventListener('click', function () {
@@ -436,11 +522,13 @@
             var receiptData = findOwnerReceipt(freshOrder) || buildReceiptFromOrder(freshOrder);
             openReceiptWindow(receiptData);
         });
-        panel.querySelector('#ot-close-btn').addEventListener('click', function () {
-            panel.hidden = true;
-            if (layout) layout.classList.remove('has-detail');
-            renderTable(root, null);
+        panel.querySelector('#ot-cancel-btn').addEventListener('click', function () {
+            closeDetail(root);
         });
+        panel.querySelector('#ot-close-btn').addEventListener('click', function () {
+            closeDetail(root);
+        });
+        openSlide(panel);
     }
 
     function saveOrderUpdates(root, orderNumber) {
@@ -449,9 +537,9 @@
 
         var orders = loadOrders();
         var order = orders[idx];
-        var statusEl = root.querySelector('#ot-status');
-        var trackingEl = root.querySelector('#ot-tracking');
-        var notesEl = root.querySelector('#ot-notes');
+        var statusEl = document.getElementById('ot-status');
+        var trackingEl = document.getElementById('ot-tracking');
+        var notesEl = document.getElementById('ot-notes');
 
         var nextStatus = statusEl ? statusEl.value : order.status;
         var tracking = trackingEl ? trackingEl.value.trim() : '';
@@ -474,11 +562,10 @@
         saveOrders(orders);
         renderTable(root, orderNumber);
         renderDetail(root, orderNumber);
-        showToast(root, 'Saved tracking for ' + orderNumber + '.');
     }
 
     function renderCreatePanel(root) {
-        var panel = root.querySelector('#order-tracking-detail');
+        var panel = document.getElementById('order-tracking-detail');
         var layout = root.querySelector('.order-tracking-layout');
         if (!panel) return;
 
@@ -561,13 +648,13 @@
             createOrderFromForm(root);
         });
         panel.querySelector('#ot-create-cancel-btn').addEventListener('click', function () {
-            panel.hidden = true;
-            if (layout) layout.classList.remove('has-detail');
+            closeDetail(root);
         });
+        openSlide(panel);
     }
 
     function createOrderFromForm(root) {
-        var panel = root.querySelector('#order-tracking-detail');
+        var panel = document.getElementById('order-tracking-detail');
         if (!panel) return;
 
         var poCode = (panel.querySelector('#ot-create-po') || {}).value || '';
@@ -578,11 +665,11 @@
         var notes = (panel.querySelector('#ot-create-notes') || {}).value || '';
 
         if (!poCode) {
-            showToast(root, 'Please select a purchase order code.');
+            showFormNote(root, 'Select a purchase order code first.');
             return;
         }
         if (!customer) {
-            showToast(root, 'Customer name could not be detected from the selected PO.');
+            showFormNote(root, 'Customer name could not be read from the selected purchase order.');
             return;
         }
         if (findOrderIndex(orderNumber) >= 0) {
@@ -630,7 +717,6 @@
         saveOrders(orders);
         renderTable(root, orderNumber);
         renderDetail(root, orderNumber);
-        showToast(root, 'Created tracking record ' + orderNumber + '.');
     }
 
     function bindPage(root) {
@@ -645,7 +731,9 @@
         }
 
         root.addEventListener('click', function (e) {
-            var row = e.target.closest('#order-tracking-tbody tr[data-order-id]');
+            var openBtn = e.target.closest('.order-tracking-open');
+            if (!openBtn || !root.contains(openBtn)) return;
+            var row = openBtn.closest('tr[data-order-id]');
             if (!row) return;
             selectedId = row.getAttribute('data-order-id');
             refresh();
@@ -659,10 +747,15 @@
             });
         }
 
+        function refreshListOnly() {
+            selectedId = null;
+            closeDetail(root);
+        }
+
         var filter = root.querySelector('#ot-status-filter');
         var search = root.querySelector('#ot-search');
-        if (filter) filter.addEventListener('change', refresh);
-        if (search) search.addEventListener('input', refresh);
+        if (filter) filter.addEventListener('change', refreshListOnly);
+        if (search) search.addEventListener('input', refreshListOnly);
 
         refresh();
     }

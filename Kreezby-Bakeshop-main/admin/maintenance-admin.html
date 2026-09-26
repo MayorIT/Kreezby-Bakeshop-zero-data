@@ -6,7 +6,7 @@
     <meta name="view-transition" content="same-origin">
     <link rel="stylesheet" href="../css/shared/kreezby-turbo-nav.css">
     <title>Kreezby Bakeshop - System Configuration Maintenance</title>
-    <link rel="stylesheet" href="../css/pages/admin/maintenance-admin.css">
+    <link rel="stylesheet" href="../css/pages/admin/maintenance-admin.css?v=search1">
     <link rel="stylesheet" href="../css/shared/expandable-nav-tabs.css">
 
 </head>
@@ -31,70 +31,58 @@
 
         <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
         <main class="workspace-view-canvas">
+            <a class="admin-back-dashboard" href="admin.html" data-turbo="false">← Back to Dashboard</a>
+
+            <div class="maintenance-page-head">
+                <div>
+                    <p class="maintenance-page-kicker">System maintenance</p>
+                    <h1>Directory</h1>
+                    <p>Suppliers, items, and account settings in one place.</p>
+                </div>
+            </div>
 
             <div class="maintenance-overview-grid">
-                <div class="overview-card-box">
-                    <label>Active Suppliers</label>
-                    <span id="metric-suppliers-count">3</span>
-                </div>
-                <div class="overview-card-box blue-theme">
-                    <label>Retailers</label>
-                    <span id="metric-retailers-count">1</span>
-                </div>
-                <div class="overview-card-box" style="border-left-color:#00897b;">
-                    <label>Wholesalers</label>
-                    <span id="metric-wholesalers-count">1</span>
-                </div>
-                <div class="overview-card-box green-theme">
-                    <label>Customers</label>
-                    <span id="metric-customers-count">3</span>
-                </div>
+                <button type="button" class="overview-card-box is-selected" data-open="supplier">
+                    <span class="overview-card-kicker">Directory</span>
+                    <span class="overview-card-label">Active Suppliers</span>
+                    <span class="overview-card-value" id="metric-suppliers-count">3</span>
+                </button>
+                <button type="button" class="overview-card-box blue-theme" data-open="retailers">
+                    <span class="overview-card-kicker">Partners</span>
+                    <span class="overview-card-label">Retailers</span>
+                    <span class="overview-card-value" id="metric-retailers-count">1</span>
+                </button>
+                <button type="button" class="overview-card-box teal-theme" data-open="wholesalers">
+                    <span class="overview-card-kicker">Partners</span>
+                    <span class="overview-card-label">Wholesalers</span>
+                    <span class="overview-card-value" id="metric-wholesalers-count">1</span>
+                </button>
+                <button type="button" class="overview-card-box green-theme" data-open="customers">
+                    <span class="overview-card-kicker">Accounts</span>
+                    <span class="overview-card-label">Customers</span>
+                    <span class="overview-card-value" id="metric-customers-count">3</span>
+                </button>
             </div>
             
-            <div class="panel-data-card">
+            <div class="panel-data-card maintenance-directory">
                 <div class="card-body-padded">
                     
-                    <div class="maintenance-directory-tabs-row">
-                        <button class="maintenance-tab-link active-tab" onclick="switchMaintenanceDataTab(this, 'supplier')">Supplier List</button>
-                        <button class="maintenance-tab-link" onclick="switchMaintenanceDataTab(this, 'items')">Item List</button>
-                        <button class="maintenance-tab-link" onclick="switchMaintenanceDataTab(this, 'settings')">Settings</button>
+                    <div class="maintenance-directory-tabs-row" role="tablist">
+                        <button type="button" class="maintenance-tab-link active-tab" data-tab="supplier">Supplier List</button>
+                        <button type="button" class="maintenance-tab-link" data-tab="items">Item List</button>
+                        <button type="button" class="maintenance-tab-link" data-tab="settings">Settings</button>
                     </div>
 
-                    <div id="maintenance-grid-workspace-root">
-                        
-                        <div class="maintenance-sub-view">
-                            <div class="datatable-controls-bar">
-                                <div>Show <select><option>10</option></select> entries</div>
-                                <button class="btn-add-item" onclick="toggleMaintenanceFormModal(true, 'Supplier')">+ Add New Supplier</button>
-                            </div>
-                            <table class="data-display-table">
-                                <thead>
-                                    <tr style="background-color: var(--brand-brown); color: white;">
-                                        <th style="width: 50px;">#</th><th>Supplier Name</th><th>Contact Person</th><th>Email Node</th><th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td><td><strong>Supplier Hub 101</strong></td><td>Juan Dela Cruz</td><td>juan@supplier101.com</td>
-                                        <td><button type="button" class="action-trigger-btn">Action ▾</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
+                    <div id="maintenance-grid-workspace-root" data-directory="supplier"></div>
 
                 </div>
             </div>
 
-        </main>
-</turbo-frame>
-</div>
-    <div class="system-modal-backdrop" id="maintenance-form-modal-node">
+    <div class="system-modal-backdrop" id="maintenance-form-modal-node" hidden>
         <div class="form-modal-box">
             <div class="modal-form-header">
                 <h2 id="modal-title-injector">Add New Record</h2>
-                <button style="background:none; border:none; font-size:16px; cursor:pointer;" onclick="toggleMaintenanceFormModal(false)">✕</button>
+                <button type="button" class="modal-close-btn" onclick="toggleMaintenanceFormModal(false)" aria-label="Close">✕</button>
             </div>
             <div class="modal-form-body">
                 <form action="#" method="POST" id="maintenance-modal-form">
@@ -104,7 +92,7 @@
                 </form>
             </div>
             <div class="modal-action-footer-panel">
-                <button class="btn-modal-cancel" onclick="toggleMaintenanceFormModal(false)">Cancel</button>
+                <button type="button" class="btn-modal-cancel" onclick="toggleMaintenanceFormModal(false)">Cancel</button>
                 <button class="btn-modal-save" type="button" onclick="handleFormSubmissionSave()">Save Parameters</button>
             </div>
         </div>
@@ -221,17 +209,17 @@
         // Form fields matrix constructor mapping specific properties to active popup frames
         const formFieldBlueprints = {
             'Supplier': `
-                <div class="form-field-unit"><label>Supplier Name *</label><input type="text" placeholder="e.g. Supplier Hub Corp" required></div>
-                <div class="form-field-unit"><label>Contact Person *</label><input type="text" placeholder="e.g. Juan Dela Cruz" required></div>
-                <div class="form-field-unit"><label>Email Address</label><input type="text" placeholder="e.g. contact@supplier.com"></div>`,
+                <div class="form-field-unit"><label>Supplier Name *</label><input name="name" type="text" placeholder="e.g. Supplier Hub Corp" required></div>
+                <div class="form-field-unit"><label>Contact Person *</label><input name="contact" type="text" placeholder="e.g. Juan Dela Cruz" required></div>
+                <div class="form-field-unit"><label>Email Address</label><input name="email" type="email" placeholder="e.g. contact@supplier.com"></div>`,
             'Retailer': `
                 <div class="form-field-unit"><label>Retailer Branch Name *</label><input type="text" placeholder="e.g. SIDC Branch" required></div>
                 <div class="form-field-unit"><label>Area / Location *</label><input type="text" placeholder="e.g. Batangas City" required></div>`,
             'Flavor Item': `
-                <div class="form-field-unit"><label>Item SKU Code *</label><input type="text" placeholder="e.g. CRK-CHO-P" required></div>
-                <div class="form-field-unit"><label>Flavor Name *</label><input type="text" placeholder="e.g. Chocolate Crinkles" required></div>
-                <div class="form-field-unit"><label>Packaging Variant Category</label><select><option>Pouch (8 Pcs)</option><option>Jar (250g Container)</option></select></div>
-                <div class="form-field-unit"><label>Base Unit Rate Cost (₱) *</label><input type="number" placeholder="165.00" required></div>`,
+                <div class="form-field-unit"><label>Item SKU Code *</label><input name="sku" type="text" placeholder="e.g. CRK-CHO-P" required></div>
+                <div class="form-field-unit"><label>Flavor Name *</label><input name="flavor" type="text" placeholder="e.g. Chocolate Crinkles" required></div>
+                <div class="form-field-unit"><label>Packaging Variant Category</label><select name="pack"><option>Pouch (8 Pcs)</option><option>Jar (250g)</option><option>Jar (250g Container)</option></select></div>
+                <div class="form-field-unit"><label>Base Unit Rate Cost (₱) *</label><input name="rate" type="number" min="0" step="0.01" placeholder="165.00" required></div>`,
             'User Account': `
                 <div class="form-field-unit"><label>Full Employee Name *</label><input type="text" placeholder="e.g. Elton McJosh" required></div>
                 <div class="form-field-unit"><label>Username ID *</label><input type="text" required></div>
@@ -239,6 +227,96 @@
         };
 
         let selectedStaffPermissionsId = 'staff-1';
+        var DIRECTORY_KEY = 'kreezbyMaintenanceDirectory';
+        var directoryState = { tab: 'supplier', query: '', pageSize: 10, editId: null, mode: 'add' };
+        var pendingSettingsSub = '';
+
+        function loadDirectory() {
+            try {
+                var saved = JSON.parse(localStorage.getItem(DIRECTORY_KEY) || 'null');
+                if (saved && Array.isArray(saved.suppliers) && Array.isArray(saved.items)) return saved;
+            } catch (e) {}
+            return {
+                suppliers: [
+                    { id: 's1', name: 'Supplier Hub 101', contact: 'Juan Dela Cruz', email: 'juan@supplier101.com' },
+                    { id: 's2', name: 'Crinkle Ingredients Co.', contact: 'Maria Santos', email: 'maria@crinkle.co' },
+                    { id: 's3', name: 'Batangas Flour Mill', contact: 'Pedro Ramos', email: 'pedro@flourmill.ph' }
+                ],
+                items: [
+                    { id: 'i1', sku: 'CRK-BUT-J', flavor: 'Choco Butternut Specialty', pack: 'Jar (250g)', rate: '200.00' },
+                    { id: 'i2', sku: 'CRK-CHO-P', flavor: 'Chocolate Crinkles', pack: 'Pouch (8 Pcs)', rate: '165.00' }
+                ]
+            };
+        }
+
+        function saveDirectory(data) {
+            localStorage.setItem(DIRECTORY_KEY, JSON.stringify(data));
+        }
+
+        function escapeHtml(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function recordKind(kind) {
+            return kind === 'items' ? 'items' : 'suppliers';
+        }
+
+        function filteredRecords(kind) {
+            var data = loadDirectory();
+            var query = directoryState.query.trim().toLowerCase();
+            var rows = data[recordKind(kind)] || [];
+            if (!query) return rows;
+            return rows.filter(function (row) {
+                return Object.keys(row).some(function (key) {
+                    return key !== 'id' && String(row[key]).toLowerCase().indexOf(query) !== -1;
+                });
+            });
+        }
+
+        function updateSupplierCount() {
+            var node = document.getElementById('metric-suppliers-count');
+            if (node) node.textContent = String(loadDirectory().suppliers.length);
+        }
+
+        function renderDirectory(kind) {
+            directoryState.tab = kind;
+            var root = document.getElementById('maintenance-grid-workspace-root');
+            if (!root) return;
+            root.setAttribute('data-directory', kind);
+            var rows = filteredRecords(kind).slice(0, directoryState.pageSize);
+            var addLabel = kind === 'items' ? '+ Add New Flavor Item' : '+ Add New Supplier';
+            var headers = kind === 'items'
+                ? ['#', 'Item SKU Code', 'Flavor Item', 'Packaging', 'Base Rate', 'Action']
+                : ['#', 'Supplier Name', 'Contact Person', 'Email', 'Action'];
+            var body = rows.map(function (row, index) {
+                var cells = kind === 'items'
+                    ? [index + 1, '<strong>' + escapeHtml(row.sku) + '</strong>', escapeHtml(row.flavor), escapeHtml(row.pack), '₱' + escapeHtml(Number(row.rate).toFixed(2))]
+                    : [index + 1, '<strong>' + escapeHtml(row.name) + '</strong>', escapeHtml(row.contact), escapeHtml(row.email)];
+                return '<tr data-record-id="' + escapeHtml(row.id) + '"><td>' + cells.join('</td><td>') + '</td><td><button type="button" class="action-trigger-btn" data-menu="directory" data-record-id="' + escapeHtml(row.id) + '">Action ▾</button></td></tr>';
+            }).join('') || '<tr><td colspan="' + headers.length + '" class="maintenance-empty">No matching records.</td></tr>';
+
+            root.innerHTML = ''
+                + '<div class="maintenance-sub-view">'
+                + '<div class="datatable-controls-bar">'
+                + '<label>Show <select id="maint-page-size"><option value="10">10</option><option value="25">25</option><option value="50">50</option></select> entries</label>'
+                + '<label class="maint-search">Search <input id="maint-search" type="search" placeholder="Search this list" value="' + escapeHtml(directoryState.query) + '"></label>'
+                + '<button type="button" class="btn-add-item" id="maint-add-btn">' + addLabel + '</button>'
+                + '</div>'
+                + '<table class="data-display-table"><thead><tr>'
+                + headers.map(function (label) { return '<th>' + label + '</th>'; }).join('')
+                + '</tr></thead><tbody>' + body + '</tbody></table></div>';
+
+            var size = document.getElementById('maint-page-size');
+            if (size) size.value = String(directoryState.pageSize);
+            updateSupplierCount();
+            document.querySelectorAll('.overview-card-box').forEach(function (card) {
+                card.classList.toggle('is-selected', card.getAttribute('data-open') === kind);
+            });
+        }
 
         function switchMaintenanceDataTab(tabNode, directoryKey) {
             const tabRow = tabNode.parentElement;
@@ -250,7 +328,14 @@
 
             const applyContent = function () {
                 if (directoryKey === 'settings') {
-                    if (window.KreezbyMaintenanceUI) KreezbyMaintenanceUI.initSettingsPanel();
+                    var openedSub = pendingSettingsSub;
+                    if (window.KreezbyMaintenanceUI) KreezbyMaintenanceUI.initSettingsPanel(openedSub || 'login-history');
+                    pendingSettingsSub = '';
+                    document.querySelectorAll('.overview-card-box').forEach(function (card) {
+                        card.classList.toggle('is-selected', card.getAttribute('data-open') === openedSub);
+                    });
+                } else if (directoryKey === 'supplier' || directoryKey === 'items') {
+                    renderDirectory(directoryKey);
                 } else {
                     rootWorkspace.innerHTML = dataTemplates[directoryKey] || '';
                 }
@@ -315,27 +400,175 @@
         }
 
         // Overlay Modal toggle state machine visibility engine routine controls
-        function toggleMaintenanceFormModal(shouldDisplay, entityContextKey = '') {
+        function toggleMaintenanceFormModal(shouldDisplay, entityContextKey = '', record, mode) {
             const backdrop = document.getElementById('maintenance-form-modal-node');
+            const saveBtn = document.querySelector('.btn-modal-save');
             if (shouldDisplay) {
-                document.getElementById('modal-title-injector').textContent = `Create New ${entityContextKey}`;
+                backdrop.hidden = false;
+                directoryState.mode = mode || 'add';
+                directoryState.editId = record && record.id ? record.id : null;
+                var title = directoryState.mode === 'edit' ? 'Edit ' + entityContextKey : directoryState.mode === 'view' ? entityContextKey + ' details' : 'Create New ' + entityContextKey;
+                document.getElementById('modal-title-injector').textContent = title;
                 document.getElementById('dynamic-form-fields-injector').innerHTML = formFieldBlueprints[entityContextKey] || '';
+                if (record) {
+                    Object.keys(record).forEach(function (key) {
+                        var field = document.querySelector('#maintenance-modal-form [name="' + key + '"]');
+                        if (field) field.value = record[key];
+                    });
+                }
+                document.querySelectorAll('#maintenance-modal-form input, #maintenance-modal-form select').forEach(function (field) {
+                    field.disabled = directoryState.mode === 'view';
+                });
+                if (saveBtn) saveBtn.hidden = directoryState.mode === 'view';
                 backdrop.classList.add('modal-triggered');
             } else {
                 backdrop.classList.remove('modal-triggered');
+                backdrop.hidden = true;
+                directoryState.editId = null;
+                directoryState.mode = 'add';
+                if (saveBtn) saveBtn.hidden = false;
             }
         }
 
         function handleFormSubmissionSave() {
-            alert('Parameters processed! New record entry successfully saved to database array clusters.');
+            var form = document.getElementById('maintenance-modal-form');
+            if (form && !form.reportValidity()) return;
+            var kind = recordKind(directoryState.tab);
+            var data = loadDirectory();
+            var record = { id: directoryState.editId || ('rec-' + Date.now()) };
+            form.querySelectorAll('input, select').forEach(function (field) {
+                if (field.name) record[field.name] = field.value.trim();
+            });
+            if (kind === 'suppliers' && (!record.name || !record.contact)) return;
+            if (kind === 'items' && (!record.sku || !record.flavor || !record.rate)) return;
+            var list = data[kind];
+            var index = list.findIndex(function (row) { return row.id === record.id; });
+            if (index >= 0) list[index] = record;
+            else list.unshift(record);
+            saveDirectory(data);
             toggleMaintenanceFormModal(false);
+            renderDirectory(directoryState.tab);
         }
+
+        function findRecord(id) {
+            var data = loadDirectory();
+            var kind = recordKind(directoryState.tab);
+            return (data[kind] || []).filter(function (row) { return row.id === id; })[0] || null;
+        }
+
+        function closeRowMenu() {
+            var menu = document.getElementById('maint-row-menu');
+            if (menu) menu.remove();
+        }
+
+        function openRowMenu(button) {
+            closeRowMenu();
+            var id = button.getAttribute('data-record-id');
+            var record = findRecord(id);
+            if (!record) return;
+            var menu = document.createElement('div');
+            menu.id = 'maint-row-menu';
+            menu.className = 'maint-row-menu';
+            menu.innerHTML = '<button type="button" data-menu-action="view">View</button><button type="button" data-menu-action="edit">Edit</button><button type="button" data-menu-action="delete">Delete</button>';
+            document.body.appendChild(menu);
+            var rect = button.getBoundingClientRect();
+            menu.style.top = Math.min(rect.bottom + 6, window.innerHeight - menu.offsetHeight - 12) + 'px';
+            menu.style.left = Math.max(12, rect.right - menu.offsetWidth) + 'px';
+            menu.onclick = function (event) {
+                var action = event.target.getAttribute('data-menu-action');
+                if (!action) return;
+                var entity = directoryState.tab === 'items' ? 'Flavor Item' : 'Supplier';
+                closeRowMenu();
+                if (action === 'delete') {
+                    if (!confirm('Delete this record?')) return;
+                    var data = loadDirectory();
+                    var kind = recordKind(directoryState.tab);
+                    data[kind] = data[kind].filter(function (row) { return row.id !== id; });
+                    saveDirectory(data);
+                    renderDirectory(directoryState.tab);
+                    return;
+                }
+                toggleMaintenanceFormModal(true, entity, record, action === 'edit' ? 'edit' : 'view');
+            };
+        }
+
+        function bootMaintenanceDirectory() {
+            var root = document.getElementById('maintenance-grid-workspace-root');
+            if (!root || root.children.length) return;
+            var supplierTab = document.querySelector('.maintenance-tab-link[data-tab="supplier"]');
+            if (supplierTab) supplierTab.classList.add('active-tab');
+            renderDirectory('supplier');
+        }
+        window.bootMaintenanceDirectory = bootMaintenanceDirectory;
+
+        if (!window.__kreezbyMaintBound) {
+        window.__kreezbyMaintBound = true;
+        document.addEventListener('click', function (event) {
+            var tab = event.target.closest('.maintenance-tab-link');
+            if (tab && tab.getAttribute('data-tab')) {
+                pendingSettingsSub = '';
+                switchMaintenanceDataTab(tab, tab.getAttribute('data-tab'));
+                return;
+            }
+            var card = event.target.closest('.overview-card-box');
+            if (card && card.getAttribute('data-open')) {
+                var open = card.getAttribute('data-open');
+                if (open === 'supplier' || open === 'items') {
+                    var listTab = document.querySelector('.maintenance-tab-link[data-tab="' + open + '"]');
+                    if (listTab) switchMaintenanceDataTab(listTab, open);
+                } else {
+                    pendingSettingsSub = open;
+                    var settingsTab = document.querySelector('.maintenance-tab-link[data-tab="settings"]');
+                    if (settingsTab) switchMaintenanceDataTab(settingsTab, 'settings');
+                }
+                return;
+            }
+            var addBtn = event.target.closest('#maint-add-btn');
+            if (addBtn) {
+                toggleMaintenanceFormModal(true, directoryState.tab === 'items' ? 'Flavor Item' : 'Supplier');
+                return;
+            }
+            var actionBtn = event.target.closest('#maintenance-grid-workspace-root .action-trigger-btn');
+            if (actionBtn) {
+                event.preventDefault();
+                event.stopPropagation();
+                openRowMenu(actionBtn);
+                return;
+            }
+            if (!event.target.closest('#maint-row-menu')) closeRowMenu();
+        }, true);
+
+        document.addEventListener('change', function (event) {
+            if (event.target.id === 'maint-page-size') {
+                directoryState.pageSize = Number(event.target.value) || 10;
+                renderDirectory(directoryState.tab);
+            }
+        });
+
+        document.addEventListener('input', function (event) {
+            if (event.target.id !== 'maint-search') return;
+            directoryState.query = event.target.value;
+            var caret = event.target.selectionStart;
+            renderDirectory(directoryState.tab);
+            var search = document.getElementById('maint-search');
+            if (search) {
+                search.focus();
+                search.setSelectionRange(caret, caret);
+            }
+        });
+
+        }
+
+        bootMaintenanceDirectory();
     </script>
-    <script src="../js/maintenance-settings.js"></script>
+        </main>
+</turbo-frame>
+</div>
+    <script src="../js/maintenance-settings.js?v=archive2"></script>
     <script src="../js/staff-permissions.js"></script>
-    <script src="../js/maintenance-settings-ui.js"></script>
+    <script src="../js/maintenance-settings-ui.js?v=search3"></script>
     <script src="../js/action-menu.js"></script>
-        <script src="../js/user-dropdown-nav.js"></script>
+        <script src="../js/user-dropdown-nav.js?v=al6"></script>
     <script src="../js/admin-sidebar.js"></script>
     <script src="../js/sidebar-toggle.js"></script>
 </body>

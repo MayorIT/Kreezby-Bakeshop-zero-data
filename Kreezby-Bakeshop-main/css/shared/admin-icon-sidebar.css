@@ -1,4 +1,40 @@
 /* Admin icon sidebar (collapsible, lucide-style nav) — grey theme */
+
+/* Keep the header and sidebar on screen; only the main area scrolls. */
+html:has(.kreezby-icon-sidebar),
+body:has(.kreezby-icon-sidebar) {
+    height: 100%;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+body:has(.kreezby-icon-sidebar) {
+    min-height: 100vh;
+}
+
+body:has(.kreezby-icon-sidebar) .core-viewport-wrapper,
+body:has(.kreezby-icon-sidebar) .system-dashboard-wrapper {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    align-items: stretch;
+}
+
+body:has(.kreezby-icon-sidebar) turbo-frame#kreezby-main-content,
+body:has(.kreezby-icon-sidebar) .kreezby-turbo-main {
+    min-height: 0;
+    overflow: hidden;
+    align-self: stretch;
+}
+
+body:has(.kreezby-icon-sidebar) turbo-frame#kreezby-main-content > main.workspace-view-canvas,
+body:has(.kreezby-icon-sidebar) .kreezby-turbo-main > main.workspace-view-canvas,
+body:has(.kreezby-icon-sidebar) > main.workspace-view-canvas {
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .kreezby-icon-sidebar.dark-sidebar-panel,
 .kreezby-icon-sidebar.sidebar-panel {
     --kreezby-sidebar-width: 256px;
@@ -13,8 +49,8 @@
     position: sticky;
     top: 0;
     align-self: stretch;
-    height: calc(100vh - var(--kreezby-admin-header-height, 60px));
-    max-height: calc(100vh - var(--kreezby-admin-header-height, 60px));
+    height: 100%;
+    max-height: 100%;
     width: var(--kreezby-sidebar-width);
     min-width: var(--kreezby-sidebar-width);
     max-width: var(--kreezby-sidebar-width);

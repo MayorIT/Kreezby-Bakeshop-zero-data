@@ -9,8 +9,13 @@
     flex-direction: column;
 }
 
+.inbox-page-main .admin-back-dashboard {
+    margin: 0 0 8px;
+    flex-shrink: 0;
+}
+
 .inbox-page-main .inbox-chat-root {
-    height: calc(100vh - 88px);
+    height: calc(100vh - 140px);
 }
 
 .inbox-chat-root {

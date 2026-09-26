@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../css/pages/admin/alert-admin.css">
     <link rel="stylesheet" href="../css/shared/expandable-nav-tabs.css">
     <link rel="stylesheet" href="../css/shared/kreezby-alert.css">
-    <link rel="stylesheet" href="../css/shared/order-tracking.css">
+    <link rel="stylesheet" href="../css/shared/order-tracking.css?v=ot5">
 </head>
 <body>
 <script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
@@ -20,7 +20,6 @@
             <a class="top-nav-item home-badge" href="admin.html">Home</a>
             <a class="top-nav-item" href="maintenance-admin.html">Maintenance</a>
             <a class="top-nav-item" href="inbox-admin.html">Inbox</a>
-            <button type="button" class="notification-pill" aria-label="Notifications"></button>
             <div class="user-dropdown">
                 <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">Admin ▾</button>
                 <div class="user-dropdown-menu" id="user-dropdown-menu">
@@ -36,39 +35,33 @@
 
         <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
         <main class="workspace-view-canvas" data-order-tracking-page>
+            <a class="admin-back-dashboard" href="admin.html" data-turbo="false">← Back to Dashboard</a>
 
-            <div id="order-tracking-toast" class="kreezby-alert kreezby-alert--success kreezby-alert--light kreezby-alert--md" hidden role="status" style="margin-bottom:16px;">
-                <div class="kreezby-alert__content"><div class="kreezby-alert__description">Saved.</div></div>
+            <div class="order-tracking-page-head">
+                <p class="order-tracking-kicker">Customer orders</p>
+                <h1>Order Tracking</h1>
+                <p>Update status and add a J&amp;T Express Philippines tracking ID.</p>
             </div>
 
             <div class="order-tracking-layout">
-                <div class="panel-data-card">
-                    <div class="panel-card-title-bar order-tracking-panel-title-bar">
-                        <h3>Customer Order Tracking</h3>
-                        <button type="button" class="btn-call-to-action" id="ot-create-btn">+ Create New</button>
-                    </div>
+                <div class="panel-data-card order-tracking-card">
                     <div class="card-body-padded">
-                        <p style="font-size:13px;color:#6b7280;margin:0 0 16px;">
-                            Update processing status and enter J&amp;T Express Philippines tracking IDs for online customer orders.
-                        </p>
-                        <div class="datatable-controls-bar">
-                            <div>
-                                Status
+                        <div class="order-tracking-toolbar">
+                            <label>Status
                                 <select id="ot-status-filter">
                                     <option value="all">All</option>
                                     <option value="Processing">Processing</option>
                                     <option value="Shipped">Shipped</option>
                                     <option value="Completed">Completed</option>
                                 </select>
-                            </div>
-                            <div>
-                                Search:
-                                <input type="text" id="ot-search" placeholder="Order #, PO code, customer, tracking ID">
-                            </div>
+                            </label>
+                            <label class="order-tracking-search">Search
+                                <input type="search" id="ot-search" placeholder="Order #, PO code, customer">
+                            </label>
                         </div>
                         <table class="data-display-table order-tracking-table">
                             <thead>
-                                <tr style="background-color: var(--brand-brown); color: white;">
+                                <tr>
                                     <th>Order #</th>
                                     <th>PO Code</th>
                                     <th>Customer</th>
@@ -76,6 +69,7 @@
                                     <th>Status</th>
                                     <th>J&amp;T Tracking ID</th>
                                     <th>Courier</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="order-tracking-tbody"></tbody>
@@ -90,8 +84,8 @@
         </turbo-frame>
     </div>
 
-    <script src="../js/order-tracking.js"></script>
-    <script src="../js/user-dropdown-nav.js"></script>
+    <script src="../js/order-tracking.js?v=ot6"></script>
+    <script src="../js/user-dropdown-nav.js?v=al6"></script>
     <script src="../js/admin-sidebar.js"></script>
     <script src="../js/sidebar-toggle.js"></script>
 </body>

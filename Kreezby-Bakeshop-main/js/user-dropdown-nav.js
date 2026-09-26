@@ -86,7 +86,7 @@
 
         var s = document.createElement('script');
         s.id = 'kreezby-turbo-nav-script';
-        s.src = jsBase() + 'kreezby-turbo-nav.js';
+        s.src = jsBase() + 'kreezby-turbo-nav.js?v=al4';
         document.head.appendChild(s);
     }
 
@@ -193,75 +193,28 @@
         var right = document.querySelector('.top-navbar-node .top-nav-links-right');
         if (!right) return;
 
-        var desired = [
-            { key: 'home', label: 'Home', href: moduleLocalHref('admin.html') },
-            { key: 'maintenance', label: 'Maintenance', href: moduleLocalHref('maintenance-admin.html') },
-            { key: 'inbox', label: 'Inbox', href: moduleLocalHref('inbox-admin.html') }
-        ];
-
         function normalize(text) {
             return (text || '').toLowerCase().replace(/\s+/g, ' ').trim();
         }
 
-        function keyForLink(link) {
+        function isRemovedNavLink(link) {
             var text = normalize(link.textContent || '');
             var href = (link.getAttribute('href') || '').toLowerCase();
             var file = href.split('/').pop().split('?')[0];
-
-            if (text === 'home' || file === 'admin.html') return 'home';
-            if (text.indexOf('maintenance') >= 0 || file === 'maintenance-admin.html') return 'maintenance';
-            if (text.indexOf('inbox') >= 0 || file === 'inbox-admin.html') return 'inbox';
-            return '';
+            if (text === 'home' || file === 'admin.html') return true;
+            if (text.indexOf('maintenance') >= 0 || file === 'maintenance-admin.html') return true;
+            if (text.indexOf('inbox') >= 0 || file === 'inbox-admin.html') return true;
+            if (text.indexOf('report') >= 0 || file.indexOf('report_issue') >= 0) return true;
+            return false;
         }
 
-        var wrap = right.querySelector('.expandable-nav-tabs');
-        var host = wrap || right;
-        var topLinks = Array.prototype.slice.call(host.querySelectorAll(':scope > a'));
-        var byKey = {};
-        var needsNavRefresh = false;
-
-        topLinks.forEach(function (link) {
-            var key = keyForLink(link);
-            if (key && !byKey[key]) byKey[key] = link;
+        right.querySelectorAll('a.top-nav-item, a.expandable-nav-tab').forEach(function (link) {
+            if (isRemovedNavLink(link)) link.remove();
         });
 
-        desired.forEach(function (item) {
-            var link = byKey[item.key];
-            if (!link) {
-                link = document.createElement('a');
-                link.className = 'top-nav-item' + (item.key === 'home' ? ' home-badge' : '');
-                host.appendChild(link);
-                byKey[item.key] = link;
-                needsNavRefresh = true;
-            }
-
-            link.setAttribute('href', item.href);
-            link.setAttribute('title', item.label);
-
-            if (link.classList.contains('expandable-nav-tab')) {
-                var labelNode = link.querySelector('.expandable-nav-tab__label');
-                if (labelNode) {
-                    labelNode.textContent = item.label;
-                } else {
-                    needsNavRefresh = true;
-                }
-            } else {
-                link.classList.add('top-nav-item');
-                if (item.key === 'home') link.classList.add('home-badge');
-                else link.classList.remove('home-badge');
-                link.textContent = item.label;
-                link.removeAttribute('aria-current');
-                if (wrap) needsNavRefresh = true;
-            }
+        right.querySelectorAll('.expandable-nav-tabs').forEach(function (wrap) {
+            if (!wrap.querySelector('a')) wrap.remove();
         });
-
-        desired.forEach(function (item) {
-            host.appendChild(byKey[item.key]);
-        });
-
-        if (needsNavRefresh && window.KreezbyNavbarSlide && typeof window.KreezbyNavbarSlide.init === 'function') {
-            window.KreezbyNavbarSlide.init();
-        }
     }
 
     function ensureAdminNotificationPill() {
@@ -270,15 +223,34 @@
         var right = document.querySelector('.top-navbar-node .top-nav-links-right');
         if (!right) return;
 
-        var bell = right.querySelector('.notification-pill');
-        if (!bell) {
-            bell = document.createElement('button');
+        if (right.querySelector('.notification-popover-root')) {
+            right.querySelectorAll('.notification-pill').forEach(function (el) {
+                el.remove();
+            });
+            return;
+        }
+
+        if (!right.querySelector('.notification-pill')) {
+            var bell = document.createElement('button');
             bell.type = 'button';
             bell.className = 'notification-pill';
             bell.setAttribute('aria-label', 'Notifications');
-            bell.textContent = '🔔';
-            right.appendChild(bell);
+            right.insertBefore(bell, right.firstChild);
         }
+    }
+
+    function arrangeAdminHeader() {
+        if (!isAdminPage()) return;
+
+        var right = document.querySelector('.top-navbar-node .top-nav-links-right');
+        if (!right) return;
+
+        var bell = right.querySelector('.notification-popover-root, .notification-pill');
+        var hamburger = right.querySelector('.hamburger-toggle');
+        var dropdown = right.querySelector('.user-dropdown');
+        if (bell) right.appendChild(bell);
+        if (hamburger) right.appendChild(hamburger);
+        if (dropdown) right.appendChild(dropdown);
     }
 
     function ensureAdminDropdownAfterNavTabs() {
@@ -362,7 +334,6 @@
         wrap.innerHTML =
             '<button type="button" class="user-dropdown-pill" id="user-dropdown-trigger" aria-haspopup="true" aria-expanded="false">Admin \u25be</button>' +
             '<div class="user-dropdown-menu" id="user-dropdown-menu">' +
-                '<a href="' + reportIssueHref() + '" class="dropdown-item">Report Issue</a>' +
                 '<a href="' + authLoginHref() + '" class="dropdown-item">\u21a9 Log Out</a>' +
             '</div>';
         right.appendChild(wrap);
@@ -385,6 +356,12 @@
         if (isStaffPage() || isRetailerPage()) {
             menu.innerHTML =
                 '<a href="' + reportHref + '" class="dropdown-item">Report Issue</a>' +
+                '<a href="' + loginHref + '" class="dropdown-item">\u21a9 Log Out</a>';
+            return;
+        }
+
+        if (isAdminPage()) {
+            menu.innerHTML =
                 '<a href="' + loginHref + '" class="dropdown-item">\u21a9 Log Out</a>';
             return;
         }
@@ -477,6 +454,7 @@
     }
 
     function bootSharedUi() {
+        ensureAdminNotificationPill();
         ensurePageTransitionLoaded();
         ensureNavbarSlideLoaded();
         ensureNotificationPopoverLoaded();
@@ -493,6 +471,7 @@
         ensureRetailerUserDropdownShell();
         ensureAdminUserDropdownShell();
         ensureAdminDropdownAfterNavTabs();
+        arrangeAdminHeader();
         bindDropdownDelegation();
         wireUserDropdown();
     }

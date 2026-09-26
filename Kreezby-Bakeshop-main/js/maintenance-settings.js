@@ -189,6 +189,42 @@
         };
     }
 
+    function archiveAccount(kind, accountId, reason) {
+        var users = getUsers();
+        var list = users[kind];
+        if (!list) return { ok: false, message: 'Unknown account type.' };
+        var idx = -1;
+        var record = null;
+        for (var i = 0; i < list.length; i++) {
+            if (list[i].id === accountId) {
+                idx = i;
+                record = list[i];
+                break;
+            }
+        }
+        if (!record) return { ok: false, message: 'Account not found.' };
+
+        list.splice(idx, 1);
+        if (!Array.isArray(users.archived)) users.archived = [];
+        users.archived.unshift({
+            id: record.id,
+            name: record.name,
+            email: record.email || '',
+            kind: kind,
+            reason: reason,
+            archivedAt: new Date().toISOString().slice(0, 10)
+        });
+        saveUsers(users);
+        return { ok: true, message: record.name + ' was archived.' };
+    }
+
+    function getArchived(kind) {
+        var users = getUsers();
+        var list = Array.isArray(users.archived) ? users.archived : [];
+        if (!kind) return list;
+        return list.filter(function (row) { return row.kind === kind; });
+    }
+
     function getAccountCounts() {
         var users = getUsers();
         return {
@@ -207,6 +243,8 @@
         getLoginHistory: getLoginHistory,
         recordLogin: recordLogin,
         upgradeCustomerToRole: upgradeCustomerToRole,
+        archiveAccount: archiveAccount,
+        getArchived: getArchived,
         getAccountCounts: getAccountCounts,
         DEFAULT_USERS: DEFAULT_USERS
     };

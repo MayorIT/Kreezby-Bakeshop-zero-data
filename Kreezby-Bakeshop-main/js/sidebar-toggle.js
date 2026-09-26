@@ -73,8 +73,9 @@
         }
         button.addEventListener('click', toggleSidebar);
 
-        // place the toggle at the right end of the header controls
-        topNav.appendChild(button);
+        var dropdown = topNav.querySelector('.user-dropdown');
+        if (dropdown) topNav.insertBefore(button, dropdown);
+        else topNav.appendChild(button);
     }
 
     function wireExistingRows() {
@@ -87,11 +88,11 @@
     }
 
     function ensureNotificationPopoverLoaded() {
+        const path = (window.location && window.location.pathname) ? window.location.pathname : '';
         if (window.KreezbyNotificationPopoverLoaded) return;
         if (document.getElementById('kreezby-notification-popover-script')) return;
         if (!document.querySelector('.notification-pill')) return;
 
-        const path = (window.location && window.location.pathname) ? window.location.pathname : '';
         let src = 'js/notification-popover.js';
         let storeSrc = 'js/notification-store.js';
         if (/\/retailer\/[^/]+\//i.test(path)) {

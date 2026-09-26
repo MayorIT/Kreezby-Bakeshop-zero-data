@@ -1,13 +1,12 @@
 /* Smooth navigation (browser-native) + click feedback — no JS link interception */
 
 @view-transition {
-    navigation: auto;
+    navigation: none;
 }
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
-    animation-duration: 0.22s;
-    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation: none;
 }
 
 html {

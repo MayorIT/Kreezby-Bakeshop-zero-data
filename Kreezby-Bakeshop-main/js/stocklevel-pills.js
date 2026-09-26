@@ -60,7 +60,7 @@
 
             var active = href === currentFile ? ' active' : '';
 
-            return '<a class="pill' + active + '" href="' + href + '" data-key="' + view.key + '">' + view.label + '</a>';
+            return '<a class="pill' + active + '" href="' + href + '" data-key="' + view.key + '" data-turbo="false">' + view.label + '</a>';
 
         }).join('');
 

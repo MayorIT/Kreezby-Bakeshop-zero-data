@@ -352,6 +352,7 @@
 
     function closeAllMenus() {
         document.querySelectorAll('.action-popup-menu').forEach(function (m) {
+            if (m.closest('.alert-log-card')) return;
             m.classList.remove('active', 'flip-up');
             m.style.display = 'none';
             resetMenuPosition(m);
@@ -586,6 +587,8 @@
         var masterSelector = PAGE_MODE === 'retailer' ? '#bo-retailer-dashboard-view' : '#bo-master-dashboard-split-view';
 
         document.addEventListener('click', function (e) {
+            if (!document.getElementById('bo-master-dashboard-split-view') && !document.getElementById('bo-retailer-dashboard-view')) return;
+            if (e.target.closest('.alert-log-card, #alert-modal-overlay')) return;
             var actionBtn = e.target.closest(masterSelector + ' .action-trigger-btn[data-menu]');
             if (actionBtn) {
                 e.preventDefault(); e.stopPropagation();
@@ -633,6 +636,8 @@
         loadData();
         refreshTables();
         bindEvents();
+        var openCode = new URLSearchParams(window.location.search).get('open');
+        if (openCode && BO_ORDERS[openCode]) openDetails(openCode);
     }
 
     window.BoAdmin = {

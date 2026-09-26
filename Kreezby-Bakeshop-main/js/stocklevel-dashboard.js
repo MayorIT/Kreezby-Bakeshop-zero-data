@@ -170,6 +170,16 @@
 
         salesSeries: [54000, 59000, 57000, 63000, 69000, 74000],
 
+        chartYear: {
+
+            months: ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May'],
+
+            stock: [48000, 51000, 54000, 58000, 60000, 61000, 62000, 68000, 71000, 76000, 82000, 88000],
+
+            sales: [41000, 44000, 47000, 50000, 52000, 53000, 54000, 59000, 57000, 63000, 69000, 74000]
+
+        },
+
         unitsTrend: [176000, 184000, 192000, 198000, 204000, 210000],
 
         valueTrend: [480000, 505000, 528000, 552000, 575000, 598000],
@@ -340,7 +350,7 @@
 
             + '<p class="sl-footer-note">ⓘ Stock levels are updated in real-time. Last updated: ' + esc(DATA.lastUpdated) + '</p>'
 
-            + '<a class="sl-btn-report" href="' + esc(reportHref) + '">View Full Inventory Report</a>'
+            + '<a class="sl-btn-report" href="' + esc(reportHref) + '" data-turbo-frame="kreezby-main-content" data-turbo-action="advance">View Full Inventory Report</a>'
 
             + '</div>';
 
@@ -426,7 +436,7 @@
 
             + '<div class="sl-detail-hero-caption">' + esc(k.caption) + '</div>'
 
-            + '<div class="sl-mini-chart sl-mini-chart-wide">' + miniSparkBars(DATA.unitsTrend.map(function (v) { return v / 3000; }), '#1e88e5') + '</div>'
+            + '<div class="sl-mini-chart sl-mini-chart-wide">' + miniSparkBars(DATA.unitsTrend.map(function (v) { return v / 3000; }), '#8d6e63') + '</div>'
 
             + '</div>'
 
@@ -784,39 +794,103 @@
 
             + '<div class="sl-panel sl-chart-panel"><div class="sl-panel-head"><h4>Stock Value vs Sales</h4>'
 
-            + '<select class="sl-chart-range"><option>Last 6 Months</option><option>Last 12 Months</option></select></div>'
+            + '<select class="sl-chart-range" id="sl-chart-range" aria-label="Chart range">'
 
-            + '<div class="sl-chart-legend"><span class="sl-legend-stock">● Stock Value (₱)</span><span class="sl-legend-sales">● Sales Value (₱)</span></div>'
+            + '<option value="6">Last 6 Months</option><option value="12">Last 12 Months</option></select></div>'
 
-            + chartSvg(DATA.chartMonths, DATA.stockSeries, DATA.salesSeries, true)
+            + '<div id="sl-chart-host"></div></div>'
 
-            + '</div>'
+            + '<div class="sl-panel sl-chart-breakdown"><div class="sl-panel-head"><h4>Monthly Breakdown</h4></div>'
 
-            + '<div class="sl-panel" style="margin-top:16px;"><div class="sl-panel-head"><h4>Monthly Breakdown</h4></div>'
-
-            + '<div class="sl-table-wrap"><table class="sl-compact-table sl-detail-table"><thead><tr>'
-
-            + '<th>Month</th><th>Stock Value (₱)</th><th>Sales Value (₱)</th><th>Variance</th>'
-
-            + '</tr></thead><tbody>'
-
-            + DATA.chartMonths.map(function (m, i) {
-
-                var diff = DATA.stockSeries[i] - DATA.salesSeries[i];
-
-                return '<tr><td><strong>' + esc(m) + '</strong></td>'
-
-                    + '<td>' + money(DATA.stockSeries[i]) + '</td>'
-
-                    + '<td>' + money(DATA.salesSeries[i]) + '</td>'
-
-                    + '<td>' + (diff >= 0 ? '+' : '') + money(diff) + '</td></tr>';
-
-            }).join('')
-
-            + '</tbody></table></div></div>'
+            + '<div class="sl-table-wrap" id="sl-chart-table"></div></div>'
 
             + footer(reportHref);
+
+
+
+        function chartSlice(range) {
+
+            var year = DATA.chartYear;
+
+            if (String(range) === '12') {
+
+                return { months: year.months, stock: year.stock, sales: year.sales };
+
+            }
+
+            return {
+
+                months: year.months.slice(-6),
+
+                stock: year.stock.slice(-6),
+
+                sales: year.sales.slice(-6)
+
+            };
+
+        }
+
+
+
+        function paintChart(range) {
+
+            var slice = chartSlice(range);
+
+            var host = document.getElementById('sl-chart-host');
+
+            var table = document.getElementById('sl-chart-table');
+
+            if (host) {
+
+                host.innerHTML = '<div class="sl-chart-legend"><span class="sl-legend-stock">● Stock Value (₱)</span><span class="sl-legend-sales">● Sales Value (₱)</span></div>'
+
+                    + chartSvg(slice.months, slice.stock, slice.sales, true);
+
+            }
+
+            if (table) {
+
+                table.innerHTML = '<table class="sl-compact-table sl-detail-table"><thead><tr>'
+
+                    + '<th>Month</th><th>Stock Value (₱)</th><th>Sales Value (₱)</th><th>Variance</th>'
+
+                    + '</tr></thead><tbody>'
+
+                    + slice.months.map(function (m, i) {
+
+                        var diff = slice.stock[i] - slice.sales[i];
+
+                        return '<tr><td><strong>' + esc(m) + '</strong></td>'
+
+                            + '<td>' + money(slice.stock[i]) + '</td>'
+
+                            + '<td>' + money(slice.sales[i]) + '</td>'
+
+                            + '<td>' + (diff >= 0 ? '+' : '') + money(diff) + '</td></tr>';
+
+                    }).join('')
+
+                    + '</tbody></table>';
+
+            }
+
+        }
+
+
+
+        var rangeSelect = document.getElementById('sl-chart-range');
+
+        paintChart(rangeSelect ? rangeSelect.value : '6');
+
+        if (rangeSelect) {
+
+            rangeSelect.addEventListener('change', function () {
+
+                paintChart(rangeSelect.value);
+
+            });
+
+        }
 
     }
 

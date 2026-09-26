@@ -37,6 +37,31 @@
         color 0.25s ease;
 }
 
+.admin-back-dashboard {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    margin: 0 0 16px;
+    padding: 10px 16px;
+    border: 1px solid rgba(63, 47, 20, 0.12);
+    border-radius: 999px;
+    background: #ffffff;
+    color: #3f2f14;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.admin-back-dashboard:hover,
+.admin-back-dashboard:focus-visible {
+    background: #fff8e1;
+    border-color: #fbc02d;
+    color: #3f2f14;
+}
+
 .expandable-nav-tab:hover {
     color: #fff;
     background: rgba(0, 0, 0, 0.18);

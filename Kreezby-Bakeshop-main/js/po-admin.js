@@ -350,6 +350,7 @@
 
     function closeAllMenus() {
         document.querySelectorAll('.action-popup-menu').forEach(function (m) {
+            if (m.closest('.alert-log-card')) return;
             m.classList.remove('active', 'flip-up');
             m.style.display = 'none';
             resetMenuPosition(m);
@@ -955,6 +956,8 @@
         var masterSelector = PAGE_MODE === 'retailer' ? '#po-retailer-directory-block' : '#po-master-lists-container-block';
 
         document.addEventListener('click', function (e) {
+            if (!document.getElementById('po-master-lists-container-block') && !document.getElementById('po-retailer-directory-block')) return;
+            if (e.target.closest('.alert-log-card, #alert-modal-overlay')) return;
             var actionBtn = e.target.closest(masterSelector + ' .action-trigger-btn[data-menu]');
             if (actionBtn) {
                 e.preventDefault(); e.stopPropagation();
@@ -1004,6 +1007,25 @@
         loadData();
         refreshTables();
         bindEvents();
+        openRestockFromAlert();
+    }
+
+    function openRestockFromAlert() {
+        var params = new URLSearchParams(window.location.search);
+        if (params.get('restock') !== '1') return;
+        openCreateModal('retailer');
+        var tbody = document.getElementById('po-modal-items-injector');
+        if (tbody) tbody.innerHTML = '';
+        addModalItemRow({
+            name: params.get('item') || 'Restock item',
+            unit: params.get('unit') || 'PCS',
+            qty: parseFloat(params.get('qty')) || 100,
+            cost: 0
+        });
+        var title = document.getElementById('po-modal-title');
+        if (title) title.textContent = 'Create Restock Purchase Order';
+        var remarks = document.getElementById('po-modal-remarks');
+        if (remarks) remarks.value = 'Restock from stock alert ' + (params.get('code') || '');
     }
 
     window.PoAdmin = {

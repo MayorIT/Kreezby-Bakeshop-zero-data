@@ -1,7 +1,7 @@
 /* Facebook-style nav: persistent chrome, smooth main content */
 
 @view-transition {
-    navigation: auto;
+    navigation: none;
 }
 
 html {
@@ -69,17 +69,10 @@ turbo-frame#kreezby-main-content,
 }
 
 ::view-transition-old(kreezby-main),
-::view-transition-new(kreezby-main) {
-    animation-duration: 0.2s;
-    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
-}
-
-::view-transition-old(kreezby-main) {
-    animation-name: kreezby-main-out;
-}
-
-::view-transition-new(kreezby-main) {
-    animation-name: kreezby-main-in;
+::view-transition-new(kreezby-main),
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
 }
 
 @keyframes kreezby-main-out {

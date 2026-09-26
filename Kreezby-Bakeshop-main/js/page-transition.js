@@ -42,11 +42,9 @@
     }
 
     function ensureViewTransitionMeta() {
-        if (document.querySelector('meta[name="view-transition"]')) return;
-        var meta = document.createElement('meta');
-        meta.name = 'view-transition';
-        meta.content = 'same-origin';
-        (document.head || document.documentElement).appendChild(meta);
+        document.querySelectorAll('meta[name="view-transition"]').forEach(function (meta) {
+            meta.setAttribute('content', 'none');
+        });
     }
 
     function ensureCss() {

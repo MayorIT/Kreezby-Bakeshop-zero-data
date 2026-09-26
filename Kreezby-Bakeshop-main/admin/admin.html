@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="../css/pages/admin/admin.css">
     <link rel="stylesheet" href="../css/shared/admin-icon-sidebar.css">
     <link rel="stylesheet" href="../css/shared/expandable-nav-tabs.css">
-
 </head>
 <body>
 <script>try{if(localStorage.getItem('kreezbySidebarCollapsed')==='1')document.body.classList.add('sidebar-collapsed');}catch(e){}</script>
@@ -17,80 +16,131 @@
     <header class="top-navbar-node">
         <div class="brand-logo-panel"><img src="../assets/logo/kreezby-logo.png" alt="Kreezby logo"></div>
         <div class="top-nav-links-right">
-            <a class="top-nav-item home-badge" href="admin.html">Home</a>
-            <a class="top-nav-item" href="maintenance-admin.html">Maintenance</a>
-            <a class="top-nav-item" href="inbox-admin.html">Inbox</a>
-            <button type="button" class="notification-pill" aria-label="Notifications">🔔</button>
             <div class="user-dropdown">
-                <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger">
-                    <span style="background:#fff; width:18px; height:18px; border-radius:50%; display:inline-block;"></span>
+                <button type="button" class="user-dropdown-pill" id="user-dropdown-trigger" aria-haspopup="true" aria-expanded="false">
+                    <span class="user-dropdown-avatar" aria-hidden="true"></span>
                     Admin ▾
                 </button>
                 <div class="user-dropdown-menu" id="user-dropdown-menu">
-                    <a href="report_issue-admin.html" class="dropdown-item">Report Issue</a>
                     <a href="../auth/log_in.html" class="dropdown-item">↩ Log Out</a>
                 </div>
             </div>
         </div>
     </header>
- 
-    <div class="core-viewport-wrapper">
 
+    <div class="core-viewport-wrapper">
         <aside class="dark-sidebar-panel" aria-label="Admin navigation"></aside>
 
         <turbo-frame id="kreezby-main-content" class="kreezby-turbo-main">
         <main class="workspace-view-canvas">
-
             <div id="admin-dashboard-root">
-                <div class="dashboard-split-layout">
-                    <div class="panel-data-card">
-                        <div class="panel-card-title-bar">
-                            <h3>Dashboard Overview</h3>
-                        </div>
-                        <div class="card-body-padded">
-                            <div class="dashboard-grid">
-                                <a class="stat-card" href="po-admin.html">
-                                    <div class="stat-title">PO Records</div>
-                                    <div class="stat-value">2</div>
-                                </a>
-                                <a class="stat-card blue-bar" href="receive-admin.html">
-                                    <div class="stat-title">Receiving Records</div>
-                                    <div class="stat-value">6</div>
-                                </a>
-                                <a class="stat-card" href="bo-admin.html">
-                                    <div class="stat-title">BO Records</div>
-                                    <div class="stat-value">4</div>
-                                </a>
-                                <a class="stat-card red-bar" href="return-admin.html">
-                                    <div class="stat-title">Return Records</div>
-                                    <div class="stat-value">3</div>
-                                </a>
-                                <a class="stat-card green-bar" href="saleslist-admin.html">
-                                    <div class="stat-title">Sales Records</div>
-                                    <div class="stat-value">4</div>
-                                </a>
-                                <a class="stat-card" href="order-tracking-admin.html">
-                                    <div class="stat-title">Order Tracking</div>
-                                    <div class="stat-value" data-order-tracking-count>0</div>
-                                </a>
-                                <a class="stat-card" href="stocks-admin.html">
-                                    <div class="stat-title">Stocks</div>
-                                    <div class="stat-value">13</div>
-                                </a>
-                                <a class="stat-card blue-bar" href="aiforecast-admin.html">
-                                    <div class="stat-title">AI Forecast</div>
-                                    <div class="stat-value">4</div>
-                                </a>
-                                <a class="stat-card" href="alert-admin.html">
-                                    <div class="stat-title">Alert</div>
-                                    <div class="stat-value">4</div>
-                                </a>
-                            </div>
-                        </div>
+                <section class="admin-hero" aria-labelledby="admin-dashboard-heading">
+                    <div class="admin-hero-copy">
+                        <p class="admin-hero-kicker">Kreezby operations</p>
+                        <h1 id="admin-dashboard-heading">Admin Dashboard</h1>
+                        <p class="admin-hero-lede">Jump into purchase orders, inventory, forecasts, and customer tracking from one place.</p>
                     </div>
-                </div>
-            </div>
+                    <div class="admin-hero-aside">
+                        <p class="admin-hero-date" id="admin-dashboard-date"></p>
+                        <p class="admin-hero-role">Signed in as Admin</p>
+                        <a class="admin-hero-primary" href="inbox-admin.html">Open Inbox</a>
+                    </div>
+                </section>
 
+                <section class="admin-quick-actions" aria-label="Quick actions">
+                    <a class="admin-quick-btn" href="maintenance-admin.html">Maintenance</a>
+                    <a class="admin-quick-btn" href="order-tracking-admin.html">Order Tracking</a>
+                    <a class="admin-quick-btn" href="stocklevel-admin.html">Stock Level</a>
+                    <a class="admin-quick-btn" href="alert-admin.html">Alerts</a>
+                </section>
+
+                <section class="admin-modules" aria-labelledby="admin-modules-heading">
+                    <div class="admin-modules-toolbar">
+                        <div>
+                            <h2 id="admin-modules-heading">Modules</h2>
+                            <p>Every admin screen is one tap away.</p>
+                        </div>
+                        <label class="admin-module-search">
+                            <span class="visually-hidden">Search modules</span>
+                            <input id="admin-module-search" type="search" placeholder="Search modules" autocomplete="off">
+                        </label>
+                    </div>
+
+                    <div class="admin-module-grid" id="admin-module-grid">
+                        <a class="admin-module-card" data-module="purchase order po records" href="po-admin.html">
+                            <span class="admin-module-icon admin-module-icon--po" aria-hidden="true">PO</span>
+                            <span class="admin-module-title">Purchase Orders</span>
+                            <span class="admin-module-count" data-count="po">2</span>
+                            <span class="admin-module-copy">Create and review retailer and customer purchase orders.</span>
+                            <span class="admin-module-open">Open module</span>
+                        </a>
+                        <a class="admin-module-card" data-module="receiving records inbound" href="receive-admin.html">
+                            <span class="admin-module-icon admin-module-icon--receive" aria-hidden="true">RC</span>
+                            <span class="admin-module-title">Receiving</span>
+                            <span class="admin-module-count" data-count="receive">6</span>
+                            <span class="admin-module-copy">Confirm inbound deliveries against purchase orders.</span>
+                            <span class="admin-module-open">Open module</span>
+                        </a>
+                        <a class="admin-module-card" data-module="back order bo records" href="bo-admin.html">
+                            <span class="admin-module-icon admin-module-icon--bo" aria-hidden="true">BO</span>
+                            <span class="admin-module-title">Back Orders</span>
+                            <span class="admin-module-count" data-count="bo">4</span>
+                            <span class="admin-module-copy">Track items still waiting to be fulfilled.</span>
+                            <span class="admin-module-open">Open module</span>
+                        </a>
+                        <a class="admin-module-card" data-module="return po list records" href="return-admin.html">
+                            <span class="admin-module-icon admin-module-icon--return" aria-hidden="true">RT</span>
+                            <span class="admin-module-title">Returns</span>
+                            <span class="admin-module-count" data-count="return">3</span>
+                            <span class="admin-module-copy">Process return lists and related purchase orders.</span>
+                            <span class="admin-module-open">Open module</span>
+                        </a>
+                        <a class="admin-module-card" data-module="sales list records" href="saleslist-admin.html">
+                            <span class="admin-module-icon admin-module-icon--sales" aria-hidden="true">SL</span>
+                            <span class="admin-module-title">Sales List</span>
+                            <span class="admin-module-count" data-count="sales">4</span>
+                            <span class="admin-module-copy">Review store and route sales activity.</span>
+                            <span class="admin-module-open">Open module</span>
+                        </a>
+                        <a class="admin-module-card" data-module="order tracking customer delivery" href="order-tracking-admin.html">
+                            <span class="admin-module-icon admin-module-icon--orders" aria-hidden="true">OT</span>
+                            <span class="admin-module-title">Order Tracking</span>
+                            <span class="admin-module-count" data-order-tracking-count data-count="orders">0</span>
+                            <span class="admin-module-copy">Follow customer orders from processing to delivery.</span>
+                            <span class="admin-module-open">Open module</span>
+                        </a>
+                        <a class="admin-module-card" data-module="stocks inventory items" href="stocks-admin.html">
+                            <span class="admin-module-icon admin-module-icon--stocks" aria-hidden="true">ST</span>
+                            <span class="admin-module-title">Stocks</span>
+                            <span class="admin-module-count" data-count="stocks">13</span>
+                            <span class="admin-module-copy">Manage bakery stock items and quantities.</span>
+                            <span class="admin-module-open">Open module</span>
+                        </a>
+                        <a class="admin-module-card" data-module="stock level category pills" href="stocklevel-admin.html">
+                            <span class="admin-module-icon admin-module-icon--level" aria-hidden="true">LV</span>
+                            <span class="admin-module-title">Stock Level</span>
+                            <span class="admin-module-count" data-count="stocklevel">—</span>
+                            <span class="admin-module-copy">Watch category levels and low-stock signals.</span>
+                            <span class="admin-module-open">Open module</span>
+                        </a>
+                        <a class="admin-module-card" data-module="ai forecast analysis trend" href="aiforecast-admin.html">
+                            <span class="admin-module-icon admin-module-icon--ai" aria-hidden="true">AI</span>
+                            <span class="admin-module-title">AI Forecast</span>
+                            <span class="admin-module-count" data-count="forecast">4</span>
+                            <span class="admin-module-copy">Open sales, inventory, and delivery forecasts.</span>
+                            <span class="admin-module-open">Open module</span>
+                        </a>
+                        <a class="admin-module-card" data-module="alert notifications" href="alert-admin.html">
+                            <span class="admin-module-icon admin-module-icon--alert" aria-hidden="true">AL</span>
+                            <span class="admin-module-title">Alerts</span>
+                            <span class="admin-module-count" data-count="alert">4</span>
+                            <span class="admin-module-copy">Review operational alerts that need attention.</span>
+                            <span class="admin-module-open">Open module</span>
+                        </a>
+                    </div>
+                    <p class="admin-modules-empty" id="admin-modules-empty" hidden>No modules match that search.</p>
+                </section>
+            </div>
         </main>
         </turbo-frame>
     </div>
@@ -98,8 +148,9 @@
     <div class="notification-modal-overlay" id="notification-modal-overlay" hidden aria-hidden="true"></div>
 
     <script src="../js/order-tracking.js"></script>
-    <script src="../js/user-dropdown-nav.js"></script>
+    <script src="../js/user-dropdown-nav.js?v=al6"></script>
     <script src="../js/admin-sidebar.js"></script>
-    <script src="../js/sidebar-toggle.js"></script>
+    <script src="../js/sidebar-toggle.js?v=al6"></script>
+    <script src="../js/admin-dashboard.js"></script>
 </body>
 </html>
